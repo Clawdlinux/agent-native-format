@@ -1,0 +1,20 @@
+Business Source License 1.1
+
+Parameters
+
+Licensor: Clawdlinux / NineVigil
+Licensed Work: NineVigil ACP server runtime, including cmd/ and internal/
+Additional Use Grant: You may use the Licensed Work for development, testing, evaluation, and internal self-hosted deployments. You may not offer the Licensed Work to third parties as a managed or hosted service without written permission from the Licensor.
+Change Date: 2029-05-02
+Change License: Apache License, Version 2.0
+
+For the Business Source License 1.1 terms, see:
+https://mariadb.com/bsl11/
+
+This repository also contains materials under separate licenses:
+
+- SPEC.md and docs/protocol.md: Creative Commons Attribution 4.0 International (CC BY 4.0)
+- pkg/ and adapters/: Apache License, Version 2.0
+- benchmark methodology and scenario definitions: Apache License, Version 2.0 unless otherwise noted
+
+If any file contains an explicit license notice, that notice controls for that file.

@@ -1,0 +1,20 @@
+id: S2
+title: Multi-tool enterprise workflow
+intent: query customer data, send a Slack summary, and log an audit event
+runs: 50
+tools:
+  relevant:
+    - db.query
+    - slack.send_message
+    - audit.log_event
+  registered_total: 15
+metrics:
+  - token_overhead
+  - round_trips
+  - time_to_first_action_ms
+  - success_rate
+  - credential_exposure
+acceptance:
+  acp_target_token_reduction: 0.75
+  acp_max_round_trips_before_action: 1
+notes: Typical enterprise workflow with multiple tool providers.

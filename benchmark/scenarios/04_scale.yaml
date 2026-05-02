@@ -1,0 +1,19 @@
+id: S4
+title: Scale with many registered tools
+intent: query billing data and send a finance summary
+runs: 50
+tools:
+  relevant:
+    - billing.query
+    - email.send
+  registered_total: 50
+mcp_servers: 10
+metrics:
+  - token_overhead
+  - context_utilization
+  - round_trips
+  - time_to_first_action_ms
+acceptance:
+  acp_target_token_reduction: 0.85
+  acp_context_utilization_min: 0.80
+notes: Demonstrates intent scoping when many irrelevant MCP tools are present.

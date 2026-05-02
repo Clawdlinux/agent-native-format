@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Go
+/bin/
+/dist/
+*.test
+coverage.out
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / benchmark helpers
+node_modules/
+
+# Generated benchmark output
+results/*.json
+results/*.csv
+results/*.png
+results/*.pdf
+results/*.html
+!results/README.md
+
+# Local env / secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# Temporary files
+tmp/

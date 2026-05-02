@@ -1,0 +1,29 @@
+id: S3
+title: Complex DAG
+intent: research a topic, analyze findings, draft a response, review it, and email the team
+runs: 50
+tools:
+  relevant:
+    - web.research
+    - analysis.summarize
+    - document.draft
+    - review.policy_check
+    - email.send
+  registered_total: 25
+dependencies:
+  document.draft:
+    - web.research
+    - analysis.summarize
+  review.policy_check:
+    - document.draft
+  email.send:
+    - review.policy_check
+metrics:
+  - token_overhead
+  - ordering_errors
+  - success_rate
+  - time_to_first_action_ms
+acceptance:
+  acp_target_token_reduction: 0.80
+  acp_max_ordering_errors: 0
+notes: Shows advantage of server-declared `depends_on` ordering.

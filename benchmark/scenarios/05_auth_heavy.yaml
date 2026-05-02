@@ -1,0 +1,23 @@
+id: S5
+title: Auth-heavy workflow
+intent: reconcile account data across CRM, billing, and secure storage
+runs: 50
+tools:
+  relevant:
+    - crm.read_customer
+    - billing.read_invoice
+    - vault.fetch_reference
+  registered_total: 18
+auth:
+  - oauth
+  - api_key
+  - mtls
+metrics:
+  - token_overhead
+  - credential_exposure
+  - auth_failures
+  - success_rate
+acceptance:
+  acp_required_credential_exposure: 0
+  acp_max_auth_failures: 0
+notes: Proves credentials never enter the agent context window.

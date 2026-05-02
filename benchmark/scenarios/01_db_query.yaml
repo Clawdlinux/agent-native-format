@@ -1,0 +1,17 @@
+id: S1
+title: Simple DB query
+intent: query customer data and return results
+runs: 50
+tools:
+  relevant:
+    - db.query
+  registered_total: 1
+metrics:
+  - token_overhead
+  - round_trips
+  - time_to_first_action_ms
+  - success_rate
+acceptance:
+  acp_target_token_reduction: 0.70
+  acp_max_round_trips_before_action: 1
+notes: Baseline scenario; even one tool should show MCP discovery/schema overhead.
