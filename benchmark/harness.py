@@ -67,6 +67,12 @@ class Scenario:
     capability_hints: list[str]
     tool_ids: list[str]  # tools the resolver should select
     mcp_servers: int  # number of MCP servers the agent would have to load
+    # When >0, the MCP baseline payload also includes this many copies of
+    # generic noise tools (cloned from the catalog) to model the
+    # "intent-scoping at scale" case where many irrelevant tools are
+    # registered. ACP's payload is unaffected because the resolver returns
+    # only the relevant tools.
+    mcp_noise_tools: int = 0
 
 
 # Scenarios (subset of the YAML library; harness ships with these inline so it
@@ -88,6 +94,42 @@ SCENARIOS: list[Scenario] = [
         capability_hints=[],
         tool_ids=["db.query", "slack.send_message", "audit.log_event"],
         mcp_servers=2,
+    ),
+    Scenario(
+        id="S3",
+        title="Complex DAG (research, render, audit, email)",
+        intent="query the customer database, render a report from the data, log an audit event, then email the team the report",
+        capability_hints=[],
+        tool_ids=[
+            "db.query",
+            "template.render",
+            "audit.log_event",
+            "email.send",
+        ],
+        mcp_servers=3,
+    ),
+    Scenario(
+        id="S4",
+        title="Scale: 50 registered tools, 2 relevant",
+        intent="query the customer database and send a slack notification",
+        capability_hints=[],
+        tool_ids=["db.query", "slack.send_message"],
+        mcp_servers=10,
+        mcp_noise_tools=48,  # 50 total registered, 2 relevant
+    ),
+    Scenario(
+        id="S5",
+        title="Auth-heavy: cross-service workflow with credential injection",
+        intent="query the customer database, render a report, send via email and slack, log audit",
+        capability_hints=[],
+        tool_ids=[
+            "db.query",
+            "template.render",
+            "email.send",
+            "slack.send_message",
+            "audit.log_event",
+        ],
+        mcp_servers=3,
     ),
 ]
 
@@ -151,7 +193,11 @@ def request_acp_manifest(
 
 def measure_run(acp_url: str, auth_token: str | None, scenario: Scenario) -> RunResult:
     acp_body, wall_ms = request_acp_manifest(acp_url, auth_token, scenario)
-    mcp_body = mcp_context_payload(scenario.tool_ids, num_servers=scenario.mcp_servers)
+    mcp_body = mcp_context_payload(
+        scenario.tool_ids,
+        num_servers=scenario.mcp_servers,
+        noise_tools=scenario.mcp_noise_tools,
+    )
     acp_tokens, _ = count_tokens(acp_context_payload(acp_body))
     mcp_tokens, _ = count_tokens(mcp_body)
     return RunResult(

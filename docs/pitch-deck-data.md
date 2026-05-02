@@ -31,20 +31,24 @@ Live side-by-side:
 
 ## Numbers
 
-**First measured benchmark — 2026-05-02, 50 runs/scenario, tiktoken cl100k_base:**
+**Headline benchmark - 2026-05-02, 50 runs/scenario, tiktoken cl100k_base, all 5 scenarios:**
 
 | Scenario | ACP tokens | MCP tokens | Reduction | RT (ACP / MCP) |
 |---|---|---|---|---|
 | S1 Simple DB query (1 tool) | 111 | 373 | **70.2%** | 1 / 3 |
 | S2 Multi-tool workflow (3 tools, 2 servers) | 295 | 837 | **64.7%** | 1 / 5 |
+| S3 Complex DAG (4 tools, 3 servers) | 306 | 1,257 | **75.6%** | 1 / 7 |
+| **S4 Scale (50 registered, 2 relevant)** | **241** | **9,223** | **97.4%** | **1 / 21** |
+| S5 Auth-heavy (5 tools across 3 servers) | 359 | 1,431 | **74.9%** | 1 / 7 |
 
 Headline numbers ready to paste into a slide:
 
-> ACP cuts agent tool-context tokens by **65-70%** in head-to-head measurements
-> against an MCP baseline built per the official 2024-11 spec. Round-trips
-> before the first useful action drop from **3-5 (MCP) to 1 (ACP)**.
+> ACP cuts agent tool-context tokens by **65-97%** in head-to-head measurements
+> against an MCP baseline built per the official 2024-11 spec. The bigger the
+> tool registry gets, the bigger the gap: at 50 registered tools (only 2
+> relevant to the task), ACP delivers a **97.4% reduction** vs MCP's full
+> `tools/list` payload. Round-trips before the first useful action drop from
+> **3-21 (MCP) to 1 (ACP)**.
 
-Source: [`results/2026-05-02-summary.md`](../results/2026-05-02-summary.md).
-Raw data: [`results/2026-05-02-week2-baseline.json`](../results/2026-05-02-week2-baseline.json).
-S3-S5 measurements (more tools, intent scoping at scale, auth-heavy paths)
-land in Week 3.
+Source: [`results/2026-05-02-week3-summary.md`](../results/2026-05-02-week3-summary.md).
+Raw data: [`results/2026-05-02-week3-baseline.json`](../results/2026-05-02-week3-baseline.json).

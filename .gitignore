@@ -35,6 +35,8 @@ results/*.html
 !results/README.md
 # Phase-2/Week-2 baseline result kept under version control as the first pitch-deck data point.
 !results/2026-05-02-week2-baseline.json
+# Phase-3/Week-3 full S1-S5 baseline kept as the headline pitch-deck data point.
+!results/2026-05-02-week3-baseline.json
 
 # Local env / secrets
 .env

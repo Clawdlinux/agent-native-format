@@ -96,3 +96,41 @@ baseline, and produce the first measured ACP-vs-MCP token-cost number.
 Falls inside the 70-85% target range stated in the source spec.
 
 **Status:** Complete
+
+## Phase 4 - Week 3 Python Adapters + S3-S5 + MCP Source Adapter
+
+**Goal:** Make ACP usable from the Python agent ecosystem, push the
+benchmark to all 5 scenarios, and prove "ACP on top of MCP" with a real
+source adapter.
+
+**Acceptance criteria**
+- `adapters/python/acp_common`: shared core (manifest types, ACPClient,
+  schema translation, topological ordering, proxy URL helpers).
+- `adapters/python/acp_openai`: manifest -> OpenAI function-calling tools
+  + dispatcher that routes through the auth-injection proxy.
+- `adapters/python/acp_langgraph`: manifest -> LangGraph nodes with
+  topological edges.
+- `adapters/python/acp_crewai`: manifest -> CrewAI tools (with callable
+  fallback when crewai is not installed).
+- `internal/sources/mcp`: ingests MCP `tools/list` payloads, infers
+  capabilities, converts verbose JSON-Schema to compact ACP form,
+  registers each tool in the ACP registry.
+- Harness covers S1-S5; S4 includes a `noise_tools` knob that adds
+  generic tool descriptors to model "intent scoping at scale".
+- All Python tests green (35 = 12 benchmark + 23 adapter).
+- All Go tests green (9 packages incl. new `internal/sources/mcp`).
+
+**Result (2026-05-02, 50 runs/scenario, tiktoken cl100k_base, all 5):**
+
+| Scenario | ACP tokens | MCP tokens | Reduction | RT ACP/MCP |
+|---|---|---|---|---|
+| S1 Simple DB query | 111 | 373 | **70.2%** | 1 / 3 |
+| S2 Multi-tool workflow | 295 | 837 | **64.7%** | 1 / 5 |
+| S3 Complex DAG | 306 | 1,257 | **75.6%** | 1 / 7 |
+| **S4 Scale (50 tools, 2 relevant)** | **241** | **9,223** | **97.4%** | **1 / 21** |
+| S5 Auth-heavy | 359 | 1,431 | **74.9%** | 1 / 7 |
+
+S4 is the headline pitch number: at 50 registered tools (2 relevant), ACP
+delivers a 97.4% reduction over MCP's full `tools/list` payload.
+
+**Status:** Complete
