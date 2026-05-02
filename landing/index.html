@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ACP — Agent Context Protocol</title>
+<meta name="description" content="ACP: one API call returns the exact tools, schemas, auth, and execution order an agent needs. Sits on top of MCP. Cuts tool-context tokens 65–97%." />
+<meta property="og:title" content="ACP — Agent Context Protocol" />
+<meta property="og:description" content="One API call. Complete execution context. Minimal tokens. Sits on top of MCP." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#1a73e8" />
+<style>
+  :root {
+    --fg: #1a1c20;
+    --fg-soft: #4a4e57;
+    --bg: #ffffff;
+    --bg-card: #f6f8fa;
+    --accent: #1a73e8;
+    --accent-soft: #e8f0fe;
+    --good: #0b8043;
+    --rule: #e1e4e8;
+  }
+  * { box-sizing: border-box; }
+  html { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; line-height: 1.5; color: var(--fg); background: var(--bg); }
+  body { margin: 0; padding: 0; }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 24px; }
+  h1 { font-size: 2.4rem; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.02em; }
+  h2 { font-size: 1.5rem; margin: 48px 0 12px; letter-spacing: -0.01em; }
+  h3 { font-size: 1.1rem; margin: 24px 0 8px; color: var(--fg-soft); text-transform: uppercase; letter-spacing: 0.05em; }
+  p, li { color: var(--fg-soft); }
+  .tagline { font-size: 1.15rem; color: var(--fg-soft); margin: 0 0 32px; }
+  .hero { padding: 24px 0 8px; border-bottom: 1px solid var(--rule); }
+  .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .num-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 24px 0 8px; }
+  .num { background: var(--bg-card); border-radius: 12px; padding: 18px; }
+  .num .v { font-size: 1.6rem; font-weight: 600; color: var(--good); margin: 0; }
+  .num .l { font-size: 0.85rem; color: var(--fg-soft); margin: 4px 0 0; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); }
+  th { color: var(--fg-soft); font-weight: 600; }
+  td.headline { color: var(--good); font-weight: 600; }
+  pre { background: var(--bg-card); border-radius: 10px; padding: 16px; overflow-x: auto; font-size: 0.88rem; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .cta { margin: 32px 0 8px; }
+  .btn { display: inline-block; padding: 10px 18px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; margin: 0 8px 8px 0; }
+  .btn.secondary { background: var(--bg-card); color: var(--accent); border: 1px solid var(--rule); }
+  footer { margin: 64px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); color: var(--fg-soft); font-size: 0.88rem; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <span class="pill">Open protocol · v0.1 · CC BY 4.0</span>
+    <h1>ACP — Agent Context Protocol</h1>
+    <p class="tagline">One API call. Complete execution context. Minimal tokens. Sits on top of MCP.</p>
+  </header>
+
+  <section>
+    <p>
+      MCP answers <em>"what tools exist?"</em>. <strong>ACP sits on top of MCP</strong>
+      and answers <em>"what exactly do I need to do right now, and how?"</em>.
+      The agent submits an intent; ACP returns one intent-scoped Execution
+      Manifest with auth pre-injected, dependency order pre-computed, and
+      security boundaries declared. Existing MCP servers keep working.
+    </p>
+  </section>
+
+  <section>
+    <h2>Headline benchmark</h2>
+    <div class="num-grid">
+      <div class="num"><p class="v">76.6%</p><p class="l">mean tool-context token reduction</p></div>
+      <div class="num"><p class="v">97.4%</p><p class="l">at scale (50 tools, 2 relevant)</p></div>
+      <div class="num"><p class="v">1 RT</p><p class="l">vs 3–21 round trips for MCP</p></div>
+      <div class="num"><p class="v">0</p><p class="l">credentials in agent context</p></div>
+    </div>
+    <table>
+      <thead><tr><th>Scenario</th><th>ACP / MCP tokens</th><th>RT</th><th>Reduction</th></tr></thead>
+      <tbody>
+        <tr><td>S1 Simple DB query</td><td>111 / 373</td><td>1 / 3</td><td class="headline">70.2%</td></tr>
+        <tr><td>S2 Multi-tool workflow</td><td>295 / 837</td><td>1 / 5</td><td class="headline">64.7%</td></tr>
+        <tr><td>S3 Complex DAG</td><td>306 / 1,257</td><td>1 / 7</td><td class="headline">75.6%</td></tr>
+        <tr><td><strong>S4 Scale (50 tools, 2 relevant)</strong></td><td><strong>241 / 9,223</strong></td><td><strong>1 / 21</strong></td><td class="headline"><strong>97.4%</strong></td></tr>
+        <tr><td>S5 Auth-heavy</td><td>359 / 1,431</td><td>1 / 7</td><td class="headline">74.9%</td></tr>
+      </tbody>
+    </table>
+    <p>50 runs per scenario, <code>tiktoken/cl100k_base</code>. Raw data committed to the repo.</p>
+  </section>
+
+  <section>
+    <h2>Try it (~30 seconds)</h2>
+    <pre><code>git clone https://github.com/Clawdlinux/ninevigil-acp
+cd ninevigil-acp
+go build -o bin/acp-server ./cmd/acp-server
+ACP_AUTH_TOKEN=dev ./bin/acp-server --addr :8080 &amp;
+
+curl -sS -X POST http://localhost:8080/v1/context \
+  -H "Authorization: Bearer dev" \
+  -H "Content-Type: application/json" \
+  -d '{"intent":"query the customer database, render a report, email the team",
+       "agent_id":"demo"}' | python3 -m json.tool</code></pre>
+  </section>
+
+  <section>
+    <h2>Use it from your stack</h2>
+    <h3>Python (OpenAI)</h3>
+    <pre><code>from openai import OpenAI
+from acp_common import ACPClient
+from acp_openai import manifest_to_openai_tools, dispatch_tool_call
+
+acp = ACPClient("http://localhost:8080", auth_token="dev")
+manifest = acp.context(intent="send last week's report", agent_id="analyst")
+tools = manifest_to_openai_tools(manifest)
+
+resp = OpenAI().chat.completions.create(
+    model="gpt-4o-mini", tools=tools,
+    messages=[{"role": "user", "content": "send the report"}],
+)</code></pre>
+
+    <h3>Go</h3>
+    <pre><code>client := acp.NewClient("http://localhost:8080", acp.WithToken("dev"))
+mf, _ := client.Context(ctx, manifest.ContextRequest{
+    Intent:  "query the customer db",
+    AgentID: "agent-01",
+})
+// mf.Actions is in topological order; mf.Boundaries enforces egress.</code></pre>
+
+    <h3>Any language</h3>
+    <p>It's HTTP/JSON. <code>POST /v1/context</code>, parse the manifest, execute via the proxy.</p>
+  </section>
+
+  <section>
+    <h2>What you get</h2>
+    <ul>
+      <li><strong>Intent-scoped manifests.</strong> Only the tools relevant to the task. Schemas compacted into a typed mini-language.</li>
+      <li><strong>Auth never enters the agent context window.</strong> Credentials are injected at a proxy boundary.</li>
+      <li><strong>Deterministic execution order.</strong> <code>depends_on</code> is server-computed. The agent doesn't reason about ordering.</li>
+      <li><strong>Declared security boundaries.</strong> Egress allow-list, per-action token ceiling, approval gates, audit level — all part of the contract.</li>
+      <li><strong>MCP-compatible.</strong> Point ACP at any MCP server. The reference implementation ingests MCP <code>tools/list</code> payloads automatically.</li>
+      <li><strong>Open spec.</strong> CC BY 4.0. SDKs Apache 2.0. Reference runtime BSL 1.1 with 3-year Apache conversion.</li>
+    </ul>
+  </section>
+
+  <section class="cta">
+    <a class="btn" href="https://github.com/Clawdlinux/ninevigil-acp">Code on GitHub</a>
+    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/SPEC.md">Read SPEC.md</a>
+    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/paper/acp.md">Paper draft</a>
+  </section>
+
+  <footer>
+    Built by <a href="https://github.com/shreyanshjain7174">Shreyansh Sancheti</a> at
+    Clawdlinux / NineVigil. Spec under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+    Reference implementation under
+    <a href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/LICENSE">BSL 1.1</a>
+    (converts to Apache 2.0 on 2029-05-02).
+  </footer>
+</main>
+</body>
+</html>

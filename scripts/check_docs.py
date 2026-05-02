@@ -7,6 +7,8 @@ required = [
     "README.md",
     "SPEC.md",
     "LICENSE",
+    "CHANGELOG.md",
+    "LAUNCH_CHECKLIST.md",
     "docs/architecture.md",
     "docs/benchmark-methodology.md",
     "docs/operator-integration.md",
