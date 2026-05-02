@@ -1,21 +1,11 @@
 services:
   acp-server:
-    image: busybox:1.36
-    command: ["sh", "-c", "echo 'ACP server implementation lands in Week 1' && tail -f /dev/null"]
+    image: ninevigil-acp/acp-server:dev
+    build:
+      context: ..
+      dockerfile: Dockerfile
     environment:
-      ACP_ADDR: ":8080"
+      ACP_AUTH_TOKEN: ${ACP_AUTH_TOKEN:-dev-token}
+    command: ["--addr", ":8080"]
     ports:
       - "8080:8080"
-    profiles: ["week1"]
-
-  db-proxy:
-    image: ghcr.io/ninevigil/mock-tool:dev
-    profiles: ["future"]
-
-  template-svc:
-    image: ghcr.io/ninevigil/mock-tool:dev
-    profiles: ["future"]
-
-  email-gw:
-    image: ghcr.io/ninevigil/mock-tool:dev
-    profiles: ["future"]

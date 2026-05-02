@@ -74,20 +74,42 @@ ninevigil-acp/
 Phase status is tracked in [`docs/phase-log.md`](./docs/phase-log.md) and
 mirrored to the `ACP-PoC/` folder inside the NineVigil Obsidian vault.
 
-## Quickstart (placeholder — Week 1)
+## Quickstart
 
 ```bash
-# Build server
-go build -o bin/acp-server ./cmd/acp-server
+# 1. Build the server
+make build                           # -> bin/acp-server
 
-# Boot local stack
-docker compose -f deploy/docker-compose.yaml up -d
+# 2. Run it (auth required when ACP_AUTH_TOKEN is set)
+ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
 
-# Request a manifest
-curl -X POST http://localhost:8080/v1/context \
+# 3. Request a manifest
+curl -sS -X POST http://localhost:8080/v1/context \
   -H "Authorization: Bearer dev-token" \
   -H "Content-Type: application/json" \
-  -d '{"intent": "query db", "agent_id": "demo", "capabilities": ["sql"]}'
+  -d '{"intent":"query customer data, render report, email the team","agent_id":"demo"}' \
+  | python3 -m json.tool
+
+# 4. Report execution feedback
+curl -sS -X POST http://localhost:8080/v1/feedback \
+  -H "Authorization: Bearer dev-token" \
+  -H "Content-Type: application/json" \
+  -d '{"manifest_id":"m-...","action_id":"a1","outcome":"success","latency_ms":42}'
+```
+
+The Week 1 server seeds an in-memory registry with five demo tools
+(`db.query`, `template.render`, `email.send`, `slack.send_message`,
+`audit.log_event`), uses a deterministic keyword resolver, and emits manifests
+with depends_on chains, egress allow-lists, and approval gates.
+
+Go SDK consumers can use [`pkg/acp`](./pkg/acp):
+
+```go
+client := acp.NewClient("http://localhost:8080", acp.WithToken("dev-token"))
+mf, err := client.Context(ctx, manifest.ContextRequest{
+    Intent:  "query the customer db",
+    AgentID: "agent-01",
+})
 ```
 
 ## License
