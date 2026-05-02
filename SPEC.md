@@ -16,14 +16,18 @@ exact endpoints, schemas, authentication injection, execution dependencies,
 and security boundaries required to satisfy the agent's stated intent — in
 the fewest tokens possible.
 
-ACP is positioned as a successor to MCP for production agent systems where
-context-window economics, security posture, and execution determinism
-matter more than human-browsable tool catalogs.
+ACP is an **intent-resolution and execution-planning layer that sits on top
+of MCP** and other tool sources (REST APIs, gRPC services, Kubernetes APIs).
+MCP answers “what tools exist?”; ACP answers “what exactly do I need to do
+right now, and how?”. ACP servers consume MCP `tools/list` payloads (see
+[§10](#10-relationship-to-mcp)) and emit token-minimal manifests that any
+agent runtime can execute with one round trip.
 
 ## 2. Motivation
 
-MCP was designed for human-like browsing of tool surfaces. In production
-this manifests as:
+MCP was designed for human-like browsing of tool surfaces. It does that job
+well. In production, however, that same human-friendly surface becomes a
+dominant cost in agent context windows:
 
 | Failure mode | Observed cost |
 |---|---|
@@ -33,7 +37,14 @@ this manifests as:
 | No auth injection (agent handles credentials in-context) | Credential-leak risk + extra round trips |
 | No execution ordering (flat tool list) | Agent burns tokens reasoning about DAGs |
 
-Cited references in [docs/references.md](./docs/references.md).
+ACP doesn’t replace any of this — MCP servers stay where they are. ACP
+strips the verbosity, scopes by intent, injects credentials at the proxy
+boundary, and pre-computes execution order, then hands the agent a single
+manifest small enough to fit in any context budget.
+
+Cited references in [docs/references.md](./docs/references.md). See also
+[docs/positioning.md](./docs/positioning.md) for the full “ACP on top of
+MCP” framing.
 
 ## 3. Design Principles
 
@@ -225,3 +236,57 @@ Code Mode, AgentSpec, A2A, Oracle Open Agent Spec).
 
 - **v0.1 (2026-05-02)** — Initial draft extracted from
   `ACP_PoC_Specification_CONFIDENTIAL.docx`.
+- **v0.1.1 (2026-05-03)** — Repositioned from "successor to MCP" to
+  "intent-resolution layer on top of MCP and other tool sources". No wire
+  format changes. Added §10.
+
+## 10. Relationship to MCP
+
+ACP **does not replace MCP**. ACP is a layer that consumes MCP (and other
+tool sources) and emits intent-scoped manifests.
+
+```
+agent ── POST /v1/context ──> ACP server ──┬── reads MCP tools/list
+                                           ├── reads REST/gRPC catalogs
+                                           └── reads Kubernetes APIs
+       <── ExecutionManifest ──
+```
+
+A conforming ACP server SHOULD provide an MCP source adapter. The reference
+implementation in this repository ships one at
+`internal/sources/mcp.Importer` (Go). The adapter:
+
+1. Issues `GET <mcp_base>/tools/list` against any MCP-compliant server.
+2. Infers ACP capability tags from each tool's name, plus optional
+   source-level extras.
+3. Compacts the verbose JSON-Schema `inputSchema` into the ACP
+   mini-language defined in §4.4 (`string`, `int?`, `string[]`,
+   `enum:a|b|c`, etc.).
+4. Registers each tool in the ACP registry under
+   `<source_name>.<tool_name>`.
+
+The compaction step is what produces the token reduction headlined in
+[docs/pitch-deck-data.md](./docs/pitch-deck-data.md). The MCP server itself
+is unchanged; the agent just talks to ACP instead of to MCP directly.
+
+### Conformance for an MCP-source adapter
+
+An adapter MUST:
+
+- Translate MCP `tools/list` descriptors into ACP `Tool` entries without
+  loss of *executable* meaning (endpoint, method, required fields).
+- Strip MCP `description`, `examples`, and JSON-Schema metadata that does
+  not affect execution.
+- Preserve MCP authentication mode by mapping it to `auth: pre-injected` on
+  the ACP side and routing actual credentials through the ACP auth proxy.
+- Set `egress` allow-list to the MCP server's host.
+
+An adapter SHOULD:
+
+- Tag each imported tool with at least one capability derived from the
+  source name (e.g. `github`, `slack`).
+- Honor MCP `notifications/tools/list_changed` to refresh the ACP
+  registry.
+
+See also [docs/positioning.md](./docs/positioning.md) for the strategic
+rationale and ecosystem implications of this layering.
