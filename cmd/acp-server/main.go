@@ -34,6 +34,8 @@ func main() {
 		"feedback endpoint advertised in manifests")
 	enableProxy := flag.Bool("enable-proxy", true, "mount the auth-injection proxy at /v1/exec/")
 	autoApprove := flag.Bool("auto-approve", false, "approve every gated action (DEV ONLY)")
+	resolverKind := flag.String("resolver", "keyword",
+		"intent resolver: 'keyword' (deterministic substring match, default) or 'embedding' (hash TF-IDF, generalizes beyond literal keywords; falls back to keyword)")
 	flag.Parse()
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
@@ -55,7 +57,7 @@ func main() {
 	)
 
 	cfg := server.Config{
-		Resolver:  resolver.NewKeywordResolver(nil),
+		Resolver:  pickResolver(*resolverKind, logger),
 		Builder:   bld,
 		Feedback:  &server.LoggingFeedbackSink{Logger: logger},
 		AuthToken: *authToken,
@@ -87,6 +89,7 @@ func main() {
 		slog.Bool("auth_required", *authToken != ""),
 		slog.Bool("proxy_enabled", *enableProxy),
 		slog.Bool("auto_approve", *autoApprove),
+		slog.String("resolver", *resolverKind),
 		slog.Int("seeded_tools", len(reg.All())),
 	)
 
@@ -95,4 +98,20 @@ func main() {
 		os.Exit(1)
 	}
 	logger.Info("acp-server stopped")
+}
+
+// pickResolver returns the configured intent resolver. Unknown values
+// log a warning and fall back to the keyword resolver so a typo in the
+// flag never takes the server offline.
+func pickResolver(kind string, logger *slog.Logger) resolver.Resolver {
+	switch kind {
+	case "embedding":
+		return resolver.NewEmbeddingResolver(resolver.DefaultExamples(), resolver.EmbeddingOptions{})
+	case "", "keyword":
+		return resolver.NewKeywordResolver(nil)
+	default:
+		logger.Warn("acp-server unknown resolver, falling back to keyword",
+			slog.String("requested", kind))
+		return resolver.NewKeywordResolver(nil)
+	}
 }
