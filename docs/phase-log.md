@@ -12,6 +12,7 @@ Obsidian vault.
 - Source spec: `ACP_PoC_Specification_CONFIDENTIAL.docx`
 - Workspace: `/Users/sunny/clawdlinux/ninevigil-acp`
 - GitHub repo: `Clawdlinux/ninevigil-acp` (private)
+- GitHub milestone: `https://github.com/Clawdlinux/ninevigil-acp/milestone/1`
 
 **Decisions**
 - Repo name: `ninevigil-acp`
