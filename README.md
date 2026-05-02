@@ -1,7 +1,7 @@
 # ninevigil-acp
 
 > **Agent Context Protocol** — one API call, complete execution context, minimal tokens.
-> A successor to MCP for production agent systems.
+> An intent-resolution and execution-planning layer that **sits on top of MCP** and other tool sources.
 >
 > **Status:** Private PoC · v0.1 DRAFT · May 2026
 > **Owner:** Clawdlinux / NineVigil
@@ -10,21 +10,26 @@
 
 ## TL;DR
 
-MCP wastes 70–85% of the context window on tool discovery and schema bloat
-before the agent can do any useful work. **ACP** flips the model: the
-infrastructure computes the execution context for the agent and returns a
-single, intent-scoped manifest with auth pre-injected, ordering pre-computed,
-and security boundaries declared.
+MCP is great at “what tools exist?”. In production agent systems that surface
+becomes the dominant cost: tool discovery and verbose schemas can consume
+70–85% of the context window before the first user task.
 
-| | MCP (today) | ACP (this repo) |
+**ACP sits on top of MCP** (and any other tool source). The agent sends a
+single intent; ACP returns one intent-scoped manifest with auth pre-injected,
+ordering pre-computed, and security boundaries declared. Existing MCP
+servers keep working — ACP ingests their `tools/list` and produces
+token-minimal manifests for execution.
+
+| | MCP today (raw) | ACP on top of MCP |
 |---|---|---|
-| Round trips before first action | 5–8 | **1** |
-| Tokens for 3-tool workflow | ~6,000+ | **~400** |
+| Round trips before first action | 3–21 (measured) | **1** |
+| Tokens for representative workflows | 373–9,223 (measured) | **111–359** |
 | Auth in agent context | yes | **never** |
 | Execution ordering | agent infers | **server declares** |
 
-Numbers above are the PoC targets — see [`benchmark/`](./benchmark/) for the
-methodology and [`results/`](./results/) for measured outcomes.
+Numbers are real S1–S5 measurements (50 runs/scenario, `tiktoken/cl100k_base`):
+[`results/2026-05-02-week3-summary.md`](./results/2026-05-02-week3-summary.md).
+The full positioning is in [`docs/positioning.md`](./docs/positioning.md).
 
 ## Repo layout (per the source PoC specification §3.3)
 

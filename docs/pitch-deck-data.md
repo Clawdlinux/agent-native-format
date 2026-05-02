@@ -5,9 +5,12 @@ materials after the Week 4 report generation pass.
 
 ## Core slide
 
-> Perplexity dropped MCP. Independent benchmarks show MCP can burn most of an
-> agent's context window before the first user task. We built ACP: one API call,
-> complete execution context, auth pre-injected, execution pre-ordered.
+> MCP answers “what tools exist?”. **ACP sits on top of MCP** and answers
+> “what exactly do I need to do right now, and how?” — in one API call,
+> with auth pre-injected, ordering pre-computed, and security boundaries
+> declared. Existing MCP servers keep working unchanged. Independent
+> benchmarks show MCP can burn most of an agent’s context window before the
+> first user task; ACP cuts that overhead by 65–97%.
 
 ## Target proof points
 
