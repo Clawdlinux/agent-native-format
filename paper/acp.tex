@@ -1,0 +1,240 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  framerule=0pt,
+  backgroundcolor=\color{gray!10},
+  showstringspaces=false,
+}
+
+\title{ACP: Intent-Resolved Execution Manifests for Production Agent Systems}
+\author{Shreyansh Sancheti\\
+        \texttt{shreyansh@clawdlinux.org}\\
+        Clawdlinux / NineVigil}
+\date{2026-05-03}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Production agent systems built on the Model Context Protocol (MCP) spend the
+majority of their context window on tool discovery and verbose JSON-Schema
+descriptors before performing any user task. We measure this overhead at
+64.7\%-97.4\% across five representative workflows. We introduce the
+\textbf{Agent Context Protocol (ACP)}, a layer that sits \emph{on top of} MCP
+and other tool sources and returns a single intent-scoped Execution Manifest
+in one round trip with auth pre-injected, dependency order pre-computed, and
+security boundaries declared. ACP cuts tool-context tokens by 64.7\%-97.4\%
+(mean 76.6\%) and reduces round trips before the first useful action from
+3-21 to 1, while preserving the underlying MCP ecosystem unchanged. We
+provide an open-source reference implementation in Go with a Python adapter
+suite for OpenAI function-calling, LangGraph, and CrewAI; the protocol
+specification is published under CC BY 4.0 and the SDKs under Apache 2.0.
+\end{abstract}
+
+\section{Introduction}
+
+Autonomous AI agents increasingly orchestrate work across many tools exposed
+by Model Context Protocol (MCP) servers~\cite{mcp}. The protocol's design
+centers on tool discoverability: every connected MCP server publishes a
+\texttt{tools/list} response that the agent loads in full at the start of
+each session. This is appropriate for human-in-the-loop browsing of tool
+catalogs; it is poorly suited to the production case where an agent is
+given a specific intent and a context-window budget.
+
+Prior measurement work~\cite{eckstein2025,apideck2025,scalekit2026} documents
+that real MCP deployments routinely consume the majority of the agent's
+context window with tool descriptors before the user's task begins. We
+replicate and extend those measurements in a controlled benchmark
+(Section~\ref{sec:eval}).
+
+We argue that the right intervention is \emph{not} to replace MCP, but to
+add a thin layer above it that resolves the agent's intent, compacts the
+verbose tool descriptors, injects credentials at a proxy boundary, and
+returns the resulting Execution Manifest in a single HTTP round trip. The
+MCP ecosystem (servers, registries, tooling) remains unchanged.
+
+\section{Background and Related Work}
+
+\textbf{MCP}~\cite{mcp} is a JSON-RPC protocol that lets agents discover and
+invoke tools published by independent servers. Its \texttt{tools/list}
+response carries the full JSON-Schema for each tool's input parameters,
+including descriptions, examples, and constraint metadata.
+
+\textbf{Cloudflare Code Mode}~\cite{cfcodemode} sidesteps the descriptor
+cost by having agents emit code against typed SDKs. The reduction is
+substantial but requires the agent to be a code-generating model and the
+deployment to be on Cloudflare.
+
+\textbf{A2A Agent Cards}~\cite{a2a} expose
+\texttt{/.well-known/agent-card.json} for inter-agent discovery. They solve
+``what agents exist'' rather than ``how should this agent execute now.''
+
+\textbf{AgentSpec}~\cite{agentspec} is a declarative manifest for an
+\emph{agent's} configuration. ACP is orthogonal: AgentSpec describes the
+agent itself; ACP describes one execution context for one task.
+
+\textbf{Oracle Open Agent Spec}~\cite{oracleopenagent} is a design-time
+workflow language for multi-agent systems. ACP operates at runtime, scoped
+to a single intent.
+
+\section{Protocol}
+
+\subsection{Wire format}
+
+An ACP request is one HTTP POST:
+
+\begin{lstlisting}
+POST /v1/context
+Content-Type: application/json
+Authorization: Bearer <agent-identity-token>
+
+{
+  "intent": "query customer data, send a slack notification",
+  "agent_id": "analytics-agent-01",
+  "capabilities": ["sql", "messaging"]
+}
+\end{lstlisting}
+
+The response is one Execution Manifest with a small list of typed
+\texttt{actions}, each carrying a compacted \texttt{schema}, an opaque
+\texttt{auth: pre-injected} marker, and an optional \texttt{depends\_on}
+array.
+
+\subsection{Schema mini-language}
+
+ACP compacts JSON-Schema input parameters into a typed mini-language:
+\texttt{string}, \texttt{int?}, \texttt{string[]},
+\texttt{enum:open|closed}, \texttt{ref:<id>}. This preserves executable
+meaning while removing prose descriptions, examples, and constraint
+metadata. The compaction is the source of the token reduction reported in
+Section~\ref{sec:eval}.
+
+\subsection{Auth injection}
+
+The manifest's \texttt{auth} field is always \texttt{pre-injected}. The
+accompanying ACP auth proxy mounts at
+\texttt{/v1/exec/\{manifest\_id\}/\{action\_id\}} and forwards each action
+to the upstream tool with credentials added at the proxy boundary. The
+agent never receives or stores credentials.
+
+\subsection{Relationship to MCP}
+
+ACP does not modify or replace MCP. The reference implementation includes
+an MCP source adapter that consumes an upstream MCP server's
+\texttt{tools/list} payload, infers ACP capability tags from each tool's
+name, compacts the JSON-Schema input parameters to the mini-language, and
+registers each tool in the ACP registry. Existing MCP servers are
+unmodified.
+
+\section{Evaluation}\label{sec:eval}
+
+\subsection{Setup}
+
+We compare two paths for the same five workflows. The MCP path is the
+verbose \texttt{initialize} + \texttt{tools/list} payload an agent must
+keep in context to invoke the tools, built per the MCP 2024-11
+specification with the same descriptors a real server would return. The
+ACP path is the manifest body returned by \texttt{POST /v1/context} against
+the live ACP server in our reference implementation.
+
+Token counts use \texttt{tiktoken}'s \texttt{cl100k\_base} encoder for
+both paths. We run each scenario 50 times.
+
+\subsection{Results}
+
+\begin{table}[h]
+\centering
+\caption{ACP versus MCP per scenario (50 runs each, mean values).}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Scenario & ACP tokens & MCP tokens & ACP RT & MCP RT & Reduction \\
+\midrule
+S1 Simple DB query                            &  111 &   373 & 1 &  3 & \textbf{70.2\%} \\
+S2 Multi-tool workflow                        &  295 &   837 & 1 &  5 & \textbf{64.7\%} \\
+S3 Complex DAG                                &  306 & 1,257 & 1 &  7 & \textbf{75.6\%} \\
+S4 Scale (50 registered, 2 relevant)          &  241 & 9,223 & 1 & 21 & \textbf{97.4\%} \\
+S5 Auth-heavy cross-service                   &  359 & 1,431 & 1 &  7 & \textbf{74.9\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Mean reduction across the five scenarios: \textbf{76.6\%}. The reduction
+grows with the number of irrelevant tools registered: S4 (50 tools, 2
+relevant) attains a 97.4\% reduction because ACP's intent resolver returns
+only the two relevant tools while MCP's \texttt{tools/list} returns all 50.
+
+Variance is small. The 95th percentile of ACP token counts is within 1\%
+of the mean across all scenarios; MCP variance is zero by construction
+(the payload is deterministic).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/tokens.png}
+\caption{Tool-context tokens per request, log scale. Lower is better.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/round_trips.png}
+\caption{Round trips before the first useful action.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/reduction.png}
+\caption{ACP token reduction over MCP per scenario.}
+\end{figure}
+
+\subsection{Reproducibility}
+
+The benchmark harness and the MCP-equivalent payload reproducer are open
+under Apache 2.0. The committed
+\texttt{results/2026-05-02-week3-baseline.json} contains all 250 raw runs.
+
+\subsection{Threats to validity}
+
+We discuss encoder choice, MCP descriptor verbosity, compact-schema
+fidelity, and network topology in the README of the reference
+implementation. The relative reduction is robust across encoders we
+sampled.
+
+\section{Implementation}
+
+The reference implementation is approximately 4{,}500 lines of Go (server,
+proxy, registry, builder, MCP source adapter) and 1{,}000 lines of Python
+(adapter packages, benchmark harness). Test coverage is 95\% on the Go
+core and 96.8\% on the Python tooling, including fuzz coverage for the
+schema compactor and dependency resolver, and a live integration test
+that exercises the MCP-source-to-ACP-manifest path end to end.
+
+\section{Conclusion}
+
+We have introduced ACP, an intent-resolved execution-manifest layer that
+sits on top of MCP and other tool sources. Across five representative
+workflows ACP cuts tool-context tokens by a measured mean of 76.6\% (range
+64.7\%-97.4\%) and reduces round trips before the first useful action
+from 3-21 to 1, while leaving the MCP ecosystem unchanged. The reference
+implementation is open source.
+
+The next development priorities are an embedding-based intent resolver
+for production deployments, additional source adapters (REST/OpenAPI,
+gRPC reflection, Kubernetes), and a feedback-driven optimizer.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

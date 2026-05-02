@@ -1,0 +1,67 @@
+name: paper
+
+on:
+  pull_request:
+    paths:
+      - paper/**
+      - benchmark/charts.py
+      - results/**
+      - scripts/check_paper.py
+      - .github/workflows/paper.yml
+  push:
+    branches: [main]
+    paths:
+      - paper/**
+      - benchmark/charts.py
+      - results/**
+      - scripts/check_paper.py
+      - .github/workflows/paper.yml
+
+jobs:
+  charts-match:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: install matplotlib
+        run: python -m pip install -q --upgrade pip matplotlib
+      - name: regenerate charts from committed results
+        run: |
+          python3 benchmark/charts.py \
+            --in results/2026-05-02-week3-baseline.json \
+            --out-dir /tmp/charts
+      - name: confirm paper/figures matches regenerated charts
+        run: |
+          for name in tokens round_trips reduction; do
+            for ext in svg png; do
+              if ! cmp -s /tmp/charts/$name.$ext paper/figures/$name.$ext; then
+                echo "::error file=paper/figures/$name.$ext::paper/figures/$name.$ext is out of date; rerun benchmark/charts.py and copy into paper/figures/"
+                exit 1
+              fi
+            done
+          done
+
+  numbers-match:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: paper sanity check
+        run: python3 scripts/check_paper.py
+
+  pdf:
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build acp.pdf
+        run: make -C paper pdf
+      - uses: actions/upload-artifact@v4
+        with:
+          name: acp-pdf
+          path: paper/acp.pdf
+          if-no-files-found: error
