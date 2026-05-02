@@ -79,7 +79,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: install
-        run: python -m pip install -q --upgrade pip pytest pytest-cov tiktoken
+        run: python -m pip install -q --upgrade pip pytest pytest-cov tiktoken matplotlib
       - name: pytest with coverage
         run: |
           python -m pytest \
