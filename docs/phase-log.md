@@ -40,3 +40,26 @@ Obsidian vault.
 - Initial commit is pushed to private GitHub repo
 
 **Status:** Complete
+
+## Phase 2 — Week 1 ACP Server
+
+**Goal:** Working ACP server with `POST /v1/context`, `POST /v1/feedback`, and
+`GET /healthz` backed by an in-memory registry, keyword resolver, and
+deterministic manifest builder.
+
+**Acceptance criteria**
+- `pkg/manifest` exposes the full ACP wire types (request, response, feedback).
+- `internal/registry` is goroutine-safe, capability-indexed, and seeds five
+  demo tools.
+- `internal/resolver` deterministically maps intent + hints to capability tags.
+- `internal/manifest` builder strips schemas, computes `depends_on`, and
+  aggregates egress + approvals.
+- `internal/server` enforces bearer auth (constant-time compare) and validates
+  payloads.
+- `cmd/acp-server` boots, handles SIGINT/SIGTERM, structured JSON logs.
+- All packages have unit tests; consumer-defined interfaces are mocked with
+  `go.uber.org/mock` (gomock).
+- `pkg/acp` Go SDK uses dependency-injected `HTTPDoer` for tests.
+- `go test -race ./...` is green.
+
+**Status:** Complete

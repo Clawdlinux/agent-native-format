@@ -6,17 +6,26 @@ on:
     branches: [main]
 
 jobs:
-  docs-and-go:
+  go:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
+      - name: go vet
+        run: go vet ./...
+      - name: go test
+        run: go test -race -count=1 ./...
+      - name: go build
+        run: go build ./...
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Validate docs
         run: python3 scripts/check_docs.py
-      - name: Go test
-        run: go test ./...
