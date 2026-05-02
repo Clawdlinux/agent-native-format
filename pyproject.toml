@@ -10,3 +10,12 @@ line-length = 100
 
 [tool.pytest.ini_options]
 testpaths = ["benchmark", "adapters"]
+pythonpath = [
+    "benchmark",
+    "adapters/python",
+    "adapters/python/acp_common",
+    "adapters/python/acp_openai",
+    "adapters/python/acp_langgraph",
+    "adapters/python/acp_crewai",
+    "adapters/python/tests",
+]
