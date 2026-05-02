@@ -306,3 +306,87 @@ func TestCryptoIDSource_Format(t *testing.T) {
 		t.Fatalf("id length = %d, want %d", len(id1), len("m-")+16)
 	}
 }
+
+// recordingPersister captures every manifest the server hands it.
+type recordingPersister struct {
+	got []manifest.ExecutionManifest
+}
+
+func (p *recordingPersister) Put(mf *manifest.ExecutionManifest) {
+	if mf != nil {
+		p.got = append(p.got, *mf)
+	}
+}
+
+func TestServer_Context_PersistsManifest(t *testing.T) {
+	t.Parallel()
+
+	ctrl := gomock.NewController(t)
+	res := NewMockResolver(ctrl)
+	bld := NewMockBuilder(ctrl)
+	persister := &recordingPersister{}
+
+	res.EXPECT().Resolve("query db", []string(nil)).Return([]string{"sql"}, nil)
+	bld.EXPECT().Build(gomock.Any(), []string{"sql"}).Return(manifest.ExecutionManifest{
+		ManifestID: "m-persist",
+		Version:    manifest.ProtocolVersion,
+	}, nil)
+
+	srv := newServer(t, Config{Resolver: res, Builder: bld, Persister: persister})
+	resp := postJSON(t, srv.URL+"/v1/context", manifest.ContextRequest{
+		Intent: "query db", AgentID: "agent",
+	}, nil)
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status = %d", resp.StatusCode)
+	}
+	if len(persister.got) != 1 {
+		t.Fatalf("persister got %d manifests, want 1", len(persister.got))
+	}
+	if persister.got[0].ManifestID != "m-persist" {
+		t.Fatalf("persisted manifest_id = %q", persister.got[0].ManifestID)
+	}
+}
+
+func TestServer_Context_NoPersisterIsOK(t *testing.T) {
+	t.Parallel()
+
+	ctrl := gomock.NewController(t)
+	res := NewMockResolver(ctrl)
+	bld := NewMockBuilder(ctrl)
+	res.EXPECT().Resolve(gomock.Any(), gomock.Any()).Return([]string{"sql"}, nil)
+	bld.EXPECT().Build(gomock.Any(), []string{"sql"}).Return(manifest.ExecutionManifest{ManifestID: "m"}, nil)
+
+	srv := newServer(t, Config{Resolver: res, Builder: bld}) // no Persister
+	resp := postJSON(t, srv.URL+"/v1/context", manifest.ContextRequest{
+		Intent: "x", AgentID: "agent",
+	}, nil)
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status = %d", resp.StatusCode)
+	}
+}
+
+func TestServer_ProxyMounted(t *testing.T) {
+	t.Parallel()
+
+	// A trivial proxy that just records that it was hit.
+	hit := false
+	proxyHandler := http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		hit = true
+		w.WriteHeader(http.StatusOK)
+	})
+
+	srv := newServer(t, Config{Proxy: proxyHandler})
+	resp, err := http.Get(srv.URL + "/v1/exec/m1/a1")
+	if err != nil {
+		t.Fatalf("get: %v", err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status = %d", resp.StatusCode)
+	}
+	if !hit {
+		t.Fatalf("proxy handler not invoked")
+	}
+}

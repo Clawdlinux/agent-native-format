@@ -73,8 +73,16 @@ type Config struct {
 	Resolver  Resolver
 	Builder   Builder
 	Feedback  FeedbackSink
-	AuthToken string // optional; empty disables auth
+	Persister ManifestPersister // optional: store every emitted manifest (e.g. for the proxy)
+	Proxy     http.Handler      // optional: mounted at /v1/exec/
+	AuthToken string            // optional; empty disables auth
 	Logger    *slog.Logger
+}
+
+// ManifestPersister is an optional hook the server calls after every
+// successful Build. Useful for the proxy to look up actions by manifest_id.
+type ManifestPersister interface {
+	Put(mf *manifest.ExecutionManifest)
 }
 
 // Server is an http.Handler hosting the ACP endpoints.
@@ -93,6 +101,9 @@ func New(cfg Config) *Server {
 	s.mux.HandleFunc("/healthz", s.handleHealthz)
 	s.mux.Handle("/v1/context", s.requireAuth(http.HandlerFunc(s.handleContext)))
 	s.mux.Handle("/v1/feedback", s.requireAuth(http.HandlerFunc(s.handleFeedback)))
+	if cfg.Proxy != nil {
+		s.mux.Handle("/v1/exec/", s.requireAuth(cfg.Proxy))
+	}
 	return s
 }
 
@@ -137,6 +148,10 @@ func (s *Server) handleContext(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		writeError(w, http.StatusUnprocessableEntity, err.Error())
 		return
+	}
+
+	if s.cfg.Persister != nil {
+		s.cfg.Persister.Put(&out)
 	}
 
 	s.cfg.Logger.Info("acp.context",
