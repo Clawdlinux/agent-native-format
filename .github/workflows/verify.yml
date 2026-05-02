@@ -79,6 +79,16 @@ jobs:
         with:
           python-version: '3.12'
       - name: install
-        run: python -m pip install -q --upgrade pip pytest tiktoken
-      - name: pytest
-        run: python -m pytest benchmark/tests/ -q
+        run: python -m pip install -q --upgrade pip pytest pytest-cov tiktoken
+      - name: pytest with coverage
+        run: |
+          python -m pytest \
+            benchmark/tests adapters/python/tests \
+            --cov=adapters/python/acp_common \
+            --cov=adapters/python/acp_openai \
+            --cov=adapters/python/acp_langgraph \
+            --cov=adapters/python/acp_crewai \
+            --cov=benchmark \
+            --cov-report=term-missing:skip-covered \
+            --cov-fail-under=85 \
+            -q
