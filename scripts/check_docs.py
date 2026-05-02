@@ -9,6 +9,7 @@ required = [
     "LICENSE",
     "docs/architecture.md",
     "docs/benchmark-methodology.md",
+    "docs/operator-integration.md",
     "docs/pitch-deck-data.md",
     "docs/phase-log.md",
     "docs/positioning.md",
