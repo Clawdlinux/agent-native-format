@@ -1,0 +1,19 @@
+# Ground truth for the `degraded` scenario.
+# api 2/3 ready, one pod with 4 restarts (warning, not critical).
+
+scenario: degraded
+description: api 2/3 ready, one pod with 4 restarts (warning)
+
+answers:
+  f1_pod_count: 5
+  f2_unhealthy_pods:
+    - api-7f8d-bbb22
+  f3_deployment_image_tag: v2.4.1
+  f4_service_port_mapping: 8080->8080
+  f5_pod_with_most_restarts:
+    - api-7f8d-bbb22
+  d1_should_alert: no   # one warning pod is below the >50% threshold (1 of 3 = 33%)
+  d2_safe_to_deploy: no  # api is not all-available (2/3)
+  d3_recommended_action: restart  # restarts > 2 triggers restart
+  d4_blast_radius: 3
+  d5_root_cause_pod: api-7f8d-bbb22

@@ -1,0 +1,91 @@
+{
+  "Cluster": "prod-east",
+  "Namespace": "payments",
+  "AsOf": "2026-05-03T12:34:56Z",
+  "Pods": [
+    {
+      "Name": "api-7f8d-aaa11",
+      "Replicas": 0,
+      "CPUPercent": 0,
+      "MemPercent": 0,
+      "Restarts": 12,
+      "Age": "3h",
+      "Warning": false,
+      "Critical": true
+    },
+    {
+      "Name": "api-7f8d-bbb22",
+      "Replicas": 0,
+      "CPUPercent": 0,
+      "MemPercent": 0,
+      "Restarts": 0,
+      "Age": "3h",
+      "Warning": false,
+      "Critical": false
+    },
+    {
+      "Name": "api-7f8d-ccc33",
+      "Replicas": 0,
+      "CPUPercent": 0,
+      "MemPercent": 0,
+      "Restarts": 2,
+      "Age": "3h",
+      "Warning": true,
+      "Critical": false
+    },
+    {
+      "Name": "worker-9a2b-aaa11",
+      "Replicas": 0,
+      "CPUPercent": 0,
+      "MemPercent": 0,
+      "Restarts": 0,
+      "Age": "3h",
+      "Warning": false,
+      "Critical": false
+    },
+    {
+      "Name": "worker-9a2b-bbb22",
+      "Replicas": 0,
+      "CPUPercent": 0,
+      "MemPercent": 0,
+      "Restarts": 0,
+      "Age": "3h",
+      "Warning": false,
+      "Critical": false
+    }
+  ],
+  "Deploys": [
+    {
+      "Name": "api",
+      "Replicas": "1/3",
+      "Strategy": "rollingupdate",
+      "Image": "v2.4.1"
+    },
+    {
+      "Name": "worker",
+      "Replicas": "2/2",
+      "Strategy": "rollingupdate",
+      "Image": "v1.8.0"
+    }
+  ],
+  "Services": [
+    {
+      "Name": "api",
+      "Type": "ClusterIP",
+      "Port": "8080-\u003e8080"
+    },
+    {
+      "Name": "worker",
+      "Type": "ClusterIP",
+      "Port": "9090-\u003e9090"
+    }
+  ],
+  "Alerts": null,
+  "Actions": [
+    "scale",
+    "rollout",
+    "restart",
+    "logs",
+    "describe"
+  ]
+}

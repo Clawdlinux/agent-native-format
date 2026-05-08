@@ -1,0 +1,531 @@
+{
+  "pods": {
+    "kind": "PodList",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+      {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "api-7f8d-aaa11",
+          "namespace": "payments",
+          "uid": "11111111-1111-1111-1111-111111111110",
+          "resourceVersion": "9847360",
+          "creationTimestamp": "2026-05-03T09:34:56Z",
+          "labels": {
+            "app": "api-7"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "api-7",
+              "image": "ghcr.io/example/api-7:v1.0",
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ]
+        },
+        "status": {
+          "phase": "Failed",
+          "conditions": [
+            {
+              "type": "Initialized",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "Ready",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "ContainersReady",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "PodScheduled",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            }
+          ],
+          "hostIP": "10.0.1.42",
+          "podIP": "10.244.1.50",
+          "startTime": "2026-05-03T09:34:56Z",
+          "containerStatuses": [
+            {
+              "name": "api-7",
+              "state": {},
+              "lastState": {},
+              "ready": true,
+              "restartCount": 12,
+              "image": "ghcr.io/example/api-7:v1.0",
+              "imageID": "ghcr.io/example/api-7@sha256:abc",
+              "containerID": "containerd://aabbccdd",
+              "started": true
+            }
+          ],
+          "qosClass": "Burstable"
+        }
+      },
+      {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "api-7f8d-bbb22",
+          "namespace": "payments",
+          "uid": "11111111-1111-1111-1111-111111111111",
+          "resourceVersion": "9847361",
+          "creationTimestamp": "2026-05-03T09:34:56Z",
+          "labels": {
+            "app": "api-7"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "api-7",
+              "image": "ghcr.io/example/api-7:v1.0",
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ]
+        },
+        "status": {
+          "phase": "Running",
+          "conditions": [
+            {
+              "type": "Initialized",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "Ready",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "ContainersReady",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "PodScheduled",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            }
+          ],
+          "hostIP": "10.0.1.42",
+          "podIP": "10.244.1.51",
+          "startTime": "2026-05-03T09:34:56Z",
+          "containerStatuses": [
+            {
+              "name": "api-7",
+              "state": {},
+              "lastState": {},
+              "ready": true,
+              "restartCount": 0,
+              "image": "ghcr.io/example/api-7:v1.0",
+              "imageID": "ghcr.io/example/api-7@sha256:abc",
+              "containerID": "containerd://aabbccdd",
+              "started": true
+            }
+          ],
+          "qosClass": "Burstable"
+        }
+      },
+      {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "api-7f8d-ccc33",
+          "namespace": "payments",
+          "uid": "11111111-1111-1111-1111-111111111112",
+          "resourceVersion": "9847362",
+          "creationTimestamp": "2026-05-03T09:34:56Z",
+          "labels": {
+            "app": "api-7"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "api-7",
+              "image": "ghcr.io/example/api-7:v1.0",
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ]
+        },
+        "status": {
+          "phase": "Running",
+          "conditions": [
+            {
+              "type": "Initialized",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "Ready",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "ContainersReady",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "PodScheduled",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            }
+          ],
+          "hostIP": "10.0.1.42",
+          "podIP": "10.244.1.52",
+          "startTime": "2026-05-03T09:34:56Z",
+          "containerStatuses": [
+            {
+              "name": "api-7",
+              "state": {},
+              "lastState": {},
+              "ready": true,
+              "restartCount": 2,
+              "image": "ghcr.io/example/api-7:v1.0",
+              "imageID": "ghcr.io/example/api-7@sha256:abc",
+              "containerID": "containerd://aabbccdd",
+              "started": true
+            }
+          ],
+          "qosClass": "Burstable"
+        }
+      },
+      {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "worker-9a2b-aaa11",
+          "namespace": "payments",
+          "uid": "11111111-1111-1111-1111-111111111110",
+          "resourceVersion": "9847360",
+          "creationTimestamp": "2026-05-03T09:34:56Z",
+          "labels": {
+            "app": "worke"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "worke",
+              "image": "ghcr.io/example/worke:v1.0",
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ]
+        },
+        "status": {
+          "phase": "Running",
+          "conditions": [
+            {
+              "type": "Initialized",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "Ready",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "ContainersReady",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "PodScheduled",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            }
+          ],
+          "hostIP": "10.0.1.42",
+          "podIP": "10.244.1.50",
+          "startTime": "2026-05-03T09:34:56Z",
+          "containerStatuses": [
+            {
+              "name": "worke",
+              "state": {},
+              "lastState": {},
+              "ready": true,
+              "restartCount": 0,
+              "image": "ghcr.io/example/worke:v1.0",
+              "imageID": "ghcr.io/example/worke@sha256:abc",
+              "containerID": "containerd://aabbccdd",
+              "started": true
+            }
+          ],
+          "qosClass": "Burstable"
+        }
+      },
+      {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "worker-9a2b-bbb22",
+          "namespace": "payments",
+          "uid": "11111111-1111-1111-1111-111111111111",
+          "resourceVersion": "9847361",
+          "creationTimestamp": "2026-05-03T09:34:56Z",
+          "labels": {
+            "app": "worke"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "worke",
+              "image": "ghcr.io/example/worke:v1.0",
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "512Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ]
+        },
+        "status": {
+          "phase": "Running",
+          "conditions": [
+            {
+              "type": "Initialized",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "Ready",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "ContainersReady",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            },
+            {
+              "type": "PodScheduled",
+              "status": "True",
+              "lastProbeTime": null,
+              "lastTransitionTime": "2026-05-03T09:34:56Z"
+            }
+          ],
+          "hostIP": "10.0.1.42",
+          "podIP": "10.244.1.51",
+          "startTime": "2026-05-03T09:34:56Z",
+          "containerStatuses": [
+            {
+              "name": "worke",
+              "state": {},
+              "lastState": {},
+              "ready": true,
+              "restartCount": 0,
+              "image": "ghcr.io/example/worke:v1.0",
+              "imageID": "ghcr.io/example/worke@sha256:abc",
+              "containerID": "containerd://aabbccdd",
+              "started": true
+            }
+          ],
+          "qosClass": "Burstable"
+        }
+      }
+    ]
+  },
+  "deploys": {
+    "kind": "DeploymentList",
+    "apiVersion": "apps/v1",
+    "metadata": {},
+    "items": [
+      {
+        "kind": "Deployment",
+        "apiVersion": "apps/v1",
+        "metadata": {
+          "name": "api",
+          "namespace": "payments",
+          "resourceVersion": "9847370"
+        },
+        "spec": {
+          "replicas": 3,
+          "selector": null,
+          "template": {
+            "metadata": {},
+            "spec": {
+              "containers": [
+                {
+                  "name": "api",
+                  "image": "ghcr.io/example/api:v2.4.1",
+                  "resources": {}
+                }
+              ]
+            }
+          },
+          "strategy": {
+            "type": "RollingUpdate"
+          }
+        },
+        "status": {
+          "replicas": 3,
+          "readyReplicas": 1,
+          "availableReplicas": 1
+        }
+      },
+      {
+        "kind": "Deployment",
+        "apiVersion": "apps/v1",
+        "metadata": {
+          "name": "worker",
+          "namespace": "payments",
+          "resourceVersion": "9847370"
+        },
+        "spec": {
+          "replicas": 2,
+          "selector": null,
+          "template": {
+            "metadata": {},
+            "spec": {
+              "containers": [
+                {
+                  "name": "worker",
+                  "image": "ghcr.io/example/worker:v1.8.0",
+                  "resources": {}
+                }
+              ]
+            }
+          },
+          "strategy": {
+            "type": "RollingUpdate"
+          }
+        },
+        "status": {
+          "replicas": 2,
+          "readyReplicas": 2,
+          "availableReplicas": 2
+        }
+      }
+    ]
+  },
+  "svcs": {
+    "kind": "ServiceList",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+      {
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "api",
+          "namespace": "payments",
+          "resourceVersion": "9847380"
+        },
+        "spec": {
+          "ports": [
+            {
+              "name": "http",
+              "protocol": "TCP",
+              "port": 8080,
+              "targetPort": 8080
+            }
+          ],
+          "selector": {
+            "app": "api"
+          },
+          "type": "ClusterIP"
+        },
+        "status": {
+          "loadBalancer": {}
+        }
+      },
+      {
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+          "name": "worker",
+          "namespace": "payments",
+          "resourceVersion": "9847380"
+        },
+        "spec": {
+          "ports": [
+            {
+              "name": "http",
+              "protocol": "TCP",
+              "port": 9090,
+              "targetPort": 9090
+            }
+          ],
+          "selector": {
+            "app": "worker"
+          },
+          "type": "ClusterIP"
+        },
+        "status": {
+          "loadBalancer": {}
+        }
+      }
+    ]
+  }
+}

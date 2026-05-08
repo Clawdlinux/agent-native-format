@@ -1,0 +1,22 @@
+@cluster prod-east
+@ns payments
+@as-of 2026-05-03T12:34:56Z
+@source k8s-namespace/v0.1
+
+pods 5/5 ok
+  api-7f8d-aaa11 cpu=0 mem=0 r=0 age=3h
+  api-7f8d-bbb22 cpu=0 mem=0 r=0 age=3h
+  api-7f8d-ccc33 cpu=0 mem=0 r=0 age=3h
+  worker-9a2b-aaa11 cpu=0 mem=0 r=0 age=3h
+  worker-9a2b-bbb22 cpu=0 mem=0 r=0 age=3h
+
+deploys 2 all-avail
+  api replicas=3/3 strategy=rollingupdate image=v2.4.1
+  worker replicas=2/2 strategy=rollingupdate image=v1.8.0
+
+svcs 2
+  api type=ClusterIP port=8080->8080
+  worker type=ClusterIP port=9090->9090
+
+actions
+  scale|rollout|restart|logs|describe

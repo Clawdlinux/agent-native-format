@@ -44,6 +44,18 @@ results/*.html
 *.pem
 *.key
 *.crt
+secrets/
+*.secret
+# Agent-accuracy benchmark output.
+# Raw per-call rows + per-run meta are excluded by default (large + may
+# carry transient API IDs). Aggregated summary.md is intentionally
+# allowed: it's the durable, paper-cited artifact.
+benchmark/agent_accuracy/results/**/raw.csv
+benchmark/agent_accuracy/results/**/summary.csv
+benchmark/agent_accuracy/results/**/meta.json
+# Anthropic count_tokens cache and per-call response cache.
+benchmark/agent_accuracy/.cache/
+!benchmark/agent_accuracy/results/.gitkeep
 
 # Temporary files
 tmp/

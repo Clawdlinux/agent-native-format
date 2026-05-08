@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:1.7
+#
+# Multi-stage build of the `acl` CLI as a static, distroless image.
+# Final image is ~10 MB and contains only the binary and CA roots.
+#
+# Build:
+#   docker build -f Dockerfile.acl -t ghcr.io/clawdlinux/acl:dev .
+#
+# Run:
+#   docker run --rm -i ghcr.io/clawdlinux/acl:dev encode openapi - < spec.json
+#   docker run --rm -i ghcr.io/clawdlinux/acl:dev tokens - < doc.acl
+
+# ----- builder ---------------------------------------------------------------
+FROM golang:1.25-alpine AS builder
+
+ARG VERSION=dev
+WORKDIR /src
+
+# Cache module downloads.
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    go mod download
+
+# Build the CLI as a static binary so the runtime image needs no libc.
+COPY . .
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 GOOS=linux go build \
+        -trimpath \
+        -ldflags="-s -w -X main.version=${VERSION}" \
+        -o /out/acl ./cmd/acl
+
+# ----- runtime ---------------------------------------------------------------
+FROM gcr.io/distroless/static-debian12:nonroot
+
+# OCI labels for ghcr.io display + provenance.
+LABEL org.opencontainers.image.title="acl"
+LABEL org.opencontainers.image.description="Agent Context Language CLI — translate human-format sources into a compact agent-native representation."
+LABEL org.opencontainers.image.source="https://github.com/clawdlinux/ninevigil-acp"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
+LABEL org.opencontainers.image.vendor="Clawdlinux / NineVigil"
+
+COPY --from=builder /out/acl /usr/local/bin/acl
+
+USER nonroot:nonroot
+ENTRYPOINT ["/usr/local/bin/acl"]
+CMD ["--help"]

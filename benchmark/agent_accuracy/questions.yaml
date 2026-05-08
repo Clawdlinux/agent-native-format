@@ -1,0 +1,86 @@
+# Eval set: 10 questions per scenario.
+# 5 fact-extraction (lookup the answer in the data) + 5 decision (apply a policy).
+# Ground truth is per-scenario in fixtures/<scenario>/expected.yaml.
+#
+# Question keys are stable across scenarios so results can be sliced by question.
+# A "kind" field is recorded on every result for the (fact|decision) split.
+
+questions:
+  # ─── fact-extraction (5) ───────────────────────────────────────────────
+  - id: f1_pod_count
+    kind: fact
+    prompt: |
+      How many pods are currently in this namespace? Answer with a single integer.
+    grader: integer
+
+  - id: f2_unhealthy_pods
+    kind: fact
+    prompt: |
+      List the names of all pods that are NOT in a healthy state (warning,
+      critical, or non-running). Output ONLY the names, one per line. If
+      every pod is healthy, output the single word "none".
+    grader: name_set
+
+  - id: f3_deployment_image_tag
+    kind: fact
+    prompt: |
+      What is the image tag of the `api` deployment?
+      Output ONLY the tag (the part after the colon).
+    grader: exact
+
+  - id: f4_service_port_mapping
+    kind: fact
+    prompt: |
+      For the `api` service, what is the port mapping? Output in the
+      form `<port>->{<targetPort>}`. Example: `8080->8080`.
+    grader: exact
+
+  - id: f5_pod_with_most_restarts
+    kind: fact
+    prompt: |
+      Which pod has the highest restart count? If multiple pods are tied,
+      list all of them, one per line. If no pod has restarted, answer "none".
+    grader: name_set
+
+  # ─── decision (5) ──────────────────────────────────────────────────────
+  - id: d1_should_alert
+    kind: decision
+    prompt: |
+      Should an SRE on-call be paged for this namespace right now?
+      Answer ONLY "yes" or "no". Page only if there is a critical pod
+      (failing) OR more than half the pods of any deployment are
+      unhealthy. Do not page for transient warnings on a single pod.
+    grader: yes_no
+
+  - id: d2_safe_to_deploy
+    kind: decision
+    prompt: |
+      Is it safe to roll out a new version of the `api` deployment right
+      now? Answer ONLY "yes" or "no". It is unsafe if the current
+      deployment is not all-available, or if any api pod is failing.
+    grader: yes_no
+
+  - id: d3_recommended_action
+    kind: decision
+    prompt: |
+      Pick exactly one action from this set, in order of priority:
+      [restart, scale, rollout, logs, none]. Output ONLY the chosen verb.
+      Use this rubric, applied top-down — the FIRST matching rule wins:
+        - any pod is failing → restart
+        - any pod has restarts > 2 → restart
+        - all pods healthy and any deployment is at minimum replicas → none
+        - any deployment under-replicated (ready < desired) → scale
+        - everything healthy → none
+    grader: verb
+
+  # d4_blast_radius dropped 2026-05-03: ambiguous question both models
+  # failed equally on; the failure was telling us nothing about the
+  # representation under test. See benchmark/agent_accuracy/README.md.
+
+  - id: d5_root_cause_pod
+    kind: decision
+    prompt: |
+      If exactly ONE pod were the root cause of the worst current
+      symptom in this namespace, which would it be? Output ONLY the pod
+      name. If everything is healthy, answer "none".
+    grader: exact_or_none

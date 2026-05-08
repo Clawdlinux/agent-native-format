@@ -1,0 +1,3 @@
+# Results directory for the agent-accuracy harness.
+# Per-run subdirectories (results/YYYY-MM-DD/) are created by the harness.
+# Raw CSVs are gitignored; aggregated summary.md is intended to be checked in.

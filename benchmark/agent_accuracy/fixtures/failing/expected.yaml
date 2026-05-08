@@ -1,0 +1,20 @@
+# Ground truth for the `failing` scenario.
+# api 1/3 ready: pod aaa11 in PodFailed with 12 restarts; pod ccc33 with 2 restarts.
+
+scenario: failing
+description: api 1/3, one pod Failed with 12 restarts, page on-call
+
+answers:
+  f1_pod_count: 5
+  f2_unhealthy_pods:
+    - api-7f8d-aaa11
+    - api-7f8d-ccc33
+  f3_deployment_image_tag: v2.4.1
+  f4_service_port_mapping: 8080->8080
+  f5_pod_with_most_restarts:
+    - api-7f8d-aaa11
+  d1_should_alert: yes   # critical pod present
+  d2_safe_to_deploy: no  # api 1/3 + failed pod
+  d3_recommended_action: restart  # rule: any pod failing -> restart
+  d4_blast_radius: 3
+  d5_root_cause_pod: api-7f8d-aaa11

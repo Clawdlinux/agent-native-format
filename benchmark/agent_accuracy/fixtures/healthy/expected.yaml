@@ -1,0 +1,18 @@
+# Ground truth for the `healthy` scenario.
+# Used by harness.py graders to score model answers.
+# Keep keys aligned with question IDs in ../../questions.yaml.
+
+scenario: healthy
+description: 5/5 running, 0 restarts, all deployments at desired
+
+answers:
+  f1_pod_count: 5
+  f2_unhealthy_pods: none
+  f3_deployment_image_tag: v2.4.1
+  f4_service_port_mapping: 8080->8080
+  f5_pod_with_most_restarts: none
+  d1_should_alert: no
+  d2_safe_to_deploy: yes
+  d3_recommended_action: none
+  d4_blast_radius: 3
+  d5_root_cause_pod: none
