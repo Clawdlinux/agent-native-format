@@ -3,11 +3,6 @@
 // Licensed under the Apache License, Version 2.0 (the "License").
 
 package main
-// Copyright 2026 NineVigil / Clawdlinux.
-//
-// Licensed under the Apache License, Version 2.0 (the "License").
-
-package main
 
 import (
 	"strings"
