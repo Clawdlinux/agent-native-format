@@ -1,4 +1,4 @@
-.PHONY: check test fmt vet build generate docs cover clean fuzz staticcheck vuln docker-build verify
+.PHONY: check test fmt vet build build-acl install-acl generate docs cover clean fuzz staticcheck vuln docker-build verify
 
 GO       ?= go
 MOCKGEN  ?= ./bin/mockgen
@@ -35,8 +35,19 @@ vuln:
 docker-build:
 	docker build -t ninevigil-acp/acp-server:dev .
 
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
+LDFLAGS  = -s -w -X main.version=$(VERSION)
+
 build:
-	$(GO) build -trimpath -ldflags="-s -w" -o bin/acp-server ./cmd/acp-server
+	$(GO) build -trimpath -ldflags="$(LDFLAGS)" -o bin/acp-server ./cmd/acp-server
+	$(GO) build -trimpath -ldflags="$(LDFLAGS)" -o bin/acl ./cmd/acl
+
+build-acl:
+	$(GO) build -trimpath -ldflags="$(LDFLAGS)" -o bin/acl ./cmd/acl
+
+install-acl: build-acl
+	cp bin/acl $(shell $(GO) env GOPATH)/bin/acl
+	@echo "installed: $$(which acl || echo '$(shell $(GO) env GOPATH)/bin/acl')"
 
 generate:
 	@if [ ! -x $(MOCKGEN) ]; then \
@@ -48,4 +59,4 @@ docs:
 	@python3 scripts/check_docs.py
 
 clean:
-	rm -rf bin/acp-server coverage.out
+	rm -rf bin/acp-server bin/acl coverage.out

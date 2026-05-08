@@ -20,6 +20,10 @@ jobs:
         run: go test -race -count=1 ./...
       - name: go build
         run: go build ./...
+      - name: build acl CLI
+        run: |
+          go build -trimpath -ldflags="-s -w -X main.version=ci" -o bin/acl ./cmd/acl
+          bin/acl version
 
   static:
     runs-on: ubuntu-latest
