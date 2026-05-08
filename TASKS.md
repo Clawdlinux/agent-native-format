@@ -7,22 +7,22 @@
 
 ## P0 — v0.1.0 (ship ACL as a usable product)
 
-### T01: Fix auto-formatter `package` duplication bug
-- [ ] **Problem:** VS Code's Go formatter prepends a bare `package X`
+### T01: Fix auto-formatter `package` duplication bug ✅
+- [x] **Problem:** VS Code's Go formatter prepends a bare `package X`
   line before the license comment, causing `package X` to appear twice.
   This breaks compilation and has required manual fixes 5+ times.
-- [ ] **Fix:** Move all package-level doc comments to separate `doc.go`
+- [x] **Fix:** Move all package-level doc comments to separate `doc.go`
   files in every package that doesn't have one yet. Verify no file has
   two `package` declarations.
-- [ ] **Packages to check:** `pkg/aclhttp`, `pkg/aclpg`, `cmd/acl`,
+- [x] **Packages to check:** `pkg/aclhttp`, `pkg/aclpg`, `cmd/acl`,
   `pkg/acl`, `pkg/acp`
-- [ ] **Gate:** `go build ./...` passes after saving each file in VS Code
+- [x] **Gate:** `go build ./...` passes after saving each file in VS Code
 
-### T02: Wire `acl` CLI into Makefile + CI
-- [ ] Add `build-acl` target to Makefile that builds `bin/acl`
-- [ ] Add `install-acl` target that copies to `$GOPATH/bin`
-- [ ] Add `acl` binary to `.github/workflows/verify.yml` test matrix
-- [ ] Verify: `make build-acl && bin/acl version` prints the git tag
+### T02: Wire `acl` CLI into Makefile + CI ✅
+- [x] Add `build-acl` target to Makefile that builds `bin/acl`
+- [x] Add `install-acl` target that copies to `$GOPATH/bin`
+- [x] Add `acl` binary to `.github/workflows/verify.yml` test matrix
+- [x] Verify: `make build-acl && bin/acl version` prints the git tag
 
 ### T03: Publish Python `acp-acl` to TestPyPI
 - [ ] Add `python/Makefile` with `build`, `test`, `publish-test` targets
