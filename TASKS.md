@@ -24,22 +24,22 @@
 - [x] Add `acl` binary to `.github/workflows/verify.yml` test matrix
 - [x] Verify: `make build-acl && bin/acl version` prints the git tag
 
-### T03: Publish Python `acp-acl` to TestPyPI
-- [ ] Add `python/Makefile` with `build`, `test`, `publish-test` targets
-- [ ] Add `python/.github/workflows/publish.yml` (on tag `acl-py-v*`)
-- [ ] Test: `pip install -i https://test.pypi.org/simple/ acp-acl`
-- [ ] Verify: `python -c "import acp_acl; print(acp_acl.__version__)"`
+### T03: Publish Python `acp-acl` to TestPyPI ✅
+- [x] Add `python/Makefile` with `build`, `test`, `publish-test` targets
+- [x] Add `python/.github/workflows/publish.yml` (on tag `acl-py-v*`)
+- [x] Test: `pip install -i https://test.pypi.org/simple/ acp-acl`
+- [x] Verify: `python -c "import acp_acl; print(acp_acl.__version__)"`
 
-### T04: Add `acl encode pg` from DDL string input
-- [ ] Currently `aclpg.Encode` takes a typed `Schema` struct. Add a
+### T04: Add `acl encode pg` from DDL string input ✅
+- [x] Currently `aclpg.Encode` takes a typed `Schema` struct. Add a
   `ParseDDL(sql string) (Schema, error)` function that parses a
   minimal subset of `CREATE TABLE` / `ALTER TABLE ... ADD CONSTRAINT`
   SQL into the typed struct.
-- [ ] Scope: Postgres DDL only, not MySQL/SQLite. Use `regexp`, not a
+- [x] Scope: Postgres DDL only, not MySQL/SQLite. Use `regexp`, not a
   full SQL parser.
-- [ ] Wire into `cmd/acl/main.go` so `acl encode pg dump.sql` works.
-- [ ] Test: golden-file test with a 5-table DDL fixture.
-- [ ] Gate: `make verify` passes, `acl encode pg testdata/five.sql`
+- [x] Wire into `cmd/acl/main.go` so `acl encode pg dump.sql` works.
+- [x] Test: golden-file test with a 5-table DDL fixture.
+- [x] Gate: `make verify` passes, `acl encode pg testdata/five.sql`
   produces valid ACL that round-trips through `acl.Decode`.
 
 ### T05: Quickstart documentation ✅
@@ -67,12 +67,12 @@
 - [x] Move ACP server docs to a "Protocol" subsection.
 - [x] Keep the existing benchmark table but update framing.
 
-### T08: `goreleaser` config for cross-platform binaries
-- [ ] Create `.goreleaser.yml` for `cmd/acl` binary.
-- [ ] Targets: darwin/arm64, darwin/amd64, linux/arm64, linux/amd64.
-- [ ] GHA workflow: `.github/workflows/release.yml` on tag `acl-v*`.
-- [ ] Checksum file + cosign signing.
-- [ ] Test: `goreleaser build --snapshot --single-target` produces a
+### T08: `goreleaser` config for cross-platform binaries ✅
+- [x] Create `.goreleaser.yml` for `cmd/acl` binary.
+- [x] Targets: darwin/arm64, darwin/amd64, linux/arm64, linux/amd64.
+- [x] GHA workflow: `.github/workflows/release.yml` on tag `acl-v*`.
+- [x] Checksum file + cosign signing.
+- [x] Test: `goreleaser build --snapshot --single-target` produces a
   working binary.
 
 ### T09: Run agent-accuracy benchmark at n=30 ✅

@@ -12,6 +12,11 @@
 *.test
 coverage.out
 
+# Python build artifacts
+python/dist/
+python/build/
+python/*.egg-info/
+
 # Python
 .venv/
 venv/

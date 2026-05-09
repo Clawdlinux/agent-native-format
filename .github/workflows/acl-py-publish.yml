@@ -1,0 +1,71 @@
+# Build and publish the acp-acl Python package.
+#
+# Tag conventions:
+#   acl-py-vX.Y.Z       -> publish to PyPI (production)
+#   acl-py-vX.Y.Z-rc.N  -> publish to TestPyPI (rehearsal)
+#
+# Auth: PYPI_API_TOKEN and TEST_PYPI_API_TOKEN must be set as repo secrets.
+# Both should be project-scoped tokens issued by (Test)PyPI.
+
+name: acl-py-publish
+
+on:
+  push:
+    tags: ["acl-py-v*"]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Where to publish"
+        required: true
+        default: testpypi
+        type: choice
+        options: [testpypi, pypi]
+
+permissions:
+  contents: read
+  id-token: write   # for trusted-publisher (PyPI/TestPyPI OIDC)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist + wheel
+        run: |
+          python -m pip install -q --upgrade pip build twine
+          python -m build
+          python -m twine check dist/*
+
+      - name: Decide target
+        id: target
+        run: |
+          # Tagged release: rc → testpypi, anything else → pypi.
+          # Manual dispatch: respect the input.
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "target=${{ inputs.target }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref_name }}" == *-rc* ]]; then
+            echo "target=testpypi" >> $GITHUB_OUTPUT
+          else
+            echo "target=pypi" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish to TestPyPI
+        if: steps.target.outputs.target == 'testpypi'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: python/dist
+
+      - name: Publish to PyPI
+        if: steps.target.outputs.target == 'pypi'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist
