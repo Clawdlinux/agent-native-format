@@ -81,6 +81,10 @@ mirrored to the `ACP-PoC/` folder inside the NineVigil Obsidian vault.
 
 ## Quickstart
 
+> **New here?** Start with [docs/quickstart.md](docs/quickstart.md) — three independent paths
+> (CLI / Go library / Python decoder) that take you from `git clone` to a measured
+> 7–14× token reduction in under 2 minutes. The section below is for the ACP server.
+
 ```bash
 # 1. Build the server
 make build                           # -> bin/acp-server
