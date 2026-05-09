@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -80,9 +81,20 @@ func encodeSource(source string, data []byte) ([]byte, error) {
 	case "openapi":
 		return aclhttp.Encode(data)
 	case "pg":
-		var s aclpg.Schema
-		if err := json.Unmarshal(data, &s); err != nil {
-			return nil, fmt.Errorf("parse pg schema JSON: %w", err)
+		// Auto-detect input format: a leading `{` means a JSON-encoded
+		// aclpg.Schema (the typed view); anything else is treated as
+		// raw Postgres DDL and parsed via aclpg.ParseDDL.
+		trimmed := bytes.TrimSpace(data)
+		if len(trimmed) > 0 && trimmed[0] == '{' {
+			var s aclpg.Schema
+			if err := json.Unmarshal(data, &s); err != nil {
+				return nil, fmt.Errorf("parse pg schema JSON: %w", err)
+			}
+			return aclpg.Encode(s)
+		}
+		s, err := aclpg.ParseDDL(string(data))
+		if err != nil {
+			return nil, fmt.Errorf("parse pg DDL: %w", err)
 		}
 		return aclpg.Encode(s)
 	case "k8s":

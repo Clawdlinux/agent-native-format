@@ -45,6 +45,28 @@ func TestEncodeSourcePG(t *testing.T) {
 	}
 }
 
+func TestEncodeSourcePGFromDDL(t *testing.T) {
+	t.Parallel()
+	in := `
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    email text NOT NULL
+);
+ALTER TABLE ONLY public.users ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+`
+	out, err := encodeSource("pg", []byte(in))
+	if err != nil {
+		t.Fatalf("encodeSource (DDL): %v", err)
+	}
+	got := string(out)
+	if !strings.Contains(got, "tables 1") {
+		t.Fatalf("expected 'tables 1' in output:\n%s", got)
+	}
+	if !strings.Contains(got, "users cols=2 pk=id") {
+		t.Fatalf("expected users row in output:\n%s", got)
+	}
+}
+
 func TestEncodeSourceK8sIsRoutedAway(t *testing.T) {
 	t.Parallel()
 	_, err := encodeSource("k8s", []byte("{}"))
