@@ -57,6 +57,8 @@ _PRICING: dict[str, ModelPricing] = {
     "gpt-4.1-mini":              ModelPricing(input_per_1k=0.0004,  output_per_1k=0.0016),
     "gpt-5-mini":                ModelPricing(input_per_1k=0.00025, output_per_1k=0.002),
     "gpt-5-nano":                ModelPricing(input_per_1k=0.00005, output_per_1k=0.0004),
+    "gpt-5.4-mini":              ModelPricing(input_per_1k=0.0003,  output_per_1k=0.0024),
+    "gpt-5.4-nano":              ModelPricing(input_per_1k=0.00006, output_per_1k=0.00048),
     # Anthropic (May 2026 catalogue)
     "claude-haiku-4-5-20251001": ModelPricing(input_per_1k=0.0008,  output_per_1k=0.004),
     "claude-haiku-4-5":          ModelPricing(input_per_1k=0.0008,  output_per_1k=0.004),

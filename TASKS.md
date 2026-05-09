@@ -42,21 +42,21 @@
 - [ ] Gate: `make verify` passes, `acl encode pg testdata/five.sql`
   produces valid ACL that round-trips through `acl.Decode`.
 
-### T05: Quickstart documentation
-- [ ] Create `docs/quickstart.md` — install → translate → measure
+### T05: Quickstart documentation ✅
+- [x] Create `docs/quickstart.md` — install → translate → measure
   in under 5 minutes.
-- [ ] Three paths: Go library, CLI, Python decoder.
-- [ ] Each path ends with a `acl tokens` call showing token savings.
-- [ ] Link from README.md.
+- [x] Three paths: Go library, CLI, Python decoder.
+- [x] Each path ends with a `acl tokens` call showing token savings.
+- [x] Link from README.md.
 
-### T06: Three runnable examples
-- [ ] `examples/01-k8s-namespace/` — shell script that runs the K8s
+### T06: Three runnable examples ✅
+- [x] `examples/01-k8s-namespace/` — shell script that runs the K8s
   translator on the bundled fixture and prints token savings.
-- [ ] `examples/02-openapi-petstore/` — downloads the Petstore spec,
+- [x] `examples/02-openapi-petstore/` — downloads the Petstore spec,
   runs `acl encode openapi`, prints before/after token counts.
-- [ ] `examples/03-python-decoder/` — Python script that decodes an
+- [x] `examples/03-python-decoder/` — Python script that decodes an
   ACL file and prints the section names + row counts.
-- [ ] Each example has a `README.md` and a single runnable script.
+- [x] Each example has a `README.md` and a single runnable script.
 
 ### T07: README rewrite — ACL-first framing
 - [ ] Lead with ACL (the representation), not ACP (the protocol).

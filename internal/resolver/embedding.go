@@ -39,8 +39,8 @@ import (
 type EmbeddingResolver struct {
 	dim       int
 	threshold float64
-	keywords  *KeywordResolver       // fallback when no centroid passes
-	centroids map[string][]float64   // capability -> centroid
+	keywords  *KeywordResolver     // fallback when no centroid passes
+	centroids map[string][]float64 // capability -> centroid
 }
 
 // CapabilityExample is one labeled training phrase used to build a
