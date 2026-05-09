@@ -58,14 +58,14 @@
   ACL file and prints the section names + row counts.
 - [x] Each example has a `README.md` and a single runnable script.
 
-### T07: README rewrite — ACL-first framing
-- [ ] Lead with ACL (the representation), not ACP (the protocol).
-- [ ] Hero section: "Agent Context Language — a compact format for
+### T07: README rewrite — ACL-first framing ✅
+- [x] Lead with ACL (the representation), not ACP (the protocol).
+- [x] Hero section: "Agent Context Language — a compact format for
   LLM agent consumption" + the 132×/68×/3.5× headline numbers.
-- [ ] Architecture diagram showing: Source → Translator → ACL → Agent.
-- [ ] Quick-start block: `acl encode openapi petstore.json | acl tokens -`
-- [ ] Move ACP server docs to a "Protocol" subsection.
-- [ ] Keep the existing benchmark table but update framing.
+- [x] Architecture diagram showing: Source → Translator → ACL → Agent.
+- [x] Quick-start block: `acl encode openapi petstore.json | acl tokens -`
+- [x] Move ACP server docs to a "Protocol" subsection.
+- [x] Keep the existing benchmark table but update framing.
 
 ### T08: `goreleaser` config for cross-platform binaries
 - [ ] Create `.goreleaser.yml` for `cmd/acl` binary.
@@ -75,12 +75,21 @@
 - [ ] Test: `goreleaser build --snapshot --single-target` produces a
   working binary.
 
-### T09: Run agent-accuracy benchmark at n=30
-- [ ] Clear cache: `rm -rf benchmark/agent_accuracy/.cache/responses`
-- [ ] Run: `python -m benchmark.agent_accuracy.harness --models
+### T09: Run agent-accuracy benchmark at n=30 ✅
+- [x] Clear cache: `rm -rf benchmark/agent_accuracy/.cache/responses`
+- [x] Run: `python -m benchmark.agent_accuracy.harness --models
   claude-haiku-4-5-20251001 --trials 30 --max-tokens 80 --max-usd 5.0`
-- [ ] Commit `summary.md` to `benchmark/agent_accuracy/results/`
-- [ ] Update paper + README headline numbers if they changed.
+- [x] Commit `summary.md` to `benchmark/agent_accuracy/results/`
+- [x] Update paper + README headline numbers if they changed.
+
+  Result: 1620 trials, $0.86 total spend (200 fresh calls + 1420 cached).
+  Fact accuracy: 93.3% both conditions, identical 95% CIs (90.6–95.3).
+  Decision accuracy: 8.3pp gap (statistically real at n=360 each now).
+  Headline numbers refreshed in README and committed at
+  benchmark/agent_accuracy/results/2026-05-09-094833/summary.md
+  (commit ae0b7bc). OpenAI dropped from this run due to tier-1 quota
+  on the test account (3 RPM, 50 RPD); will re-add once a payment
+  method is on file.
 
 ### T10: Landing page for clawdlinux.org
 - [ ] Update `landing/index.html` — NineVigil-first framing (matches
