@@ -1,0 +1,103 @@
+# goreleaser config for the `acl` CLI.
+#
+# Builds cross-platform static binaries on tag `acl-v*` and publishes
+# a GitHub Release with checksums + cosign signatures.
+#
+# Test locally without releasing:
+#   goreleaser build --snapshot --single-target --clean
+#
+# Run a real release:
+#   git tag acl-v0.1.0 && git push origin acl-v0.1.0
+#   (the .github/workflows/acl-release.yml workflow does the rest)
+
+version: 2
+
+# Project metadata.
+project_name: acl
+
+before:
+  hooks:
+    - go mod tidy
+    - go vet ./cmd/acl/...
+
+builds:
+  - id: acl
+    main: ./cmd/acl
+    binary: acl
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.version={{ .Version }}
+      - -X main.commit={{ .Commit }}
+      - -X main.date={{ .Date }}
+    goos: [darwin, linux]
+    goarch: [amd64, arm64]
+    # Skip windows for v0.1; can revisit if a user asks.
+
+archives:
+  - id: default
+    formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_
+      {{- if eq .Os "darwin" }}macos{{- else }}{{ .Os }}{{ end }}_
+      {{- if eq .Arch "amd64" }}x86_64{{- else }}{{ .Arch }}{{ end }}
+    files:
+      - LICENSE
+      - README.md
+      - docs/acl-spec.md
+      - docs/quickstart.md
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+  algorithm: sha256
+
+snapshot:
+  version_template: "{{ .Tag }}-next"
+
+# Cosign keyless (Sigstore) signing of checksums + binaries.
+# Requires the GHA workflow to have id-token: write permission.
+signs:
+  - cmd: cosign
+    artifacts: checksum
+    args:
+      - sign-blob
+      - --yes
+      - --output-signature=${signature}
+      - --output-certificate=${certificate}
+      - ${artifact}
+    output: true
+
+release:
+  github:
+    owner: Clawdlinux
+    name: ninevigil-acp
+  prerelease: auto
+  draft: false
+  name_template: "acl {{ .Version }}"
+  header: |
+    # acl {{ .Version }}
+
+    Standalone binary for the Agent Context Language CLI.
+    Build provenance verifiable via [cosign](https://github.com/sigstore/cosign).
+
+    See [docs/quickstart.md]({{ .ReleaseURL }}/../../blob/main/docs/quickstart.md)
+    for usage.
+  footer: |
+    ---
+
+    **Verify a download:**
+
+    ```bash
+    cosign verify-blob \
+      --certificate-identity-regexp=https://github.com/Clawdlinux/ninevigil-acp \
+      --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+      --signature acl_{{ .Version }}_checksums.txt.sig \
+      --certificate acl_{{ .Version }}_checksums.txt.pem \
+      acl_{{ .Version }}_checksums.txt
+    ```
+
+changelog:
+  use: github-native

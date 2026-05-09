@@ -19,8 +19,15 @@ import (
 	"github.com/Clawdlinux/ninevigil-acp/pkg/aclpg"
 )
 
-// version is set at link time via -ldflags "-X main.version=...".
-var version = "dev"
+// version, commit, and date are set at link time via -ldflags "-X
+// main.version=...". goreleaser populates all three for tagged
+// releases; the Makefile populates `version` from `git describe` for
+// local builds.
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
 
 func main() {
 	root := &cobra.Command{
@@ -155,13 +162,22 @@ func newTokensCmd() *cobra.Command {
 // ─── version ────────────────────────────────────────────────────────────────
 
 func newVersionCmd() *cobra.Command {
-	return &cobra.Command{
+	var verbose bool
+	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print the acl CLI version",
 		Run: func(cmd *cobra.Command, _ []string) {
+			if verbose {
+				fmt.Fprintf(os.Stdout, "acl %s\n  commit: %s\n  built:  %s\n",
+					version, commit, date)
+				return
+			}
 			fmt.Fprintln(os.Stdout, version)
 		},
 	}
+	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false,
+		"include commit hash and build date")
+	return cmd
 }
 
 // ─── helpers ────────────────────────────────────────────────────────────────
