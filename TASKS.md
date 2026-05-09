@@ -91,12 +91,11 @@
   on the test account (3 RPM, 50 RPD); will re-add once a payment
   method is on file.
 
-### T10: Landing page for clawdlinux.org
-- [ ] Update `landing/index.html` — NineVigil-first framing (matches
-  YC application), with ACL demo above the fold.
-- [ ] Sections: problem, operator, ACL translators, benchmark, get started.
-- [ ] No signup form, no pricing, no features that don't exist yet.
-- [ ] Deploy to GitHub Pages or Vercel.
+### T10: Landing page for clawdlinux.org ✅
+- [x] Update `landing/index.html` — ACL-first framing matching README v0.1
+- [x] Sections: problem, compression on real fixtures, agent-accuracy table, try it 30s, use it (CLI/Python/Go), what ships today
+- [x] No signup form, no pricing, no features that don't exist yet. All numbers cite real fixtures and the n=1620 benchmark.
+- [ ] Deploy to GitHub Pages or Vercel (manual — requires DNS/repo settings).
 
 ---
 

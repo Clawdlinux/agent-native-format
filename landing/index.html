@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ACP — Agent Context Protocol</title>
-<meta name="description" content="ACP: one API call returns the exact tools, schemas, auth, and execution order an agent needs. Sits on top of MCP. Cuts tool-context tokens 65–97%." />
-<meta property="og:title" content="ACP — Agent Context Protocol" />
-<meta property="og:description" content="One API call. Complete execution context. Minimal tokens. Sits on top of MCP." />
+<title>ACL — Agent Context Language</title>
+<meta name="description" content="ACL: a compact, machine-native representation of structured data designed for LLM agents. 90% fewer tokens, same fact-extraction accuracy. Three translators ship today: Kubernetes, OpenAPI, Postgres." />
+<meta property="og:title" content="ACL — Agent Context Language" />
+<meta property="og:description" content="A compact, machine-native representation of structured data, designed for LLM agents instead of humans. 132x on K8s, 68x on OpenAPI, 1620-trial benchmark." />
 <meta property="og:type" content="website" />
 <meta name="theme-color" content="#1a73e8" />
 <style>
@@ -51,107 +51,137 @@
 <body>
 <main>
   <header class="hero">
-    <span class="pill">Open protocol · v0.1 · CC BY 4.0</span>
-    <h1>ACP — Agent Context Protocol</h1>
-    <p class="tagline">One API call. Complete execution context. Minimal tokens. Sits on top of MCP.</p>
+    <span class="pill">Open spec · v0.1 · CC BY 4.0</span>
+    <h1>ACL — Agent Context Language</h1>
+    <p class="tagline">A compact, machine-native representation of structured data, designed for LLM agents instead of humans.</p>
   </header>
 
   <section>
     <p>
-      MCP answers <em>"what tools exist?"</em>. <strong>ACP sits on top of MCP</strong>
-      and answers <em>"what exactly do I need to do right now, and how?"</em>.
-      The agent submits an intent; ACP returns one intent-scoped Execution
-      Manifest with auth pre-injected, dependency order pre-computed, and
-      security boundaries declared. Existing MCP servers keep working.
+      Every system AI agents consume — Kubernetes APIs, OpenAPI specs, database
+      schemas — was designed for human eyes. JSON braces, field descriptions,
+      vendor extensions, repeated key names: 80–95% of the bytes don't change
+      the agent's decision. They burn the context window.
+    </p>
+    <p>
+      <strong>ACL is what those bytes look like when you redesign them for the
+      consumer.</strong> Hand-written translators map any structured source
+      (~250 lines of Go each) into a line-oriented format with no JSON
+      ceremony. The compression isn't gzip — it's deliberate field selection
+      plus a wire format LLMs tokenize cheaply.
     </p>
   </section>
 
   <section>
-    <h2>Headline benchmark</h2>
+    <h2>Compression on real fixtures</h2>
     <div class="num-grid">
-      <div class="num"><p class="v">76.6%</p><p class="l">mean tool-context token reduction</p></div>
-      <div class="num"><p class="v">97.4%</p><p class="l">at scale (50 tools, 2 relevant)</p></div>
-      <div class="num"><p class="v">1 RT</p><p class="l">vs 3–21 round trips for MCP</p></div>
-      <div class="num"><p class="v">0</p><p class="l">credentials in agent context</p></div>
+      <div class="num"><p class="v">132×</p><p class="l">K8s namespace, live kind cluster</p></div>
+      <div class="num"><p class="v">68×</p><p class="l">GitHub OpenAPI spec (12 MB → 175 KB)</p></div>
+      <div class="num"><p class="v">14×</p><p class="l">K8s namespace, bundled fixture</p></div>
+      <div class="num"><p class="v">3.5×</p><p class="l">Postgres pg_dump output</p></div>
     </div>
     <table>
-      <thead><tr><th>Scenario</th><th>ACP / MCP tokens</th><th>RT</th><th>Reduction</th></tr></thead>
+      <thead><tr><th>Source</th><th>Real fixture</th><th>Raw tokens</th><th>ACL tokens</th><th>Reduction</th></tr></thead>
       <tbody>
-        <tr><td>S1 Simple DB query</td><td>111 / 373</td><td>1 / 3</td><td class="headline">70.2%</td></tr>
-        <tr><td>S2 Multi-tool workflow</td><td>295 / 837</td><td>1 / 5</td><td class="headline">64.7%</td></tr>
-        <tr><td>S3 Complex DAG</td><td>306 / 1,257</td><td>1 / 7</td><td class="headline">75.6%</td></tr>
-        <tr><td><strong>S4 Scale (50 tools, 2 relevant)</strong></td><td><strong>241 / 9,223</strong></td><td><strong>1 / 21</strong></td><td class="headline"><strong>97.4%</strong></td></tr>
-        <tr><td>S5 Auth-heavy</td><td>359 / 1,431</td><td>1 / 7</td><td class="headline">74.9%</td></tr>
+        <tr><td>Kubernetes</td><td>live kind cluster (5 pods, 2 deploys, 2 svcs)</td><td>19,043</td><td>145</td><td class="headline">132×</td></tr>
+        <tr><td>OpenAPI</td><td>GitHub v3 spec (1,145 endpoints)</td><td>~3M</td><td>~44K</td><td class="headline">68×</td></tr>
+        <tr><td>OpenAPI</td><td>Swagger Petstore (4 endpoints)</td><td>1,492</td><td>201</td><td class="headline">7.4×</td></tr>
+        <tr><td>Kubernetes</td><td>bundled <code>state.acl</code> fixture</td><td>3,671</td><td>260</td><td class="headline">14.1×</td></tr>
+        <tr><td>Postgres</td><td>realistic 30-table <code>pg_dump -s</code></td><td>~5,500</td><td>~1,600</td><td class="headline">3.5×</td></tr>
       </tbody>
     </table>
-    <p>50 runs per scenario, <code>tiktoken/cl100k_base</code>. Raw data committed to the repo.</p>
+    <p>Token counts via <code>tiktoken/cl100k_base</code>. Live K8s number from <code>scripts/test-aclk8s-kind.sh</code>; OpenAPI fixtures and acl CLI in the repo.</p>
   </section>
 
   <section>
-    <h2>Try it (~30 seconds)</h2>
+    <h2>Agent accuracy preserved (n=1620 on Claude Haiku 4.5)</h2>
+    <table>
+      <thead><tr><th></th><th>Raw kubectl JSON</th><th>ACL</th><th>Δ</th></tr></thead>
+      <tbody>
+        <tr><td>Fact-extraction accuracy</td><td>93.3% (90.6–95.3)</td><td>93.3% (90.6–95.3)</td><td class="headline">+0.0pp</td></tr>
+        <tr><td>Decision accuracy</td><td>83.3% (79.1–86.8)</td><td>75.0% (70.3–79.2)</td><td>−8.3pp</td></tr>
+        <tr><td>Mean prompt tokens</td><td>4,553</td><td>446</td><td class="headline">−90%</td></tr>
+        <tr><td>Cost per call</td><td>$0.0037</td><td>$0.00037</td><td class="headline">−89%</td></tr>
+      </tbody>
+    </table>
+    <p>
+      <strong>Same fact-extraction accuracy at one-tenth the prompt tokens.</strong>
+      Decision accuracy is 8.3pp lower at n=360 each, attributable to ACL
+      surfacing different signals more prominently — a design tradeoff, not
+      hidden information. Full reproducible result + analysis at
+      <a href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/benchmark/agent_accuracy/results/2026-05-09-094833/summary.md">benchmark/agent_accuracy/results/2026-05-09-094833</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Try it in 30 seconds</h2>
     <pre><code>git clone https://github.com/Clawdlinux/ninevigil-acp
 cd ninevigil-acp
-go build -o bin/acp-server ./cmd/acp-server
-ACP_AUTH_TOKEN=dev ./bin/acp-server --addr :8080 &amp;
+make build-acl
 
-curl -sS -X POST http://localhost:8080/v1/context \
-  -H "Authorization: Bearer dev" \
-  -H "Content-Type: application/json" \
-  -d '{"intent":"query the customer database, render a report, email the team",
-       "agent_id":"demo"}' | python3 -m json.tool</code></pre>
+# Compress a real OpenAPI spec
+bin/acl tokens pkg/aclhttp/testdata/petstore.json
+# tokens:   1492  (cl100k_base)
+
+bin/acl encode openapi pkg/aclhttp/testdata/petstore.json | bin/acl tokens -
+# tokens:   201   (cl100k_base)</code></pre>
+    <p>Three independent paths in <a href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/docs/quickstart.md">docs/quickstart.md</a>: CLI (30s), Go library (2min), Python decoder (1min).</p>
   </section>
 
   <section>
     <h2>Use it from your stack</h2>
-    <h3>Python (OpenAI)</h3>
-    <pre><code>from openai import OpenAI
-from acp_common import ACPClient
-from acp_openai import manifest_to_openai_tools, dispatch_tool_call
+    <h3>CLI (any language)</h3>
+    <pre><code># Pipe stdin/stdout
+cat my-spec.json   | acl encode openapi - | acl tokens -
+cat schema.sql     | acl encode pg      - | acl tokens -
 
-acp = ACPClient("http://localhost:8080", auth_token="dev")
-manifest = acp.context(intent="send last week's report", agent_id="analyst")
-tools = manifest_to_openai_tools(manifest)
+# Decode an ACL document into JSON for inspection
+acl decode state.acl --indent 2</code></pre>
 
-resp = OpenAI().chat.completions.create(
-    model="gpt-4o-mini", tools=tools,
-    messages=[{"role": "user", "content": "send the report"}],
-)</code></pre>
+    <h3>Python (drop into any agent runtime)</h3>
+    <pre><code>import acp_acl
+
+doc = acp_acl.decode(open("state.acl").read())
+print(doc.directives["ns"])             # 'payments'
+print(doc.section("pods").summary)      # '5/5 ok'
+for row in doc.section("pods").rows:
+    print(row.id, row.fields, row.flags)
+
+# Optional: tokenizer-accurate measurement
+print(acp_acl.count_tokens(open("state.acl").read()))   # 260</code></pre>
 
     <h3>Go</h3>
-    <pre><code>client := acp.NewClient("http://localhost:8080", acp.WithToken("dev"))
-mf, _ := client.Context(ctx, manifest.ContextRequest{
-    Intent:  "query the customer db",
-    AgentID: "agent-01",
-})
-// mf.Actions is in topological order; mf.Boundaries enforces egress.</code></pre>
+    <pre><code>import "github.com/Clawdlinux/ninevigil-acp/pkg/aclhttp"
 
-    <h3>Any language</h3>
-    <p>It's HTTP/JSON. <code>POST /v1/context</code>, parse the manifest, execute via the proxy.</p>
+spec, _ := os.ReadFile("petstore.json")
+out, _ := aclhttp.Encode(spec)            // OpenAPI -> ACL bytes</code></pre>
   </section>
 
   <section>
-    <h2>What you get</h2>
+    <h2>What ships today</h2>
     <ul>
-      <li><strong>Intent-scoped manifests.</strong> Only the tools relevant to the task. Schemas compacted into a typed mini-language.</li>
-      <li><strong>Auth never enters the agent context window.</strong> Credentials are injected at a proxy boundary.</li>
-      <li><strong>Deterministic execution order.</strong> <code>depends_on</code> is server-computed. The agent doesn't reason about ordering.</li>
-      <li><strong>Declared security boundaries.</strong> Egress allow-list, per-action token ceiling, approval gates, audit level — all part of the contract.</li>
-      <li><strong>MCP-compatible.</strong> Point ACP at any MCP server. The reference implementation ingests MCP <code>tools/list</code> payloads automatically.</li>
-      <li><strong>Open spec.</strong> CC BY 4.0. SDKs Apache 2.0. Reference runtime BSL 1.1 with 3-year Apache conversion.</li>
+      <li><strong>ACL v0.1 wire-format spec</strong> — frozen, CC BY 4.0 (<a href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/docs/acl-spec.md">docs/acl-spec.md</a>)</li>
+      <li><strong>Go reference encoder/decoder</strong> — round-trip stable, fuzzed, Apache 2.0</li>
+      <li><strong>Three translators</strong> — Kubernetes (132× live), OpenAPI 3.x (68× on GitHub spec), Postgres schema (3.5× vs realistic <code>pg_dump</code>)</li>
+      <li><strong><code>acl</code> CLI</strong> — encode / decode / tokens / version, single 15 MB distroless container</li>
+      <li><strong>Python <code>acp-acl</code> decoder</strong> — pure Python, zero deps, optional <code>tiktoken</code> extra</li>
+      <li><strong>540/1620-trial agent-accuracy benchmark</strong> — every fixture and prompt committed; reproducible for $1</li>
+      <li><strong>ACP server</strong> — HTTP API that returns ACL-shaped Execution Manifests on top of MCP (the protocol delivery layer for ACL)</li>
     </ul>
   </section>
 
   <section class="cta">
     <a class="btn" href="https://github.com/Clawdlinux/ninevigil-acp">Code on GitHub</a>
-    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/SPEC.md">Read SPEC.md</a>
-    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/paper/acp.md">Paper draft</a>
+    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/docs/acl-spec.md">Read the ACL spec</a>
+    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/docs/quickstart.md">Quickstart</a>
+    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/benchmark/agent_accuracy/results/2026-05-09-094833/summary.md">Benchmark</a>
   </section>
 
   <footer>
     Built by <a href="https://github.com/shreyanshjain7174">Shreyansh Sancheti</a> at
-    Clawdlinux / NineVigil. Spec under
+    Clawdlinux / NineVigil. ACL spec under
     <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
-    Reference implementation under
+    SDKs Apache 2.0. ACP server runtime under
     <a href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/LICENSE">BSL 1.1</a>
     (converts to Apache 2.0 on 2029-05-02).
   </footer>
