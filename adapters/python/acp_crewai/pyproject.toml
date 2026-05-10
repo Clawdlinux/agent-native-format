@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acp-crewai"
+version = "0.1.0"
+description = "CrewAI adapter for ACP (Agent Context Protocol) manifests."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Clawdlinux / NineVigil" }]
+keywords = ["acp", "agent", "crewai", "mcp", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+crewai = ["crewai>=0.1.0"]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/Clawdlinux/ninevigil-acp"
+Repository = "https://github.com/Clawdlinux/ninevigil-acp"
+
+[tool.setuptools]
+packages = ["acp_crewai"]
+package-dir = { acp_crewai = "." }
+
+[tool.setuptools.exclude-package-data]
+acp_crewai = ["pyproject.toml", "README.md", "*.egg-info", "*.egg-info/*"]

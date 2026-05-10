@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acp-common"
+version = "0.1.0"
+description = "Shared client + types for ACP (Agent Context Protocol) Python adapters."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Clawdlinux / NineVigil" }]
+keywords = ["acp", "agent", "context", "protocol", "mcp", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
+
+# Pure stdlib (urllib, json, dataclasses, typing). No third-party runtime deps.
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Clawdlinux/ninevigil-acp"
+Repository = "https://github.com/Clawdlinux/ninevigil-acp"
+Spec = "https://github.com/Clawdlinux/ninevigil-acp/blob/main/SPEC.md"
+Issues = "https://github.com/Clawdlinux/ninevigil-acp/issues"
+
+[tool.setuptools]
+# The package source is the directory containing pyproject.toml itself
+# (acp_common/__init__.py sits next to this file). package-dir maps the
+# distribution name onto "." so setuptools collects __init__.py without
+# requiring a redundant nested acp_common/acp_common/ wrapper.
+packages = ["acp_common"]
+package-dir = { acp_common = "." }
+
+[tool.setuptools.exclude-package-data]
+# Keep distribution metadata out of the runtime package contents.
+acp_common = ["pyproject.toml", "README.md", "*.egg-info", "*.egg-info/*"]
