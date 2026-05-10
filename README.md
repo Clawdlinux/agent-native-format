@@ -152,9 +152,9 @@ The Go importer at [`internal/sources/mcp`](internal/sources/mcp) reads the stan
 ```bash
 # Try it against any MCP server that exposes /tools/list (the 2024-11 envelope).
 # Example below uses the bundled fake MCP server for a 60-second smoke test:
-python3 -c "$(curl -sSL https://raw.githubusercontent.com/Clawdlinux/ninevigil-acp/v0.1.0-spec/scripts/fake-mcp.py)" 19090 &
+python3 -c "$(curl -sSL https://raw.githubusercontent.com/Clawdlinux/ninevigil-acp/v0.1.1-rc1/scripts/fake-mcp.py)" 19090 &
 
-go run github.com/Clawdlinux/ninevigil-acp/cmd/import-demo@v0.1.0-spec \
+go run github.com/Clawdlinux/ninevigil-acp/cmd/import-demo@v0.1.1-rc1 \
   -source name=files,url=http://127.0.0.1:19090,caps=filesystem \
   -source name=github,url=http://gh-mcp.internal:9100,auth="bearer ghp_xxx",caps=git
 ```
