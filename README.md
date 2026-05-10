@@ -101,9 +101,12 @@ Phase status: [`docs/phase-log.md`](docs/phase-log.md).
 go install github.com/Clawdlinux/ninevigil-acp/cmd/acp-server@v0.1.0-spec
 ACP_AUTH_TOKEN=dev-token acp-server --addr :8080
 
-# Option B — Docker (no toolchain needed)
+# Option B — Docker (no toolchain needed) — pick either registry
 docker run --rm -p 8080:8080 -e ACP_AUTH_TOKEN=dev-token \
   ghcr.io/clawdlinux/ninevigil-acp:v0.1.0-spec
+# or, from Docker Hub:
+docker run --rm -p 8080:8080 -e ACP_AUTH_TOKEN=dev-token \
+  goodra007/acp-server:v0.1.0-spec
 
 # Option C — Build from source
 git clone https://github.com/Clawdlinux/ninevigil-acp && cd ninevigil-acp
