@@ -103,7 +103,7 @@ ACP_AUTH_TOKEN=dev-token acp-server --addr :8080
 
 # Option B — Docker (no toolchain needed)
 docker run --rm -p 8080:8080 -e ACP_AUTH_TOKEN=dev-token \
-  ninevigil/acp-server:v0.1.0-spec
+  ghcr.io/clawdlinux/ninevigil-acp:v0.1.0-spec
 
 # Option C — Build from source
 git clone https://github.com/Clawdlinux/ninevigil-acp && cd ninevigil-acp
