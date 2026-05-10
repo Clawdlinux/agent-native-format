@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acp-langgraph"
+version = "0.1.0"
+description = "LangGraph adapter for ACP (Agent Context Protocol) execution manifests."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Clawdlinux / NineVigil" }]
+keywords = ["acp", "agent", "langgraph", "mcp", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
+
+dependencies = [
+    # acp_common ships shared types and the ACPClient. Until we publish to
+    # PyPI, install acp-common first via the same git URL — see README.md.
+    # Listing it here as a hard dep would break pip install from git, since
+    # pip cannot resolve "acp-common" without an index.
+]
+
+[project.optional-dependencies]
+# LangGraph itself is the framework integration target. We do not pin a
+# version because you bring your own — the adapter only needs the public
+# StateGraph API which has been stable since 0.0.x.
+langgraph = ["langgraph>=0.0.50"]
+test = ["pytest>=7", "langgraph>=0.0.50"]
+
+[project.urls]
+Homepage = "https://github.com/Clawdlinux/ninevigil-acp"
+Repository = "https://github.com/Clawdlinux/ninevigil-acp"
+Spec = "https://github.com/Clawdlinux/ninevigil-acp/blob/main/SPEC.md"
+Issues = "https://github.com/Clawdlinux/ninevigil-acp/issues"
+
+[tool.setuptools]
+packages = ["acp_langgraph"]
+package-dir = { acp_langgraph = "." }
+
+[tool.setuptools.exclude-package-data]
+acp_langgraph = ["pyproject.toml", "README.md", "*.egg-info", "*.egg-info/*"]

@@ -94,14 +94,26 @@ Phase status: [`docs/phase-log.md`](docs/phase-log.md).
 
 ## Quickstart
 
+### Install (pick one)
+
 ```bash
-# 1. Build
+# Option A — Go binary, no clone (requires Go 1.25+)
+go install github.com/Clawdlinux/ninevigil-acp/cmd/acp-server@v0.1.0-spec
+ACP_AUTH_TOKEN=dev-token acp-server --addr :8080
+
+# Option B — Docker (no toolchain needed)
+docker run --rm -p 8080:8080 -e ACP_AUTH_TOKEN=dev-token \
+  ninevigil/acp-server:v0.1.0-spec
+
+# Option C — Build from source
+git clone https://github.com/Clawdlinux/ninevigil-acp && cd ninevigil-acp
 make build
-
-# 2. Run
 ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
+```
 
-# 3. Request a manifest
+### Request a manifest
+
+```bash
 curl -sS -X POST http://localhost:8080/v1/context \
   -H "Authorization: Bearer dev-token" \
   -H "Content-Type: application/json" \
@@ -109,7 +121,19 @@ curl -sS -X POST http://localhost:8080/v1/context \
   | python3 -m json.tool
 ```
 
-Go SDK:
+### Python adapters (pip from git, no PyPI required)
+
+```bash
+# Shared client + types (used by every adapter)
+pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_common"
+
+# Pick the framework you actually use:
+pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_langgraph"
+pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_openai"
+pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_crewai"
+```
+
+### Go SDK
 
 ```go
 client := acp.NewClient("http://localhost:8080", acp.WithToken("dev-token"))

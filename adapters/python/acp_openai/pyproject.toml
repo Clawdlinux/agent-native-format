@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acp-openai"
+version = "0.1.0"
+description = "Raw OpenAI function-calling adapter for ACP (Agent Context Protocol) manifests."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Clawdlinux / NineVigil" }]
+keywords = ["acp", "agent", "openai", "function-calling", "mcp", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+openai = ["openai>=1.0"]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/Clawdlinux/ninevigil-acp"
+Repository = "https://github.com/Clawdlinux/ninevigil-acp"
+
+[tool.setuptools]
+packages = ["acp_openai"]
+package-dir = { acp_openai = "." }
+
+[tool.setuptools.exclude-package-data]
+acp_openai = ["pyproject.toml", "README.md", "*.egg-info", "*.egg-info/*"]
