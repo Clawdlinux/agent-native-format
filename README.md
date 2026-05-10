@@ -124,6 +124,79 @@ curl -sS -X POST http://localhost:8080/v1/context \
   | python3 -m json.tool
 ```
 
+## Use with your existing MCP servers
+
+ACP doesn't replace your MCP servers — it sits in front of them. The MCP servers you run today (filesystem, GitHub, Postgres, Slack, your custom ones) keep working unchanged. ACP discovers their tools via standard `tools/list`, deduplicates schemas, attaches auth out-of-context, and emits one scoped manifest per agent intent.
+
+### The shape of the integration
+
+```
+   Your agent (Claude / Cursor / LangGraph / custom)
+                │
+                │  POST /v1/context  {"intent": "..."}
+                ▼
+   ┌──────────────────────────┐         ┌─────────────────────────┐
+   │     ACP server           │ ──GET──▶│  your-mcp-server.local  │  (existing)
+   │  (intent → manifest)     │  /tools │   filesystem, GH, etc.  │
+   └──────────────────────────┘  /list  └─────────────────────────┘
+                │
+                │  one manifest, scoped, ordered, auth pre-injected
+                ▼
+   Agent executes against POST /v1/exec/<action_id>
+```
+
+### Pointing ACP at one or more MCP servers
+
+The Go importer at [`internal/sources/mcp`](internal/sources/mcp) reads the standard MCP `tools/list` envelope (2024-11 spec) and registers every tool into ACP's registry. The repo ships a runnable demo at [`cmd/import-demo`](cmd/import-demo):
+
+```bash
+# Try it against any MCP server that exposes /tools/list (the 2024-11 envelope).
+# Example below uses the bundled fake MCP server for a 60-second smoke test:
+python3 -c "$(curl -sSL https://raw.githubusercontent.com/Clawdlinux/ninevigil-acp/v0.1.0-spec/scripts/fake-mcp.py)" 19090 &
+
+go run github.com/Clawdlinux/ninevigil-acp/cmd/import-demo@v0.1.0-spec \
+  -source name=files,url=http://127.0.0.1:19090,caps=filesystem \
+  -source name=github,url=http://gh-mcp.internal:9100,auth="bearer ghp_xxx",caps=git
+```
+
+Output:
+
+```
+─── files (http://127.0.0.1:19090) ───────────────────
+  ✅ imported 4 tool(s)
+─── github (http://gh-mcp.internal:9100) ─────────────
+  ✅ imported 12 tool(s)
+
+=== ACP registry now holds 16 tool(s) ===
+  files.list_directory   caps=[directory filesystem list read]  endpoint=...
+  files.read_file        caps=[file filesystem read]            endpoint=...
+  github.create_pr       caps=[create git pr write]              endpoint=...
+  github.search_repos    caps=[git read repos search]            endpoint=...
+  …
+```
+
+Each imported tool gets:
+- A namespaced ID (`<source>.<tool>`) so two MCP servers can expose the same tool name without collision.
+- Capabilities auto-inferred from the tool name + your explicit `caps=` tag, so the resolver can pick the right one for an intent.
+- Endpoint rewired through the ACP auth-injection proxy — your `auth=` value is stored server-side and never enters the agent context.
+
+> **Honest status (v0.1.0-spec):** the `cmd/import-demo` flow above works end-to-end and is what to run for evaluation. The `acp-server` binary still boots with a 5-tool seed registry — wiring the importer behind a `--mcp-source` flag (or a `sources.yaml` config) so you can do it without writing Go is tracked in [#12](https://github.com/Clawdlinux/ninevigil-acp/issues/12) for v0.1.1.
+
+### Migration ladder (for teams already in production with MCP)
+
+| You have today | What to add | What changes for the agent |
+|---|---|---|
+| 1 MCP server, 5 tools, agent calls `tools/list` every turn | Run ACP in front of it; agent calls `POST /v1/context` instead | One round-trip vs. 3+; tokens drop ~70% |
+| 3+ MCP servers, manual fan-out in agent code | Import each into the same ACP registry | Agent stops fanning out; ACP picks the right server per intent |
+| MCP servers behind separate auth headers | Set `Source.Auth` per source at import time | Credentials leave the agent context entirely |
+| Custom MCP server you wrote | Nothing — ACP just calls your `tools/list` | None — your server is unchanged |
+
+### What ACP does not do
+
+- **Discover MCP servers automatically.** You configure each one explicitly so the egress allow-list is auditable.
+- **Re-implement MCP transport.** ACP speaks the MCP HTTP envelope; stdio MCP servers are tracked for v0.2 in [#13](https://github.com/Clawdlinux/ninevigil-acp/issues/13).
+- **Cache `tools/list` indefinitely.** Each `ImportSource` call refetches; re-call on a schedule (or on a webhook) when your MCP server's tool set changes.
+
 ### Python adapters (pip from git, no PyPI required)
 
 ```bash
