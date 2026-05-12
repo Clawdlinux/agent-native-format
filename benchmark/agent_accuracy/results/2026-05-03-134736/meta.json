@@ -1,0 +1,20 @@
+{
+  "date": "2026-05-03-134736",
+  "git_sha": "bde5167",
+  "trials": 1,
+  "scenarios": [
+    "healthy",
+    "degraded",
+    "failing"
+  ],
+  "models": [
+    "gpt-4o-mini",
+    "claude-haiku-4-5-20251001"
+  ],
+  "n_calls": 48,
+  "n_cache_hits": 48,
+  "wall_seconds": 134.1,
+  "total_usd": 0,
+  "max_completion_tokens": 50,
+  "temperature": 0.0
+}

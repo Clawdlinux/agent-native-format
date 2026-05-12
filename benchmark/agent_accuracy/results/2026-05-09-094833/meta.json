@@ -1,0 +1,19 @@
+{
+  "date": "2026-05-09-094833",
+  "git_sha": "c4fa52d",
+  "trials": 30,
+  "scenarios": [
+    "healthy",
+    "degraded",
+    "failing"
+  ],
+  "models": [
+    "claude-haiku-4-5-20251001"
+  ],
+  "n_calls": 1620,
+  "n_cache_hits": 1189,
+  "wall_seconds": 525.2,
+  "total_usd": 0.8631,
+  "max_completion_tokens": 80,
+  "temperature": 0.0
+}

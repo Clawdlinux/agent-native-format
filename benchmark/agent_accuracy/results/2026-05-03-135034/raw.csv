@@ -1,0 +1,17 @@
+model,scenario,question_id,question_kind,condition,trial,correct,response,prompt_tokens,completion_tokens,latency_ms,usd,cache_hit
+claude-haiku-4-5-20251001,degraded,f1_pod_count,fact,raw,0,1,5,4519,5,1179.7263339394704,0.0036352000000000003,1
+claude-haiku-4-5-20251001,degraded,f1_pod_count,fact,acl,0,0,4,408,5,708.4350830409676,0.0003464,1
+claude-haiku-4-5-20251001,degraded,f2_unhealthy_pods,fact,raw,0,1,api-7f8d-bbb22,4552,13,990.5760419787839,0.0036936000000000004,1
+claude-haiku-4-5-20251001,degraded,f2_unhealthy_pods,fact,acl,0,1,api-7f8d-bbb22,441,13,717.1404999680817,0.00040480000000000003,1
+claude-haiku-4-5-20251001,degraded,f3_deployment_image_tag,fact,raw,0,1,v2.4.1,4530,9,699.1917089326307,0.00366,1
+claude-haiku-4-5-20251001,degraded,f3_deployment_image_tag,fact,acl,0,1,v2.4.1,419,9,798.1917910510674,0.0003712,1
+claude-haiku-4-5-20251001,degraded,f4_service_port_mapping,fact,raw,0,1,8080->8080,4543,9,1027.5086670881137,0.0036704000000000003,1
+claude-haiku-4-5-20251001,degraded,f4_service_port_mapping,fact,acl,0,1,8080->8080,432,9,821.163084008731,0.0003816,1
+claude-haiku-4-5-20251001,degraded,f5_pod_with_most_restarts,fact,raw,0,1,api-7f8d-bbb22,4540,13,4198.766874964349,0.003684,1
+claude-haiku-4-5-20251001,degraded,f5_pod_with_most_restarts,fact,acl,0,1,api-7f8d-bbb22,429,13,1013.8968749670312,0.0003952,1
+claude-haiku-4-5-20251001,degraded,d3_recommended_action,decision,raw,0,1,restart,4617,4,776.2237921124324,0.0037096,1
+claude-haiku-4-5-20251001,degraded,d3_recommended_action,decision,acl,0,0,scale,506,4,1469.8604999575764,0.0004208,1
+claude-haiku-4-5-20251001,degraded,d4_blast_radius,decision,raw,0,0,2,4539,5,921.1332919076085,0.0036512000000000003,1
+claude-haiku-4-5-20251001,degraded,d4_blast_radius,decision,acl,0,0,2,428,5,831.3804999925196,0.0003624,1
+claude-haiku-4-5-20251001,degraded,d5_root_cause_pod,decision,raw,0,1,api-7f8d-bbb22,4545,13,986.0555829945952,0.003688,1
+claude-haiku-4-5-20251001,degraded,d5_root_cause_pod,decision,acl,0,1,api-7f8d-bbb22,434,13,819.9275840306655,0.0003992,1

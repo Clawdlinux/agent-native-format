@@ -1,0 +1,17 @@
+{
+  "date": "2026-05-03-140350",
+  "git_sha": "bde5167",
+  "trials": 1,
+  "scenarios": [
+    "healthy"
+  ],
+  "models": [
+    "ollama:gemma3:1b"
+  ],
+  "n_calls": 18,
+  "n_cache_hits": 0,
+  "wall_seconds": 500.2,
+  "total_usd": 0.0,
+  "max_completion_tokens": 50,
+  "temperature": 0.0
+}

@@ -1,0 +1,5 @@
+model,condition,question_kind,n,correct,accuracy,ci_low,ci_high,mean_prompt_tokens,median_latency_ms,total_usd
+ollama:gemma3:1b,acl,decision,4,0,0.0,0.0,0.4899,450.2,6622.5,0.0
+ollama:gemma3:1b,acl,fact,5,2,0.4,0.1176,0.7693,417.4,4486.2,0.0
+ollama:gemma3:1b,raw,decision,4,0,0.0,0.0,0.4899,4096.0,54744.7,0.0
+ollama:gemma3:1b,raw,fact,5,0,0.0,0.0,0.4345,4096.0,41543.9,0.0

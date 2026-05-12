@@ -1,0 +1,19 @@
+model,scenario,question_id,question_kind,condition,trial,correct,response,prompt_tokens,completion_tokens,latency_ms,usd,cache_hit
+ollama:gemma3:1b,healthy,f1_pod_count,fact,raw,0,0, inv ,4096,3,40562.67212505918,0.0,0
+ollama:gemma3:1b,healthy,f1_pod_count,fact,acl,0,0,2,400,2,3143.2775830617175,0.0,0
+ollama:gemma3:1b,healthy,f2_unhealthy_pods,fact,raw,0,0,crontab ,4096,5,32312.237916048616,0.0,0
+ollama:gemma3:1b,healthy,f2_unhealthy_pods,fact,acl,0,1,none,432,2,4364.166290964931,0.0,0
+ollama:gemma3:1b,healthy,f3_deployment_image_tag,fact,raw,0,0,ghcr.io/example/api:v2.4.1 ,4096,17,41543.852125061676,0.0,0
+ollama:gemma3:1b,healthy,f3_deployment_image_tag,fact,acl,0,1,v2.4.1,409,7,4486.185583053157,0.0,0
+ollama:gemma3:1b,healthy,f4_service_port_mapping,fact,raw,0,0, ovat ,4096,3,49151.43212501425,0.0,0
+ollama:gemma3:1b,healthy,f4_service_port_mapping,fact,acl,0,0,`8080->8080`,427,12,6732.76645806618,0.0,0
+ollama:gemma3:1b,healthy,f5_pod_with_most_restarts,fact,raw,0,0,"The pod with the highest restart count is the `api` pod.  Here's a breakdown:  *   **api:** 3 restarts *   **worker:** 2 restarts  Therefore, the answer is:  ``` api",4096,50,57486.44408304244,0.0,0
+ollama:gemma3:1b,healthy,f5_pod_with_most_restarts,fact,acl,0,0,api-7f8d-aaa11,419,11,6025.692416005768,0.0,0
+ollama:gemma3:1b,healthy,d1_should_alert,decision,raw,0,0,yes ,4096,3,49041.35520895943,0.0,0
+ollama:gemma3:1b,healthy,d1_should_alert,decision,acl,0,0,yes,449,2,5335.216875071637,0.0,0
+ollama:gemma3:1b,healthy,d2_safe_to_deploy,decision,raw,0,0,no ,4096,3,49350.86508397944,0.0,0
+ollama:gemma3:1b,healthy,d2_safe_to_deploy,decision,acl,0,0,no ,435,3,6358.56283409521,0.0,0
+ollama:gemma3:1b,healthy,d3_recommended_action,decision,raw,0,0, plus ,4096,3,54744.65987505391,0.0,0
+ollama:gemma3:1b,healthy,d3_recommended_action,decision,acl,0,0,restart,491,2,7779.411625000648,0.0,0
+ollama:gemma3:1b,healthy,d5_root_cause_pod,decision,raw,0,0,api ,4096,3,75117.71729192697,0.0,0
+ollama:gemma3:1b,healthy,d5_root_cause_pod,decision,acl,0,0,api-7f8d-aaa11,426,11,6622.539708972909,0.0,0

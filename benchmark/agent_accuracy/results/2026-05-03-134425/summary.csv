@@ -1,0 +1,5 @@
+model,condition,question_kind,n,correct,accuracy,ci_low,ci_high,mean_prompt_tokens,median_latency_ms,total_usd
+claude-haiku-4-5-20251001,acl,decision,9,5,0.5556,0.2666,0.8112,458.7,807.3,0.0035
+claude-haiku-4-5-20251001,acl,fact,15,14,0.9333,0.7018,0.9881,428.5,811.7,0.0057
+claude-haiku-4-5-20251001,raw,decision,9,6,0.6667,0.3542,0.8794,4567.0,921.1,0.0331
+claude-haiku-4-5-20251001,raw,fact,15,14,0.9333,0.7018,0.9881,4536.8,923.4,0.055
