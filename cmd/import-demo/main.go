@@ -1,3 +1,4 @@
+package main
 /*
 Copyright 2026.
 

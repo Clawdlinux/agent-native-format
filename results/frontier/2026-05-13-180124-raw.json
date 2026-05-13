@@ -1,0 +1,1826 @@
+[
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 353,
+    "output_tokens": 154,
+    "total_tokens": 507,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 8058.309124999141,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 353,
+    "output_tokens": 207,
+    "total_tokens": 560,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 5944.620291000319,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 353,
+    "output_tokens": 199,
+    "total_tokens": 552,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 4825.048041999253,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 159,
+    "output_tokens": 120,
+    "total_tokens": 279,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2975.3961660007917,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 159,
+    "output_tokens": 90,
+    "total_tokens": 249,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2830.051333001393,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 159,
+    "output_tokens": 133,
+    "total_tokens": 292,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 3630.2480419999483,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 604,
+    "output_tokens": 364,
+    "total_tokens": 968,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 8347.206417000052,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 604,
+    "output_tokens": 450,
+    "total_tokens": 1054,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 11137.888041001133,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 604,
+    "output_tokens": 618,
+    "total_tokens": 1222,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 13793.297042000631,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 212,
+    "output_tokens": 173,
+    "total_tokens": 385,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 4217.4789590008,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 212,
+    "output_tokens": 147,
+    "total_tokens": 359,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 5729.194957999425,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 212,
+    "output_tokens": 175,
+    "total_tokens": 387,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 4520.695875000456,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 811,
+    "output_tokens": 460,
+    "total_tokens": 1271,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event"
+      ],
+      "missed_tools": [
+        "db.query",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 26652.60333400147,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 811,
+    "output_tokens": 625,
+    "total_tokens": 1436,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 16993.959791001544,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 811,
+    "output_tokens": 554,
+    "total_tokens": 1365,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 12572.822333999284,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 239,
+    "output_tokens": 363,
+    "total_tokens": 602,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 9865.707082999506,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 239,
+    "output_tokens": 276,
+    "total_tokens": 515,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 5338.601458000994,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 239,
+    "output_tokens": 180,
+    "total_tokens": 419,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 4921.179249999113,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 2630,
+    "output_tokens": 106,
+    "total_tokens": 2736,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4097.359708999647,
+    "num_tools_provided": 50,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 2630,
+    "output_tokens": 106,
+    "total_tokens": 2736,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4143.480040998838,
+    "num_tools_provided": 50,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 2630,
+    "output_tokens": 123,
+    "total_tokens": 2753,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3143.867249998948,
+    "num_tools_provided": 50,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 176,
+    "output_tokens": 399,
+    "total_tokens": 575,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 11164.742458000546,
+    "num_tools_provided": 2,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 176,
+    "output_tokens": 288,
+    "total_tokens": 464,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 6662.304207999114,
+    "num_tools_provided": 2,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 176,
+    "output_tokens": 185,
+    "total_tokens": 361,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 5535.615000000689,
+    "num_tools_provided": 2,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 929,
+    "output_tokens": 279,
+    "total_tokens": 1208,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event"
+      ],
+      "missed_tools": [
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 7586.622875000103,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 929,
+    "output_tokens": 184,
+    "total_tokens": 1113,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4715.026249999937,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 929,
+    "output_tokens": 327,
+    "total_tokens": 1256,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 6869.420125000033,
+    "num_tools_provided": 5,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 254,
+    "output_tokens": 452,
+    "total_tokens": 706,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 10856.461082999886,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 254,
+    "output_tokens": 377,
+    "total_tokens": 631,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 9476.687041998957,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.5-2026-04-23",
+    "model_tier": "heavy",
+    "model_label": "GPT-5.5",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 254,
+    "output_tokens": 266,
+    "total_tokens": 520,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 6716.026957999929,
+    "num_tools_provided": 5,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 353,
+    "output_tokens": 45,
+    "total_tokens": 398,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 1545.9740000005695,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 353,
+    "output_tokens": 47,
+    "total_tokens": 400,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2155.0980000010895,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 353,
+    "output_tokens": 52,
+    "total_tokens": 405,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 1338.811124998756,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 159,
+    "output_tokens": 41,
+    "total_tokens": 200,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 1642.2880419995636,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 159,
+    "output_tokens": 43,
+    "total_tokens": 202,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 1447.8838340000948,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 159,
+    "output_tokens": 43,
+    "total_tokens": 202,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 1541.2245000006806,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 604,
+    "output_tokens": 29,
+    "total_tokens": 633,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 1437.6730829990265,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 604,
+    "output_tokens": 75,
+    "total_tokens": 679,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 1959.0777920002438,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 604,
+    "output_tokens": 74,
+    "total_tokens": 678,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 2974.0879999990284,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 212,
+    "output_tokens": 43,
+    "total_tokens": 255,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 3186.204583998915,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 212,
+    "output_tokens": 43,
+    "total_tokens": 255,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 1725.7246669996675,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 212,
+    "output_tokens": 55,
+    "total_tokens": 267,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 1455.7307499999297,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 812,
+    "output_tokens": 195,
+    "total_tokens": 1007,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "db.query",
+      "template.render"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query",
+        "template.render"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 3284.0707920004206,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 812,
+    "output_tokens": 218,
+    "total_tokens": 1030,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 18445.87112499903,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 812,
+    "output_tokens": 250,
+    "total_tokens": 1062,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 3696.68987499972,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 239,
+    "output_tokens": 28,
+    "total_tokens": 267,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 1446.0750420003023,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 239,
+    "output_tokens": 25,
+    "total_tokens": 264,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 1570.4499170005874,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 239,
+    "output_tokens": 38,
+    "total_tokens": 277,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 1514.3104580001818,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 2631,
+    "output_tokens": 30,
+    "total_tokens": 2661,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 1441.0676250008692,
+    "num_tools_provided": 50,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 2631,
+    "output_tokens": 80,
+    "total_tokens": 2711,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 2570.9947910017945,
+    "num_tools_provided": 50,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 2631,
+    "output_tokens": 30,
+    "total_tokens": 2661,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 1308.5429170005227,
+    "num_tools_provided": 50,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 176,
+    "output_tokens": 75,
+    "total_tokens": 251,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [
+      "db.query",
+      "slack.send_message"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 3001.2742079998134,
+    "num_tools_provided": 2,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 176,
+    "output_tokens": 76,
+    "total_tokens": 252,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [
+      "db.query",
+      "slack.send_message"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 1851.6799160006485,
+    "num_tools_provided": 2,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 176,
+    "output_tokens": 75,
+    "total_tokens": 251,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [
+      "db.query",
+      "slack.send_message"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2053.6089170000196,
+    "num_tools_provided": 2,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 930,
+    "output_tokens": 36,
+    "total_tokens": 966,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 1437.4000829993747,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 930,
+    "output_tokens": 53,
+    "total_tokens": 983,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 1539.5582910005032,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 930,
+    "output_tokens": 29,
+    "total_tokens": 959,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 1748.5181669999292,
+    "num_tools_provided": 5,
+    "run_index": 2
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 254,
+    "output_tokens": 79,
+    "total_tokens": 333,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.4,
+      "exact_match": false
+    },
+    "latency_ms": 2157.0558330004133,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 254,
+    "output_tokens": 24,
+    "total_tokens": 278,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 1133.530332999726,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "gpt-5.4-2026-03-05",
+    "model_tier": "medium",
+    "model_label": "GPT-5.4",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 254,
+    "output_tokens": 32,
+    "total_tokens": 286,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 1295.3673749998416,
+    "num_tools_provided": 5,
+    "run_index": 2
+  }
+]

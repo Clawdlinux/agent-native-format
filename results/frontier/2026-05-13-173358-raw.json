@@ -1,0 +1,1786 @@
+[
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 1129,
+    "output_tokens": 179,
+    "total_tokens": 1308,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 5321.22495799922,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 1129,
+    "output_tokens": 248,
+    "total_tokens": 1377,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4555.686499999865,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 1129,
+    "output_tokens": 192,
+    "total_tokens": 1321,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 3927.060624999285,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 820,
+    "output_tokens": 132,
+    "total_tokens": 952,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2704.4215419991815,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 820,
+    "output_tokens": 169,
+    "total_tokens": 989,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2959.6201670010487,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 820,
+    "output_tokens": 145,
+    "total_tokens": 965,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 3620.4649999999674,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 1666,
+    "output_tokens": 165,
+    "total_tokens": 1831,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 4063.61887499952,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 1666,
+    "output_tokens": 192,
+    "total_tokens": 1858,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 3763.6369159990863,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 1666,
+    "output_tokens": 192,
+    "total_tokens": 1858,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 4551.131374999386,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 1027,
+    "output_tokens": 354,
+    "total_tokens": 1381,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 5470.791874999122,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 1027,
+    "output_tokens": 288,
+    "total_tokens": 1315,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4856.893832999049,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 1027,
+    "output_tokens": 223,
+    "total_tokens": 1250,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 3936.8459999986953,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 2086,
+    "output_tokens": 283,
+    "total_tokens": 2369,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4930.809458001022,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 2086,
+    "output_tokens": 350,
+    "total_tokens": 2436,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 6104.842374999862,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 2086,
+    "output_tokens": 302,
+    "total_tokens": 2388,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 5577.147708998382,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 1132,
+    "output_tokens": 188,
+    "total_tokens": 1320,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 3680.6155419999413,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 1132,
+    "output_tokens": 297,
+    "total_tokens": 1429,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.25,
+      "exact_match": false
+    },
+    "latency_ms": 4744.664249999914,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 1132,
+    "output_tokens": 304,
+    "total_tokens": 1436,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 5007.600250000905,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 8395,
+    "output_tokens": 189,
+    "total_tokens": 8584,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3520.5593339996994,
+    "num_tools_provided": 50,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 8395,
+    "output_tokens": 216,
+    "total_tokens": 8611,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4746.994958000869,
+    "num_tools_provided": 50,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 8395,
+    "output_tokens": 206,
+    "total_tokens": 8601,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4173.893291999775,
+    "num_tools_provided": 50,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 905,
+    "output_tokens": 172,
+    "total_tokens": 1077,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 2964.269375001095,
+    "num_tools_provided": 2,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 905,
+    "output_tokens": 184,
+    "total_tokens": 1089,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3214.5017910006572,
+    "num_tools_provided": 2,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 905,
+    "output_tokens": 232,
+    "total_tokens": 1137,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3946.5737500013347,
+    "num_tools_provided": 2,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 2329,
+    "output_tokens": 284,
+    "total_tokens": 2613,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 5318.847624999762,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 2329,
+    "output_tokens": 367,
+    "total_tokens": 2696,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 6242.76325000028,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 2329,
+    "output_tokens": 286,
+    "total_tokens": 2615,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 5227.020000000266,
+    "num_tools_provided": 5,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 1214,
+    "output_tokens": 387,
+    "total_tokens": 1601,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 5570.048458999736,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 1214,
+    "output_tokens": 417,
+    "total_tokens": 1631,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 6618.52316599834,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-opus-4-7",
+    "model_tier": "heavy",
+    "model_label": "Claude Opus 4.7",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 1214,
+    "output_tokens": 369,
+    "total_tokens": 1583,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "audit.log_event",
+        "db.query",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 6361.748916000579,
+    "num_tools_provided": 5,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 816,
+    "output_tokens": 107,
+    "total_tokens": 923,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 3901.272249999238,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 816,
+    "output_tokens": 107,
+    "total_tokens": 923,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2067.935666000267,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "mcp",
+    "input_tokens": 816,
+    "output_tokens": 107,
+    "total_tokens": 923,
+    "tiktoken_control_input_tokens": 273,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2054.5589579996886,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 603,
+    "output_tokens": 99,
+    "total_tokens": 702,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2086.410290999993,
+    "num_tools_provided": 1,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 603,
+    "output_tokens": 105,
+    "total_tokens": 708,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2225.4225830001815,
+    "num_tools_provided": 1,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S1",
+    "scenario_title": "Simple DB query",
+    "path": "acp",
+    "input_tokens": 603,
+    "output_tokens": 99,
+    "total_tokens": 702,
+    "tiktoken_control_input_tokens": 84,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 2256.4710839997133,
+    "num_tools_provided": 1,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 1216,
+    "output_tokens": 158,
+    "total_tokens": 1374,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 3374.5158329984406,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 1216,
+    "output_tokens": 175,
+    "total_tokens": 1391,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 3110.423833000823,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "mcp",
+    "input_tokens": 1216,
+    "output_tokens": 171,
+    "total_tokens": 1387,
+    "tiktoken_control_input_tokens": 582,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 3561.11541700011,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 763,
+    "output_tokens": 194,
+    "total_tokens": 957,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 3767.8189580001344,
+    "num_tools_provided": 3,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 763,
+    "output_tokens": 404,
+    "total_tokens": 1167,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query",
+      "slack.send_message",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query",
+        "slack.send_message"
+      ],
+      "missed_tools": [],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "exact_match": true
+    },
+    "latency_ms": 6541.924083001504,
+    "num_tools_provided": 3,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S2",
+    "scenario_title": "Multi-tool workflow",
+    "path": "acp",
+    "input_tokens": 763,
+    "output_tokens": 200,
+    "total_tokens": 963,
+    "tiktoken_control_input_tokens": 187,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "exact_match": false
+    },
+    "latency_ms": 4068.9362499997515,
+    "num_tools_provided": 3,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 1531,
+    "output_tokens": 430,
+    "total_tokens": 1961,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 7112.8446249986155,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 1531,
+    "output_tokens": 420,
+    "total_tokens": 1951,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 6365.170874998512,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "mcp",
+    "input_tokens": 1531,
+    "output_tokens": 408,
+    "total_tokens": 1939,
+    "tiktoken_control_input_tokens": 846,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 6084.98120799959,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 851,
+    "output_tokens": 259,
+    "total_tokens": 1110,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 4867.194041000403,
+    "num_tools_provided": 4,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 851,
+    "output_tokens": 261,
+    "total_tokens": 1112,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 4490.32945900035,
+    "num_tools_provided": 4,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S3",
+    "scenario_title": "Complex DAG",
+    "path": "acp",
+    "input_tokens": 851,
+    "output_tokens": 264,
+    "total_tokens": 1115,
+    "tiktoken_control_input_tokens": 244,
+    "tool_calls": [
+      "db.query",
+      "audit.log_event"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "audit.log_event",
+        "db.query"
+      ],
+      "missed_tools": [
+        "email.send",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 4063.0247499993857,
+    "num_tools_provided": 4,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 5979,
+    "output_tokens": 85,
+    "total_tokens": 6064,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.5,
+      "exact_match": false
+    },
+    "latency_ms": 2850.784291000309,
+    "num_tools_provided": 50,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 5979,
+    "output_tokens": 123,
+    "total_tokens": 6102,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3047.466042000451,
+    "num_tools_provided": 50,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "mcp",
+    "input_tokens": 5979,
+    "output_tokens": 164,
+    "total_tokens": 6143,
+    "tiktoken_control_input_tokens": 4169,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 4296.066458000496,
+    "num_tools_provided": 50,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 669,
+    "output_tokens": 118,
+    "total_tokens": 787,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3116.46245799966,
+    "num_tools_provided": 2,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 669,
+    "output_tokens": 143,
+    "total_tokens": 812,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3421.676750000188,
+    "num_tools_provided": 2,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S4",
+    "scenario_title": "Scale: 50 tools, 2 relevant",
+    "path": "acp",
+    "input_tokens": 669,
+    "output_tokens": 125,
+    "total_tokens": 794,
+    "tiktoken_control_input_tokens": 124,
+    "tool_calls": [],
+    "correctness": {
+      "correct_tools": [],
+      "missed_tools": [
+        "db.query",
+        "slack.send_message"
+      ],
+      "extra_tools": [],
+      "precision": 0.0,
+      "recall": 0.0,
+      "exact_match": false
+    },
+    "latency_ms": 3181.009957999777,
+    "num_tools_provided": 2,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 1713,
+    "output_tokens": 136,
+    "total_tokens": 1849,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 2750.7041670014587,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 1713,
+    "output_tokens": 146,
+    "total_tokens": 1859,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 4931.091041999025,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "mcp",
+    "input_tokens": 1713,
+    "output_tokens": 135,
+    "total_tokens": 1848,
+    "tiktoken_control_input_tokens": 983,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 2865.831791999881,
+    "num_tools_provided": 5,
+    "run_index": 2
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 916,
+    "output_tokens": 96,
+    "total_tokens": 1012,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 2646.5773330000957,
+    "num_tools_provided": 5,
+    "run_index": 0
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 916,
+    "output_tokens": 96,
+    "total_tokens": 1012,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 2579.513291000694,
+    "num_tools_provided": 5,
+    "run_index": 1
+  },
+  {
+    "model_id": "claude-sonnet-4-6",
+    "model_tier": "medium",
+    "model_label": "Claude Sonnet 4.6",
+    "scenario_id": "S5",
+    "scenario_title": "Auth-heavy cross-service",
+    "path": "acp",
+    "input_tokens": 916,
+    "output_tokens": 101,
+    "total_tokens": 1017,
+    "tiktoken_control_input_tokens": 282,
+    "tool_calls": [
+      "db.query"
+    ],
+    "correctness": {
+      "correct_tools": [
+        "db.query"
+      ],
+      "missed_tools": [
+        "audit.log_event",
+        "email.send",
+        "slack.send_message",
+        "template.render"
+      ],
+      "extra_tools": [],
+      "precision": 1.0,
+      "recall": 0.2,
+      "exact_match": false
+    },
+    "latency_ms": 3329.4351250006002,
+    "num_tools_provided": 5,
+    "run_index": 2
+  }
+]

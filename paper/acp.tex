@@ -24,7 +24,7 @@
 \author{Shreyansh Sancheti\\
         \texttt{shreyansh@clawdlinux.org}\\
         Clawdlinux / NineVigil}
-\date{2026-05-03}
+\date{Draft updated 2026-05-13}
 
 \begin{document}
 \maketitle
@@ -33,15 +33,19 @@
 Production agent systems built on the Model Context Protocol (MCP) spend the
 majority of their context window on tool discovery and verbose JSON-Schema
 descriptors before performing any user task. We measure this overhead at
-64.7\%-97.4\% across five representative workflows. We introduce the
+64.7\%-97.4\% across five representative workflows using committed,
+reproducible payloads. We introduce the
 \textbf{Agent Context Protocol (ACP)}, a layer that sits \emph{on top of} MCP
 and other tool sources and returns a single intent-scoped Execution Manifest
 in one round trip with auth pre-injected, dependency order pre-computed, and
 security boundaries declared. ACP cuts tool-context tokens by 64.7\%-97.4\%
 (mean 76.6\%) and reduces round trips before the first useful action from
-3-21 to 1, while preserving the underlying MCP ecosystem unchanged. We
-provide an open-source reference implementation in Go with a Python adapter
-suite for OpenAI function-calling, LangGraph, and CrewAI; the protocol
+3-21 to 1, while preserving the underlying MCP ecosystem unchanged. Unlike
+schema-only compression libraries or agent-side active discovery, ACP combines
+server-side intent resolution, schema stripping, credential injection, and
+dependency pre-computation into one execution manifest. We provide an
+open-source reference implementation in Go with a Python adapter suite for
+OpenAI-compatible function calling, LangGraph, and CrewAI; the protocol
 specification is published under CC BY 4.0 and the SDKs under Apache 2.0.
 \end{abstract}
 
@@ -74,22 +78,61 @@ invoke tools published by independent servers. Its \texttt{tools/list}
 response carries the full JSON-Schema for each tool's input parameters,
 including descriptions, examples, and constraint metadata.
 
-\textbf{Cloudflare Code Mode}~\cite{cfcodemode} sidesteps the descriptor
-cost by having agents emit code against typed SDKs. The reduction is
-substantial but requires the agent to be a code-generating model and the
-deployment to be on Cloudflare.
+\textbf{Tool-schema compression.} TSCG~\cite{sakizli2026tscg} is the closest
+schema-level comparison. It deterministically compiles JSON tool schemas into
+token-efficient structured text at the API boundary and reports 52\%-57\%
+token savings across model and schema settings. ACP uses schema stripping as
+one component, but differs in where the decision is made and what is returned:
+ACP is a server-side protocol that first resolves an intent to a small tool
+subset, then returns an execution manifest with auth and ordering metadata.
+TSCG compresses the schemas supplied to it; ACP also decides which schemas
+should not be supplied at all.
+
+\textbf{Active discovery.} MCP-Zero~\cite{fei2025mcpzero} reduces context
+overhead by letting the model request tools on demand through hierarchical
+semantic routing and iterative capability extension. ACP takes the opposite
+deployment stance: discovery autonomy is moved out of the model loop and into
+a server layer. The agent sends one intent and receives one manifest, instead
+of spending model turns assembling a toolchain.
+
+\textbf{MCP description quality.} Hasan et al.~\cite{hasan2026smelly} find
+that 97.1\% of 856 tool descriptions across 103 MCP servers contain at least
+one quality defect, and that augmenting descriptions can improve success while
+also increasing execution cost. This work supports the observation that tool
+descriptors are load-bearing context, but it optimizes description quality
+within MCP rather than reducing the structural cost of loading irrelevant
+tools.
+
+\textbf{Code-oriented alternatives.} Cloudflare Code Mode~\cite{cfcodemode}
+sidesteps descriptor cost by having agents emit code against typed SDKs. The
+reduction is substantial but requires the agent to be a code-generating model
+and the deployment to be on Cloudflare.
 
 \textbf{A2A Agent Cards}~\cite{a2a} expose
 \texttt{/.well-known/agent-card.json} for inter-agent discovery. They solve
 ``what agents exist'' rather than ``how should this agent execute now.''
 
-\textbf{AgentSpec}~\cite{agentspec} is a declarative manifest for an
-\emph{agent's} configuration. ACP is orthogonal: AgentSpec describes the
-agent itself; ACP describes one execution context for one task.
+\textbf{Agent manifests and interoperability.} AgentSpec~\cite{agentspec} is
+a declarative manifest for an \emph{agent's} configuration, dependency checks,
+policy, and observability. ACP is orthogonal: AgentSpec describes the agent
+itself; ACP describes one execution context for one task. An agent
+interoperability survey~\cite{ehtesham2025interop} also uses the acronym ACP
+for IBM's Agent Communication Protocol, a RESTful agent-to-agent messaging
+protocol. In this paper, ACP means \textbf{Agent Context Protocol}, a
+tool-context optimization protocol rather than an agent-to-agent messaging
+protocol.
 
 \textbf{Oracle Open Agent Spec}~\cite{oracleopenagent} is a design-time
 workflow language for multi-agent systems. ACP operates at runtime, scoped
 to a single intent.
+
+\textbf{Open tool-use benchmarks.} BFCL~\cite{patil2025bfcl} provides an
+open, citable function-calling benchmark with executable correctness checks
+and model leaderboards. tau-bench~\cite{yao2024taubench} evaluates multi-turn
+tool-agent-user interaction. ACP's current evaluation is a protocol-overhead
+benchmark; the next benchmark track maps BFCL-style function sets into MCP and
+ACP payloads to measure context overhead, tool-call correctness, cost, and
+latency across model tiers.
 
 \section{Protocol}
 
@@ -151,8 +194,11 @@ specification with the same descriptors a real server would return. The
 ACP path is the manifest body returned by \texttt{POST /v1/context} against
 the live ACP server in our reference implementation.
 
-Token counts use \texttt{tiktoken}'s \texttt{cl100k\_base} encoder for
-both paths. We run each scenario 50 times.
+Token counts use \texttt{tiktoken}'s \texttt{cl100k\_base} encoder for both
+paths. We use one encoder for apples-to-apples payload accounting rather than
+as a claim about any single model family. Frontier-model follow-up runs will
+record both benchmark tokenizer counts and provider-reported usage when
+available. We run each scenario 50 times.
 
 \subsection{Results}
 
@@ -207,10 +253,12 @@ under Apache 2.0. The committed
 
 \subsection{Threats to validity}
 
-We discuss encoder choice, MCP descriptor verbosity, compact-schema
-fidelity, and network topology in the README of the reference
-implementation. The relative reduction is robust across encoders we
-sampled.
+All current measurements use \texttt{cl100k\_base}. Models with different
+tokenizers and provider-side accounting will report different absolute counts.
+The reported percentage reduction is a payload-level result under a fixed
+tokenizer; model-specific cost claims require the frontier benchmark described
+below. We also discuss MCP descriptor verbosity, compact-schema fidelity, and
+network topology in the README of the reference implementation.
 
 \section{Implementation}
 
@@ -221,6 +269,30 @@ core and 96.8\% on the Python tooling, including fuzz coverage for the
 schema compactor and dependency resolver, and a live integration test
 that exercises the MCP-source-to-ACP-manifest path end to end.
 
+\section{Frontier Benchmark Plan}
+
+The present paper reports a deterministic protocol benchmark. Before claiming
+model-specific production gains, we will add a frontier tool-context benchmark
+under \texttt{benchmark/frontier/} with BFCL as the primary open standard and
+tau-bench / tau$^3$-bench as the secondary multi-turn track.
+
+The planned model matrix has four tiers: a 1M+ context-window model to test
+whether long context removes or merely hides descriptor overhead; a medium
+frontier tier such as Claude Sonnet and available GPT-5.x medium variants; a
+heavy frontier tier such as Claude Opus and the strongest available GPT-5.x /
+Gemini Pro-class models; and at least one open or research-licensed
+tool-calling model. Exact model IDs will be pinned in result files. If a
+colloquial alias is not exposed by a provider API, it will not be used as a
+paper claim.
+
+For each selected BFCL task, the harness will construct an MCP
+\texttt{tools/list} payload and an ACP registry from the same functions, then
+measure descriptor tokens, context utilization, first-action round trips,
+provider-reported usage, latency, and BFCL correctness. This separates three
+questions that are often conflated: whether ACP reduces protocol overhead,
+whether reduced overhead preserves tool-call correctness, and whether frontier
+model costs change enough to matter operationally.
+
 \section{Conclusion}
 
 We have introduced ACP, an intent-resolved execution-manifest layer that
@@ -230,9 +302,10 @@ workflows ACP cuts tool-context tokens by a measured mean of 76.6\% (range
 from 3-21 to 1, while leaving the MCP ecosystem unchanged. The reference
 implementation is open source.
 
-The next development priorities are an embedding-based intent resolver
-for production deployments, additional source adapters (REST/OpenAPI,
-gRPC reflection, Kubernetes), and a feedback-driven optimizer.
+The next development priorities are a BFCL-based frontier benchmark with pinned
+long-context, medium, heavy, and open-model tiers; an embedding-based intent
+resolver for production deployments; additional source adapters (REST/OpenAPI,
+gRPC reflection, Kubernetes); and a feedback-driven optimizer.
 
 \bibliographystyle{plain}
 \bibliography{references}

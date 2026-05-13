@@ -5,9 +5,11 @@ credible enough for technical scrutiny.
 
 ## Claim to test
 
-ACP reduces tool-context overhead by **70-85%** versus MCP for identical agent
-tasks while improving time to first useful action and reducing auth-related
-failures.
+ACP reduces tool-context overhead versus MCP for identical agent tasks while
+improving time to first useful action and keeping credentials out of the agent's
+context. The current checked-in benchmark measures a **64.7-97.4%** reduction
+across five representative scenarios. Future frontier-model runs must report
+their own exact range from committed results.
 
 ## Scenarios
 
@@ -29,16 +31,34 @@ failures.
 | Wall-clock latency | Start to first useful action | <500 ms ACP vs 2-5 s MCP |
 | Task success rate | Completed without selection/ordering/auth failure | >95% ACP |
 | Credential exposure | Credentials in agent context | 0 for ACP |
-| Cost per task | GPT-4o pricing equivalent | 3-5x cheaper |
+| Cost per task | Provider-reported usage and pinned price sheet | Lower input-token cost without correctness loss |
 
 ## Controls
 
 - Run each scenario 50 times for ACP and MCP.
 - Use the same LLM model and prompt budget for both paths.
-- Use `tiktoken` with `cl100k_base` for exact token counting.
+- Use `tiktoken` with `cl100k_base` for the current deterministic benchmark.
+- For frontier model runs, record both benchmark-tokenizer counts and provider
+	usage counts when the provider returns them.
 - Use the official MCP SDK for the baseline.
 - Record OpenTelemetry traces for each run.
 - Generate markdown, CSV, chart, and PDF outputs.
+
+## Open standard track
+
+The next benchmark track uses BFCL (Berkeley Function Calling Leaderboard) as
+the primary open standard because it is citable, executable, and evaluates
+function/tool calling with AST-based correctness metrics. ACP adds a protocol
+overhead profile around BFCL-style tasks: transform selected BFCL functions into
+MCP `tools/list` payloads, register the same tools in ACP, and compare descriptor
+tokens, correctness, round trips, cost, and latency.
+
+tau-bench / tau^3-bench is the secondary benchmark family for multi-turn
+tool-agent-user interaction and pass^k consistency once the BFCL profile is
+running.
+
+See `benchmark/frontier/README.md` for the frontier model matrix and result
+artifact rules.
 
 ## Investor-grade bar
 
