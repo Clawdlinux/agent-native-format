@@ -51,3 +51,4 @@ tmp/
 # Python packaging artefacts (added with pyproject.toml in v0.1.0-spec)
 *.egg-info/
 adapters/python/*/build/
+paper/acp.pdf
