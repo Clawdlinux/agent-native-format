@@ -1,0 +1,21 @@
+{
+  "sources": [
+    {
+      "name": "github",
+      "url": "http://127.0.0.1:9001",
+      "capabilities": ["github"]
+    },
+    {
+      "name": "flyctl",
+      "url": "http://127.0.0.1:9002",
+      "capabilities": ["flyctl"]
+    },
+    {
+      "name": "database",
+      "url": "http://127.0.0.1:9003",
+      "capabilities": ["database"]
+    }
+  ],
+  "narrow_threshold": 3,
+  "window_size": 10
+}

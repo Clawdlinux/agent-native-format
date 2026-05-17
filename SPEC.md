@@ -57,6 +57,9 @@ MCP” framing.
 6. **Boundaries are part of the contract.** Egress, budgets, approvals, and
    audit level are returned with the manifest.
 7. **Every result is a training signal.** Feedback endpoint is mandatory.
+8. **Deferred resolution is first-class.** Agents MAY operate without
+   upfront intent. The server starts broad and narrows as observations
+   accumulate. See §4.8.
 
 ## 4. Protocol
 
@@ -199,6 +202,82 @@ POST /v1/feedback
 Feedback feeds the optimizer. Compliance is encouraged but not required for
 v0.1.
 
+### 4.8 Deferred Intent Mode
+
+ACP v0.1 assumes intent is known when the client calls `POST /v1/context`.
+In interactive environments — IDE copilots, chat interfaces, REPL-style
+agents — intent does not exist at session start. It emerges over time as
+the user works.
+
+**Deferred Intent Mode** is a first-class protocol extension that lets an
+ACP-backed tool surface start broad and narrow progressively as
+observations accumulate.
+
+#### 4.8.1 Lifecycle
+
+```
+Phase 1: Cold Start (0 observations)
+  └─ Resolver returns ALL registered capabilities.
+  └─ Client sees the full tool surface (schema-compacted).
+
+Phase 2: Warming (1..N-1 observations, below threshold)
+  └─ Resolver still returns all capabilities.
+  └─ Server records tool-call observations silently.
+
+Phase 3: Narrowed (≥N observations)
+  └─ Resolver returns only observed capability domains.
+  └─ Server emits a list-change notification.
+  └─ Client re-fetches and sees a smaller tool surface.
+```
+
+The narrow threshold `N` is server-configured (default: 3).
+
+#### 4.8.2 Observation signal
+
+The server records each `tools/call` invocation as an observation. The
+observed tool's capability tags are added to a sliding window of size `W`
+(default: 10). When the window contains `≥N` entries, the resolver
+switches from "return all" to "return observed domains only."
+
+#### 4.8.3 Re-broadening
+
+If the client explicitly provides capability hints (via the `capabilities`
+field in a `POST /v1/context` request, or via MCP tool-call arguments),
+those hints are always honored and merged with observed domains. This
+prevents the narrowed surface from becoming a dead end.
+
+A `Reset` operation clears all observations and returns the resolver to
+cold-start phase. Implementations SHOULD expose reset as either:
+- A `POST /v1/context` with `intent: "*"` (wildcard).
+- A protocol-specific mechanism (e.g. MCP server restart).
+
+#### 4.8.4 MCP bridge integration
+
+When ACP operates as an MCP server (the "ACP-MCP bridge"):
+- The bridge declares `"tools": {"listChanged": true}` during MCP
+  `initialize`.
+- On `tools/list`: returns the resolver's current scoped tool set.
+- On `tools/call`: proxies to the downstream MCP server and records
+  capability observations.
+- When narrowing changes the tool surface, emits
+  `notifications/tools/list_changed` so the MCP client re-fetches.
+- Schema compaction (§4.4) is applied unconditionally to all tools.
+- Auth is NOT intercepted; it stays with each downstream MCP server
+  process. This differs from the standard ACP auth proxy (§4.6) and is
+  by design: IDE MCP clients manage credentials at the transport layer.
+
+#### 4.8.5 Conformance
+
+A conforming deferred-mode **server** MUST:
+- Start with the full capability set when no observations exist.
+- Narrow only after a configurable threshold of observations.
+- Always honor explicit capability hints from the client.
+- Provide a mechanism to reset to cold-start phase.
+
+A conforming deferred-mode **client** SHOULD:
+- Re-fetch the tool surface when notified of changes.
+- Not cache tool definitions beyond the server's TTL.
+
 ## 5. Conformance
 
 A conforming **client** MUST:
@@ -239,6 +318,10 @@ Code Mode, AgentSpec, A2A, Oracle Open Agent Spec).
 - **v0.1.1 (2026-05-03)** — Repositioned from "successor to MCP" to
   "intent-resolution layer on top of MCP and other tool sources". No wire
   format changes. Added §10.
+- **v0.2.0 (2026-05-16)** — Added §4.8 Deferred Intent Mode for
+  interactive environments (IDE copilots, chat agents). Added Design
+  Principle #8. Reference implementation: `internal/resolver/deferred.go`,
+  `internal/bridge/`, `cmd/acp-bridge/`.
 
 ## 10. Relationship to MCP
 
