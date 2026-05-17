@@ -67,7 +67,7 @@ func (s *sourceFlag) Set(raw string) error {
 		}
 	}
 	if src.Name == "" || src.BaseURL == "" {
-		return fmt.Errorf("source needs at least name=... and url=...")
+		return fmt.Errorf("source needs at least name and url")
 	}
 	*s = append(*s, src)
 	return nil
