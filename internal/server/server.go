@@ -23,6 +23,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/Clawdlinux/ninevigil-acp/internal/observability"
 	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
 )
 
@@ -138,14 +139,19 @@ func (s *Server) handleContext(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	ctx, span := observability.StartContextSpan(r.Context(), req.Intent)
+	defer span.End()
+
 	caps, err := s.cfg.Resolver.Resolve(req.Intent, req.Capabilities)
 	if err != nil {
+		observability.RecordError(span, err)
 		writeError(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
 
 	out, err := s.cfg.Builder.Build(req, caps)
 	if err != nil {
+		observability.RecordError(span, err)
 		writeError(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
@@ -154,11 +160,14 @@ func (s *Server) handleContext(w http.ResponseWriter, r *http.Request) {
 		s.cfg.Persister.Put(&out)
 	}
 
+	observability.SetManifestEmitted(span, out.ManifestID, len(out.Actions), false)
+
 	s.cfg.Logger.Info("acp.context",
 		slog.String("agent_id", req.AgentID),
 		slog.String("manifest_id", out.ManifestID),
 		slog.Int("actions", len(out.Actions)),
 	)
+	_ = ctx
 	writeJSON(w, http.StatusOK, out)
 }
 

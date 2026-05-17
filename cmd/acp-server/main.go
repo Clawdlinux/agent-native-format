@@ -18,13 +18,18 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	builder "github.com/Clawdlinux/ninevigil-acp/internal/builder"
+	"github.com/Clawdlinux/ninevigil-acp/internal/observability"
 	"github.com/Clawdlinux/ninevigil-acp/internal/proxy"
 	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
 	"github.com/Clawdlinux/ninevigil-acp/internal/resolver"
 	"github.com/Clawdlinux/ninevigil-acp/internal/server"
 )
+
+// acpVersion is the version string set at build time via -ldflags.
+var acpVersion = "0.1.0-dev"
 
 func main() {
 	addr := flag.String("addr", ":8080", "listen address")
@@ -39,6 +44,26 @@ func main() {
 	flag.Parse()
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
+
+	// Bootstrap OpenTelemetry. The endpoint is read from
+	// OTEL_EXPORTER_OTLP_ENDPOINT (env). When unset, Init is a no-op
+	// (air-gapped lite deployments without a collector).
+	otelCtx, otelCancel := context.WithTimeout(context.Background(), 10*time.Second)
+	otelShutdown, err := observability.Init(otelCtx, observability.Config{
+		ServiceName:    "acp-server",
+		ServiceVersion: acpVersion,
+		Environment:    os.Getenv("CLAWD_DEPLOYMENT_ENV"),
+	})
+	otelCancel()
+	if err != nil {
+		logger.Warn("acp.observability.init_failed", slog.String("err", err.Error()))
+		otelShutdown = func(context.Context) error { return nil }
+	}
+	defer func() {
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_ = otelShutdown(shutdownCtx)
+	}()
 
 	reg := registry.NewMemoryRegistry()
 	if err := registry.Seed(reg); err != nil {
