@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "acp-bridge": {
+      "type": "stdio",
+      "command": "acp-bridge",
+      "args": ["--import-vscode"]
+    }
+  }
+}

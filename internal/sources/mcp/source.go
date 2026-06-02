@@ -65,6 +65,9 @@ type Source struct {
 	Name string
 	// BaseURL is the MCP server's HTTP root.
 	BaseURL string
+	// Type is the downstream transport. Empty means HTTP for backwards
+	// compatibility. Set to "stdio" for acp-bridge child processes.
+	Type string
 	// Auth, if non-empty, is sent as `Authorization` to the MCP server. The
 	// proxy strips this before the agent ever sees it.
 	Auth string
@@ -155,6 +158,19 @@ func convert(src Source, d ToolDescriptor) (registry.Tool, error) {
 		caps = []string{src.Name}
 	}
 	schema := compactSchema(d.InputSchema)
+
+	if strings.EqualFold(src.Type, "stdio") {
+		return registry.Tool{
+			ID:           src.Name + "." + d.Name,
+			Type:         "stdio",
+			Endpoint:     "stdio://" + src.Name + "/" + d.Name,
+			Method:       "tools/call",
+			Schema:       schema,
+			Auth:         manifest.AuthNone,
+			Timeout:      "30s",
+			Capabilities: caps,
+		}, nil
+	}
 
 	return registry.Tool{
 		ID:           src.Name + "." + d.Name,

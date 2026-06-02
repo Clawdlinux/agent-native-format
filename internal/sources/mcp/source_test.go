@@ -196,6 +196,43 @@ func TestRegisterAll_RejectsEmptyDescriptorName(t *testing.T) {
 	}
 }
 
+func TestRegisterAll_StdioSourceRegistersStdioTools(t *testing.T) {
+	t.Parallel()
+
+	reg := registry.NewMemoryRegistry()
+	imp := NewImporter(reg, nil)
+	_, err := imp.RegisterAll(Source{Name: "files", Type: "stdio", ExtraCapabilities: []string{"filesystem"}}, []ToolDescriptor{
+		{
+			Name:        "read_file",
+			Description: "Read a file",
+			InputSchema: map[string]interface{}{
+				"type": "object",
+				"properties": map[string]interface{}{
+					"path": map[string]interface{}{"type": "string"},
+				},
+				"required": []interface{}{"path"},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("register stdio tools: %v", err)
+	}
+
+	tool, err := reg.Get("files.read_file")
+	if err != nil {
+		t.Fatalf("get stdio tool: %v", err)
+	}
+	if tool.Type != "stdio" {
+		t.Fatalf("type = %q, want stdio", tool.Type)
+	}
+	if tool.Endpoint != "stdio://files/read_file" {
+		t.Fatalf("endpoint = %q, want stdio://files/read_file", tool.Endpoint)
+	}
+	if len(tool.Egress) != 0 {
+		t.Fatalf("egress = %v, want empty", tool.Egress)
+	}
+}
+
 func TestCompactSchema_OmittedFieldDefaults(t *testing.T) {
 	t.Parallel()
 

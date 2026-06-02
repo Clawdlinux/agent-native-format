@@ -23,6 +23,7 @@ package bridge
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -33,6 +34,11 @@ import (
 	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
 	"github.com/Clawdlinux/ninevigil-acp/internal/resolver"
 )
+
+// Forwarder routes a bridge tools/call to the original downstream MCP server.
+type Forwarder interface {
+	Call(ctx context.Context, source, tool string, args map[string]interface{}) (json.RawMessage, error)
+}
 
 // jsonrpcRequest is a JSON-RPC 2.0 request.
 type jsonrpcRequest struct {
@@ -79,6 +85,7 @@ type Bridge struct {
 	tools    map[string]DownstreamTool // MCP tool name -> downstream mapping
 	logger   *slog.Logger
 	out      io.Writer
+	forward  Forwarder
 
 	// prevToolCount tracks the last emitted tools/list size so we know
 	// when to send list_changed.
@@ -91,6 +98,7 @@ type Config struct {
 	Resolver *resolver.DeferredResolver
 	Logger   *slog.Logger
 	Out      io.Writer // stdout, for JSON-RPC responses
+	Forward  Forwarder
 }
 
 // New creates a Bridge ready to serve.
@@ -104,6 +112,7 @@ func New(cfg Config) *Bridge {
 		tools:    make(map[string]DownstreamTool),
 		logger:   cfg.Logger,
 		out:      cfg.Out,
+		forward:  cfg.Forward,
 	}
 }
 
@@ -241,9 +250,26 @@ func (b *Bridge) handleToolsCall(req jsonrpcRequest) {
 	// Check if tool surface changed after observation.
 	b.maybeNotifyListChanged()
 
+	if b.forward != nil {
+		result, err := b.forward.Call(context.Background(), downstream.SourceName, downstream.ToolName, params.Arguments)
+		if err != nil {
+			b.sendResult(req.ID, map[string]interface{}{
+				"content": []map[string]interface{}{
+					{
+						"type": "text",
+						"text": err.Error(),
+					},
+				},
+				"isError": true,
+			})
+			return
+		}
+		b.sendResult(req.ID, json.RawMessage(result))
+		return
+	}
+
 	// Return a placeholder result indicating the tool was routed.
-	// In production, this would proxy to the downstream MCP server via
-	// the ACP auth proxy at /v1/exec/{manifest_id}/{action_id}.
+	// This remains only for config/test modes that do not provide a Forwarder.
 	b.sendResult(req.ID, map[string]interface{}{
 		"content": []map[string]interface{}{
 			{
