@@ -7,6 +7,22 @@ This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- `docs/discovery/2026-06-research-log.md` — Phase 0 research log for the
+  Agent Contract Protocol reframe.
+- `docs/validation/signals.md` — public validation signals for the execution
+  governance thesis.
+
+### Changed
+
+- Renamed the project identity from Agent Context Protocol to Agent Contract
+  Protocol while keeping the ACP acronym.
+- Renamed the Go module and repository references to
+  `github.com/Clawdlinux/agent-contract-protocol`.
+- Reframed the README, SPEC, positioning doc, landing page, and public post
+  draft around governed execution contracts instead of token efficiency.
+
+### Added (historical v0.1 launch assets)
+
 - `LAUNCH_CHECKLIST.md` — go/no-go checklist for the public v0.1 spec launch.
 - `landing/index.html` — single-page summary of the protocol, headline
   benchmark numbers, and code links.
@@ -14,10 +30,11 @@ This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.1.0-spec] — 2026-05-03 (pre-launch)
 
-This is the v0.1 of the **Agent Context Protocol** specification and the
-reference implementation. The repository is still private at this tag; the
-public release happens in `v0.1.0-public` once the launch checklist is signed
-off.
+This is the v0.1 of the Agent Context Protocol specification and the
+reference implementation. The project was later renamed to Agent Contract
+Protocol (see the Unreleased section). The repository is still private at this
+tag; the public release happens in `v0.1.0-public` once the launch checklist is
+signed off.
 
 ### Added
 
@@ -108,5 +125,5 @@ Mean reduction: **76.6%**.
 - `pkg/`, `adapters/`: Apache 2.0.
 - `cmd/`, `internal/`: BSL 1.1, converts to Apache 2.0 on 2029-05-02.
 
-[Unreleased]: https://github.com/Clawdlinux/ninevigil-acp/compare/v0.1.0-spec...HEAD
-[0.1.0-spec]: https://github.com/Clawdlinux/ninevigil-acp/releases/tag/v0.1.0-spec
+[Unreleased]: https://github.com/Clawdlinux/agent-contract-protocol/compare/v0.1.0-spec...HEAD
+[0.1.0-spec]: https://github.com/Clawdlinux/agent-contract-protocol/releases/tag/v0.1.0-spec

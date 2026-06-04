@@ -1,6 +1,6 @@
 services:
   acp-server:
-    image: ninevigil-acp/acp-server:dev
+    image: agent-contract-protocol/acp-server:dev
     build:
       context: ..
       dockerfile: Dockerfile

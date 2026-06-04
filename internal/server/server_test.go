@@ -19,7 +19,7 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 func newServer(t *testing.T, cfg Config) *httptest.Server {

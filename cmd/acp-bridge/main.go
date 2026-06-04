@@ -40,12 +40,12 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/bridge"
-	"github.com/Clawdlinux/ninevigil-acp/internal/mcpclient"
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	"github.com/Clawdlinux/ninevigil-acp/internal/resolver"
-	mcpsource "github.com/Clawdlinux/ninevigil-acp/internal/sources/mcp"
-	"github.com/Clawdlinux/ninevigil-acp/internal/vscodeconfig"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/bridge"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/mcpclient"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
+	mcpsource "github.com/Clawdlinux/agent-contract-protocol/internal/sources/mcp"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/vscodeconfig"
 )
 
 var version = "0.2.0-dev"

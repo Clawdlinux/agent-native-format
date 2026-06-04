@@ -1,6 +1,7 @@
 # Agent Adapters
 
-Adapters consume ACP manifests from existing agent frameworks.
+Adapters consume ACP contracts from existing agent frameworks. The v0.1 wire
+type is still named `ExecutionManifest` for compatibility.
 
 Initial target:
 

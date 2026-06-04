@@ -12,7 +12,7 @@ package server
 import (
 	reflect "reflect"
 
-	manifest "github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	manifest "github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 	gomock "go.uber.org/mock/gomock"
 )
 

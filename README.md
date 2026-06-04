@@ -1,115 +1,101 @@
-# ninevigil-acp
+# Agent Contract Protocol
 
-> **Agent Context Protocol** — one API call, complete execution context, minimal tokens.
-> An intent-resolution and execution-planning layer that **sits on top of MCP** and other tool sources.
+> **ACP** is the governed execution layer for autonomous agents.
+> Any tool source in. Signed, identity-bound, ordered, auditable execution out.
 >
-> **Status:** Public PoC · v0.1 DRAFT · May 2026 &nbsp;**Owner:** Clawdlinux / NineVigil
+> **Status:** Public PoC · v0.2 DRAFT · June 2026 &nbsp;**Owner:** Clawdlinux / NineVigil
 
 ---
 
 ## TL;DR
 
-MCP handles tool *discovery* well. It was never designed to handle *execution context*.
+MCP answers **what tools exist**. Claude Code Tool Search and semantic retrieval
+are making tool selection cheaper. That is good. It also means raw token
+reduction is not a durable product thesis.
 
-In production agent systems, three problems compound before the agent takes its first action:
+The hard problem is now execution trust.
 
-1. **Token bloat** — verbose tool schemas consume 70–85% of the context window. With 50 registered tools, a single `tools/list` round-trip costs 9,223 tokens (measured).
-2. **Auth in context** — credentials must be present in the agent context to call tools. That's an exploitable attack surface.
-3. **Ordering inferred, not declared** — agents reason about `depends_on` chains themselves, burning tokens and introducing errors on multi-step workflows.
+Before an autonomous agent touches a real system, you need to know:
 
-**ACP sits on top of MCP** (and any other tool source). The agent sends one intent; ACP returns one scoped manifest with auth pre-injected, ordering pre-computed, and security boundaries declared. Existing MCP servers keep working — ACP ingests their `tools/list` and produces token-minimal manifests for execution.
+1. **Who is it acting as?** The contract binds execution to an agent identity
+   and a credential alias. Raw credentials never enter the model context.
+2. **What is it allowed to do?** The contract declares egress, approval gates,
+   TTL, rate limits, and audit level.
+3. **What happened afterward?** Every action can be tied back to a contract,
+   action id, principal, outcome, and audit record.
 
-### How ACP compares
+ACP takes an agent intent and returns an **Execution Contract**. The current
+wire type is still `ExecutionManifest` for v0.1 compatibility, but the contract
+is the product primitive: scoped capabilities, ordered actions, auth handled at
+the proxy, and policy declared before the first tool call.
 
-|  | Framework tool-retrievers¹ | Custom MCP proxies² | **ACP** |
-| --- | --- | --- | --- |
-| Token reduction | ✅ partial | ✅ partial | ✅ **64–97%** |
-| Auth out of agent context | ❌ | ❌ | ✅ |
-| Execution ordering declared | ❌ | ❌ | ✅ |
-| Works across frameworks | ❌ per-framework | ❌ per-app | ✅ |
-| Open protocol spec | ❌ | ❌ | ✅ CC BY 4.0 |
+## Why this exists
 
-¹ LangChain/LlamaIndex ToolRetriever: agent-side embedding selection — auth still in context, framework-specific.
-² Ad-hoc `tools/list` filters: app-specific, no auth model, no ordering hints.
+Autonomous agents are stuck in demos because teams cannot bound their blast
+radius. Tool discovery is getting solved. Production execution governance is
+not.
 
-**ACP is a protocol, not a library.** Any framework can implement an adapter. The spec (`SPEC.md`) is CC BY 4.0.
+ACP is a small open contract format and reference runtime for that gap:
 
-### Raw numbers (50 runs/scenario, `tiktoken/cl100k_base`)
+- **MCP-compatible.** Existing MCP servers keep working. ACP consumes their
+  `tools/list` and emits a governed execution contract.
+- **Source-agnostic.** MCP, Kubernetes Services, and future OpenAPI/gRPC/CLI
+  adapters all normalize into the same contract shape.
+- **Policy at the boundary.** The proxy enforces egress and approval. The
+  model does not get to self-police.
+- **Audit by construction.** Feedback and proxy execution events attach to the
+  same contract id.
 
-|  | MCP today (raw) | ACP on top of MCP |
-| --- | --- | --- |
-| Round trips before first action | 3–21 (measured) | **1** |
-| Tokens for representative workflows | 373–9,223 (measured) | **111–359** |
-| Auth in agent context | yes | **never** |
-| Execution ordering | agent infers | **server declares** |
+## Token efficiency is a side effect
 
-Full benchmark data: [`results/2026-05-02-week3-summary.md`](results/2026-05-02-week3-summary.md) · Full positioning: [`docs/positioning.md`](docs/positioning.md).
+ACP still reduces tool-context tokens because contracts only include the
+capabilities needed for the intent.
 
-## Repo layout
+Measured benchmark data is in
+[`results/2026-05-02-week3-summary.md`](results/2026-05-02-week3-summary.md).
 
-```
-ninevigil-acp/
-├── SPEC.md                       # ACP v0.1 protocol specification
+| Scenario | ACP / MCP tokens | ACP / MCP round trips | Reduction |
+|---|---:|---:|---:|
+| S1 Simple DB query | 111 / 373 | 1 / 3 | 70.2% |
+| S2 Multi-tool workflow | 295 / 837 | 1 / 5 | 64.7% |
+| S3 Complex DAG | 306 / 1,257 | 1 / 7 | 75.6% |
+| S4 Scale, 50 tools and 2 relevant | 241 / 9,223 | 1 / 21 | 97.4% |
+| S5 Auth-heavy | 359 / 1,431 | 1 / 7 | 74.9% |
+
+Those numbers are useful. They are not the moat. The moat is the governed
+execution contract.
+
+## Repository layout
+
+```text
+agent-contract-protocol/
+├── SPEC.md                       # ACP protocol specification
 ├── cmd/
-│   ├── acp-server/               # ACP server entrypoint (Go)
+│   ├── acp-server/               # ACP server entrypoint
+│   ├── acp-bridge/               # MCP bridge for IDE-style clients
 │   └── benchmark/                # Benchmark CLI
 ├── internal/
-│   ├── manifest/                 # Manifest builder + optimizer
+│   ├── builder/                  # Contract builder and ordering
+│   ├── proxy/                    # Auth-injection and policy enforcement
 │   ├── registry/                 # Tool registry
-│   ├── resolver/                 # Intent → capabilities resolver
-│   └── proxy/                    # Auth-injection proxy
+│   ├── resolver/                 # Intent to capabilities resolver
+│   └── sources/                  # MCP and Kubernetes source adapters
 ├── pkg/
-│   ├── acp/                      # Public Go SDK: acp.NewClient()
-│   └── manifest/                 # Manifest types (shared with adapters)
-├── adapters/python/
-│   ├── acp_langgraph/            # LangGraph adapter
-│   ├── acp_crewai/               # CrewAI adapter
-│   └── acp_openai/               # Raw OpenAI function-calling adapter
-├── benchmark/
-│   ├── scenarios/                # YAML task definitions (S1–S5)
-│   ├── baseline/mcp_client.py    # MCP baseline implementation
-│   ├── harness.py                # Benchmark orchestrator
-│   └── report.py                 # Generates comparison report
-├── results/                      # Auto-generated benchmark output + charts
-├── docs/
-│   ├── architecture.md
-│   ├── protocol.md
-│   ├── benchmark-methodology.md
-│   └── pitch-deck-data.md
-└── deploy/
-    ├── docker-compose.yaml
-    └── k8s/
+│   ├── acp/                      # Public Go SDK
+│   └── manifest/                 # Wire types
+├── adapters/python/              # Python adapters for common agent stacks
+├── benchmark/                    # Reproducible MCP vs ACP harness
+├── docs/                         # Architecture, positioning, validation
+└── deploy/                       # Docker Compose and Kubernetes assets
 ```
-
-## Phase plan (4 weeks)
-
-| Week | Deliverable | Success criteria |
-| --- | --- | --- |
-| **1** | ACP server + tool registry + manifest builder; keyword intent resolver; Docker Compose dev stack | `POST /v1/context` returns valid manifest for 3 registered tools |
-| **2** | Auth proxy (credential injection); MCP baseline client; benchmark harness for S1 + S2 | Side-by-side runs for simple + multi-tool scenarios |
-| **3** | Python adapters (LangGraph, raw OpenAI); S3–S5 scenarios; embedding-based intent resolver | All 5 scenarios benchmarked end-to-end |
-| **4** | Report generation; charts; protocol spec finalized; pitch-deck data extraction | Reproducible benchmark, investor-ready numbers |
-
-Phase status: [`docs/phase-log.md`](docs/phase-log.md).
 
 ## Quickstart
 
-### Install (pick one)
+### Build from source
 
 ```bash
-# Option A — Go binary, no clone (requires Go 1.25+)
-go install github.com/Clawdlinux/ninevigil-acp/cmd/acp-server@v0.1.0-spec
-ACP_AUTH_TOKEN=dev-token acp-server --addr :8080
-
-# Option B — Docker (no toolchain needed) — pick either registry
-docker run --rm -p 8080:8080 -e ACP_AUTH_TOKEN=dev-token \
-  ghcr.io/clawdlinux/ninevigil-acp:v0.1.0-spec
-# or, from Docker Hub:
-docker run --rm -p 8080:8080 -e ACP_AUTH_TOKEN=dev-token \
-  goodra007/acp-server:v0.1.0-spec
-
-# Option C — Build from source
-git clone https://github.com/Clawdlinux/ninevigil-acp && cd ninevigil-acp
+git clone https://github.com/Clawdlinux/agent-contract-protocol
+cd agent-contract-protocol
 make build
 ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
 ```
@@ -119,7 +105,7 @@ ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
 For normal MCP users, install the bridge and register one MCP server in VS Code:
 
 ```bash
-go install github.com/Clawdlinux/ninevigil-acp/cmd/acp-bridge@latest
+go install github.com/Clawdlinux/agent-contract-protocol/cmd/acp-bridge@latest
 ```
 
 `~/Library/Application Support/Code/User/mcp.json`:
@@ -148,7 +134,8 @@ For an explicit config instead of auto-import:
 acp-bridge --config ./examples/bridge.json
 ```
 
-### Request a manifest
+### Request an execution contract
+
 
 ```bash
 curl -sS -X POST http://localhost:8080/v1/context \
@@ -158,61 +145,50 @@ curl -sS -X POST http://localhost:8080/v1/context \
   | python3 -m json.tool
 ```
 
-## Use with your existing MCP servers
-
-ACP doesn't replace your MCP servers — it sits in front of them. The MCP servers you run today (filesystem, GitHub, Postgres, Slack, your custom ones) keep working unchanged. ACP discovers their tools via standard `tools/list`, deduplicates schemas, attaches auth out-of-context, and emits one scoped manifest per agent intent.
-
-### The shape of the integration
-
-```
-   Your agent (Claude / Cursor / LangGraph / custom)
-                │
-                │  POST /v1/context  {"intent": "..."}
-                ▼
-   ┌──────────────────────────┐         ┌─────────────────────────┐
-   │     ACP server           │ ──GET──▶│  your-mcp-server.local  │  (existing)
-   │  (intent → manifest)     │  /tools │   filesystem, GH, etc.  │
-   └──────────────────────────┘  /list  └─────────────────────────┘
-                │
-                │  one manifest, scoped, ordered, auth pre-injected
-                ▼
-   Agent executes against POST /v1/exec/<action_id>
-```
-
-### Pointing ACP at one or more MCP servers
-
-The Go importer at [`internal/sources/mcp`](internal/sources/mcp) reads the standard MCP `tools/list` envelope (2024-11 spec) and registers every tool into ACP's registry. The repo ships a runnable demo at [`cmd/import-demo`](cmd/import-demo):
+### Go install after the rename lands
 
 ```bash
-# Try it against any MCP server that exposes /tools/list (the 2024-11 envelope).
-# Example below uses the bundled fake MCP server for a 60-second smoke test:
-python3 -c "$(curl -sSL https://raw.githubusercontent.com/Clawdlinux/ninevigil-acp/v0.1.1-rc1/scripts/fake-mcp.py)" 19090 &
-
-go run github.com/Clawdlinux/ninevigil-acp/cmd/import-demo@v0.1.1-rc1 \
-  -source name=files,url=http://127.0.0.1:19090,caps=filesystem \
-  -source name=github,url=http://gh-mcp.internal:9100,auth="bearer ghp_xxx",caps=git
+go install github.com/Clawdlinux/agent-contract-protocol/cmd/acp-server@main
+ACP_AUTH_TOKEN=dev-token acp-server --addr :8080
 ```
 
-Output:
+Use a release tag once the first Agent Contract Protocol tag is cut.
 
+## Use with existing MCP servers
+
+ACP does not replace MCP. It uses MCP as a discovery supply chain.
+
+```text
+   Agent runtime
+        │
+        │  POST /v1/context  {"intent":"...", "agent_id":"..."}
+        ▼
+   ┌──────────────────────────────┐       ┌─────────────────────────┐
+   │ ACP server                   │ ────▶ │ Existing MCP server     │
+   │ intent → execution contract  │ tools │ GitHub, Slack, DB, etc. │
+   └──────────────────────────────┘ /list └─────────────────────────┘
+        │
+        │  scoped actions, policy, auth alias, ordering
+        ▼
+   Agent executes through /v1/exec/{contract_id}/{action_id}
 ```
-─── files (http://127.0.0.1:19090) ───────────────────
-  ✅ imported 4 tool(s)
-─── github (http://gh-mcp.internal:9100) ─────────────
-  ✅ imported 12 tool(s)
 
-=== ACP registry now holds 16 tool(s) ===
-  files.list_directory   caps=[directory filesystem list read]  endpoint=...
-  files.read_file        caps=[file filesystem read]            endpoint=...
-  github.create_pr       caps=[create git pr write]              endpoint=...
-  github.search_repos    caps=[git read repos search]            endpoint=...
-  …
+The MCP importer at [`internal/sources/mcp`](internal/sources/mcp) reads the
+standard MCP `tools/list` envelope and registers each tool in ACP's registry.
+
+```bash
+python3 scripts/fake-mcp.py 19090 &
+
+go run ./cmd/import-demo \
+  -source name=files,url=http://127.0.0.1:19090,caps=filesystem
 ```
 
 Each imported tool gets:
-- A namespaced ID (`<source>.<tool>`) so two MCP servers can expose the same tool name without collision.
-- Capabilities auto-inferred from the tool name + your explicit `caps=` tag, so the resolver can pick the right one for an intent.
-- Endpoint rewired through the ACP auth-injection proxy — your `auth=` value is stored server-side and never enters the agent context.
+
+- A namespaced id like `<source>.<tool>`.
+- Capability tags for intent resolution.
+- An endpoint routed through the ACP proxy.
+- An auth mode that keeps raw credentials out of the model context.
 
 > **Honest status:** `acp-bridge` is the plug-and-play IDE path. It can import
 > VS Code MCP config, start stdio MCP servers, and forward real tool calls.
@@ -220,14 +196,17 @@ Each imported tool gets:
 > `acp-server` still uses the manifest/proxy path and a seeded registry unless
 > you run the importer flow above.
 
-### Migration ladder (for teams already in production with MCP)
+## Current status
 
-| You have today | What to add | What changes for the agent |
-|---|---|---|
-| 1 MCP server, 5 tools, agent calls `tools/list` every turn | Run ACP in front of it; agent calls `POST /v1/context` instead | One round-trip vs. 3+; tokens drop ~70% |
-| 3+ MCP servers, manual fan-out in agent code | Import each into the same ACP registry | Agent stops fanning out; ACP picks the right server per intent |
-| MCP servers behind separate auth headers | Set `Source.Auth` per source at import time | Credentials leave the agent context entirely |
-| Custom MCP server you wrote | Nothing — ACP just calls your `tools/list` | None — your server is unchanged |
+Working today:
+
+- `POST /v1/context` returns scoped contracts using the existing v0.1
+  `ExecutionManifest` wire type.
+- The proxy strips agent-supplied auth headers and injects server-side creds.
+- Egress and approval boundaries are represented in the contract.
+- MCP and Kubernetes source adapters exist.
+- Python adapters cover OpenAI function calling, LangGraph, and CrewAI.
+- Benchmarks reproduce the MCP baseline and token deltas.
 
 ### What ACP does not do
 
@@ -237,23 +216,31 @@ Each imported tool gets:
   does not re-implement their provider APIs.
 - **Cache `tools/list` indefinitely.** Each `ImportSource` call refetches; re-call on a schedule (or on a webhook) when your MCP server's tool set changes.
 
-### Python adapters (pip from git, no PyPI required)
+### Next hardening work
+
+- Enforce contract TTL at the proxy.
+- Persist append-only audit logs.
+- Sign contracts and verify signatures before execution.
+- Bind each contract to principal and credential alias.
+- Add an OpenAPI source adapter to prove source-agnostic execution.
+
+See [`docs/positioning.md`](docs/positioning.md) and
+[`docs/validation/signals.md`](docs/validation/signals.md).
+
+## Python adapters
 
 ```bash
-# Shared client + types (used by every adapter)
-pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_common"
-
-# Pick the framework you actually use:
-pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_langgraph"
-pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_openai"
-pip install "git+https://github.com/Clawdlinux/ninevigil-acp.git@v0.1.0-spec#subdirectory=adapters/python/acp_crewai"
+pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_common"
+pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_langgraph"
+pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_openai"
+pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_crewai"
 ```
 
-### Go SDK
+## Go SDK
 
 ```go
 client := acp.NewClient("http://localhost:8080", acp.WithToken("dev-token"))
-mf, err := client.Context(ctx, manifest.ContextRequest{
+contract, err := client.Context(ctx, manifest.ContextRequest{
     Intent:  "query the customer db",
     AgentID: "agent-01",
 })
@@ -263,6 +250,6 @@ mf, err := client.Context(ctx, manifest.ContextRequest{
 
 - **Protocol spec** (`SPEC.md`, `docs/protocol.md`): CC BY 4.0
 - **Adapters / SDKs** (`pkg/`, `adapters/`): Apache 2.0
-- **ACP server runtime** (`cmd/`, `internal/`): **BSL 1.1** → Apache 2.0 after 3 years
+- **ACP server runtime** (`cmd/`, `internal/`): BSL 1.1, converts to Apache 2.0 after 3 years
 
 See [`LICENSE`](LICENSE) and [`docs/LICENSING.md`](docs/LICENSING.md).

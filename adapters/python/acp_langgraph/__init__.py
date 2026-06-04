@@ -1,4 +1,4 @@
-"""LangGraph adapter for ACP Execution Manifests.
+"""LangGraph adapter for ACP Execution Contracts.
 
 Builds a LangGraph ``StateGraph`` whose nodes execute the ACP manifest's
 actions in `depends_on` order via the auth-injection proxy.

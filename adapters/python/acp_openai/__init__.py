@@ -1,4 +1,4 @@
-"""OpenAI function-calling adapter for ACP Execution Manifests.
+"""OpenAI function-calling adapter for ACP Execution Contracts.
 
 Converts an ACP manifest into the OpenAI Chat Completions ``tools=[...]``
 parameter so existing OpenAI agent code can consume ACP manifests with no

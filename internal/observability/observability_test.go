@@ -15,7 +15,7 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/observability"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/observability"
 )
 
 func setupRecorder(t *testing.T) (*tracetest.SpanRecorder, func()) {

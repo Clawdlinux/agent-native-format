@@ -12,8 +12,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 func ann(kvs ...string) map[string]string {

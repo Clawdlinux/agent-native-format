@@ -22,7 +22,7 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 func mustResponse(status int, body any) *http.Response {

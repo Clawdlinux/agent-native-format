@@ -33,7 +33,7 @@ vuln:
 	./bin/govulncheck $(PKG)
 
 docker-build:
-	docker build -t ninevigil-acp/acp-server:dev .
+	docker build -t agent-contract-protocol/acp-server:dev .
 
 build:
 	$(GO) build -trimpath -ldflags="-s -w" -o bin/acp-server ./cmd/acp-server

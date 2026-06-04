@@ -95,12 +95,12 @@ builder, and bearer auth.
 
 ```bash
 $ go test -race -count=1 ./...
-ok  github.com/Clawdlinux/ninevigil-acp/internal/manifest    0.49s
-ok  github.com/Clawdlinux/ninevigil-acp/internal/registry    0.91s
-ok  github.com/Clawdlinux/ninevigil-acp/internal/resolver    0.51s
-ok  github.com/Clawdlinux/ninevigil-acp/internal/server      0.59s
-ok  github.com/Clawdlinux/ninevigil-acp/pkg/acp              0.57s
-ok  github.com/Clawdlinux/ninevigil-acp/pkg/manifest         0.43s
+ok  github.com/Clawdlinux/agent-contract-protocol/internal/manifest    0.49s
+ok  github.com/Clawdlinux/agent-contract-protocol/internal/registry    0.91s
+ok  github.com/Clawdlinux/agent-contract-protocol/internal/resolver    0.51s
+ok  github.com/Clawdlinux/agent-contract-protocol/internal/server      0.59s
+ok  github.com/Clawdlinux/agent-contract-protocol/pkg/acp              0.57s
+ok  github.com/Clawdlinux/agent-contract-protocol/pkg/manifest         0.43s
 ```
 
 End-to-end smoke test against the running binary:

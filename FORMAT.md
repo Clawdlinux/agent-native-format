@@ -318,7 +318,7 @@ status      = "[" word "]"
 prop        = key ":" value
 ```
 
-Reference parsers are provided in Go and Python in the ninevigil-acp
+Reference parsers are provided in Go and Python in the agent-contract-protocol
 repository.
 
 ## 7. Extending ANF for New Domains

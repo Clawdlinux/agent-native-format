@@ -10,13 +10,13 @@ Obsidian vault.
 
 **Inputs**
 - Source spec: `ACP_PoC_Specification_CONFIDENTIAL.docx`
-- Workspace: `/Users/sunny/clawdlinux/ninevigil-acp`
-- GitHub repo: `Clawdlinux/ninevigil-acp` (private)
-- GitHub milestone: `https://github.com/Clawdlinux/ninevigil-acp/milestone/1`
+- Workspace: `/Users/sunny/clawdlinux/agent-contract-protocol`
+- GitHub repo: `Clawdlinux/agent-contract-protocol` (private)
+- GitHub milestone: `https://github.com/Clawdlinux/agent-contract-protocol/milestone/1`
 
 **Decisions**
-- Repo name: `ninevigil-acp`
-- Local path: `/Users/sunny/clawdlinux/ninevigil-acp`
+- Repo name: `agent-contract-protocol`
+- Local path: `/Users/sunny/clawdlinux/agent-contract-protocol`
 - Phase 1 scope: repo scaffold + `SPEC.md` + documentation index, no runtime logic yet
 - Documentation cadence: end-of-phase verifier/doc pass with Obsidian mirror
 

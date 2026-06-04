@@ -8,7 +8,7 @@ ACP-managed tool surface.
 Install the bridge:
 
 ```bash
-go install github.com/Clawdlinux/ninevigil-acp/cmd/acp-bridge@latest
+go install github.com/Clawdlinux/agent-contract-protocol/cmd/acp-bridge@latest
 ```
 
 Add one server to VS Code `mcp.json`:

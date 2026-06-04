@@ -4,7 +4,7 @@
 # - Builder stage uses the pinned Go toolchain.
 # - Runtime stage is distroless static for minimal attack surface.
 
-ARG GO_VERSION=1.26.3
+ARG GO_VERSION=1.26.4
 FROM golang:${GO_VERSION}-alpine AS builder
 
 WORKDIR /src

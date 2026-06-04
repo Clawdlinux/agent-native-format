@@ -31,8 +31,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	"github.com/Clawdlinux/ninevigil-acp/internal/resolver"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
 )
 
 // Forwarder routes a bridge tools/call to the original downstream MCP server.
