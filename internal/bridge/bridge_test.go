@@ -9,6 +9,7 @@ package bridge
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"strings"
 	"testing"
@@ -17,6 +18,27 @@ import (
 	"github.com/Clawdlinux/ninevigil-acp/internal/resolver"
 	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
 )
+
+type fakeForwarder struct {
+	lastSource string
+	lastTool   string
+	lastArgs   map[string]interface{}
+	result     json.RawMessage
+	err        error
+}
+
+func (f *fakeForwarder) Call(_ context.Context, source, tool string, args map[string]interface{}) (json.RawMessage, error) {
+	f.lastSource = source
+	f.lastTool = tool
+	f.lastArgs = args
+	if f.err != nil {
+		return nil, f.err
+	}
+	if f.result != nil {
+		return f.result, nil
+	}
+	return json.RawMessage(`{"content":[{"type":"text","text":"forwarded"}],"isError":false}`), nil
+}
 
 func seedRegistry(t *testing.T) (*registry.MemoryRegistry, []string) {
 	t.Helper()
@@ -55,6 +77,10 @@ func seedRegistry(t *testing.T) (*registry.MemoryRegistry, []string) {
 }
 
 func newTestBridge(t *testing.T) (*Bridge, *bytes.Buffer) {
+	return newTestBridgeWithForwarder(t, nil)
+}
+
+func newTestBridgeWithForwarder(t *testing.T, forwarder Forwarder) (*Bridge, *bytes.Buffer) {
 	t.Helper()
 	reg, allCaps := seedRegistry(t)
 	out := &bytes.Buffer{}
@@ -67,6 +93,7 @@ func newTestBridge(t *testing.T) (*Bridge, *bytes.Buffer) {
 		Registry: reg,
 		Resolver: dr,
 		Out:      out,
+		Forward:  forwarder,
 	})
 	// Register tools in the bridge's downstream map.
 	for _, tool := range reg.All() {
@@ -201,7 +228,8 @@ func TestBridge_ToolsList_CompactSchemas(t *testing.T) {
 
 func TestBridge_ToolsCall_Success(t *testing.T) {
 	t.Parallel()
-	b, out := newTestBridge(t)
+	forwarder := &fakeForwarder{}
+	b, out := newTestBridgeWithForwarder(t, forwarder)
 
 	msg := mustJSON(jsonrpcRequest{
 		JSONRPC: "2.0",
@@ -227,6 +255,37 @@ func TestBridge_ToolsCall_Success(t *testing.T) {
 	result := callResp.Result.(map[string]interface{})
 	if result["isError"] != false {
 		t.Fatal("expected isError=false")
+	}
+	content := result["content"].([]interface{})
+	first := content[0].(map[string]interface{})
+	if first["text"] != "forwarded" {
+		t.Fatalf("forwarded text = %v, want forwarded", first["text"])
+	}
+	if forwarder.lastSource != "github" || forwarder.lastTool != "issues_list" {
+		t.Fatalf("forwarded to %s.%s, want github.issues_list", forwarder.lastSource, forwarder.lastTool)
+	}
+	if forwarder.lastArgs["owner"] != "test" {
+		t.Fatalf("forwarded args = %#v", forwarder.lastArgs)
+	}
+}
+
+func TestBridge_ToolsCall_WithoutForwarderUsesPlaceholder(t *testing.T) {
+	t.Parallel()
+	b, out := newTestBridge(t)
+
+	msg := mustJSON(jsonrpcRequest{
+		JSONRPC: "2.0",
+		ID:      json.RawMessage(`1`),
+		Method:  "tools/call",
+		Params:  json.RawMessage(`{"name":"github.issues_list","arguments":{"owner":"test","repo":"test"}}`),
+	})
+
+	responses := sendAndCollect(t, b, out, msg)
+	result := responses[0].Result.(map[string]interface{})
+	content := result["content"].([]interface{})
+	first := content[0].(map[string]interface{})
+	if !strings.Contains(first["text"].(string), "routed to downstream") {
+		t.Fatalf("placeholder text = %v", first["text"])
 	}
 }
 

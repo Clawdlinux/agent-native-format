@@ -114,6 +114,40 @@ make build
 ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
 ```
 
+### Plug into VS Code MCP
+
+For normal MCP users, install the bridge and register one MCP server in VS Code:
+
+```bash
+go install github.com/Clawdlinux/ninevigil-acp/cmd/acp-bridge@latest
+```
+
+`~/Library/Application Support/Code/User/mcp.json`:
+
+```json
+{
+  "servers": {
+    "acp-bridge": {
+      "type": "stdio",
+      "command": "acp-bridge",
+      "args": ["--import-vscode"]
+    }
+  }
+}
+```
+
+`acp-bridge` imports your existing VS Code stdio MCP servers, skips its own
+entry, starts each downstream server as a child process, compacts `tools/list`,
+narrows the tool surface after observed calls, and forwards real `tools/call`
+requests to the original MCP server. VS Code HTTP MCP entries are skipped until
+HTTP forwarding lands.
+
+For an explicit config instead of auto-import:
+
+```bash
+acp-bridge --config ./examples/bridge.json
+```
+
 ### Request a manifest
 
 ```bash
@@ -180,7 +214,11 @@ Each imported tool gets:
 - Capabilities auto-inferred from the tool name + your explicit `caps=` tag, so the resolver can pick the right one for an intent.
 - Endpoint rewired through the ACP auth-injection proxy — your `auth=` value is stored server-side and never enters the agent context.
 
-> **Honest status (v0.1.0-spec):** the `cmd/import-demo` flow above works end-to-end and is what to run for evaluation. The `acp-server` binary still boots with a 5-tool seed registry — wiring the importer behind a `--mcp-source` flag (or a `sources.yaml` config) so you can do it without writing Go is tracked in [#12](https://github.com/Clawdlinux/ninevigil-acp/issues/12) for v0.1.1.
+> **Honest status:** `acp-bridge` is the plug-and-play IDE path. It can import
+> VS Code MCP config, start stdio MCP servers, and forward real tool calls.
+> HTTP MCP entries are skipped by the auto-import path for now.
+> `acp-server` still uses the manifest/proxy path and a seeded registry unless
+> you run the importer flow above.
 
 ### Migration ladder (for teams already in production with MCP)
 
@@ -193,8 +231,10 @@ Each imported tool gets:
 
 ### What ACP does not do
 
-- **Discover MCP servers automatically.** You configure each one explicitly so the egress allow-list is auditable.
-- **Re-implement MCP transport.** ACP speaks the MCP HTTP envelope; stdio MCP servers are tracked for v0.2 in [#13](https://github.com/Clawdlinux/ninevigil-acp/issues/13).
+- **Resolve interactive VS Code `${input:...}` prompts.** Put secrets in the
+  environment or in your existing downstream MCP server config.
+- **Replace your downstream MCP servers.** ACP starts and forwards to them. It
+  does not re-implement their provider APIs.
 - **Cache `tools/list` indefinitely.** Each `ImportSource` call refetches; re-call on a schedule (or on a webhook) when your MCP server's tool set changes.
 
 ### Python adapters (pip from git, no PyPI required)

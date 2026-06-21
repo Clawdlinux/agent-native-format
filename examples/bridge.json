@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "name": "filesystem",
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "$HOME"],
+      "capabilities": ["filesystem"]
+    }
+  ],
+  "narrow_threshold": 3,
+  "window_size": 10
+}

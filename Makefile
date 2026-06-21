@@ -37,6 +37,7 @@ docker-build:
 
 build:
 	$(GO) build -trimpath -ldflags="-s -w" -o bin/acp-server ./cmd/acp-server
+	$(GO) build -trimpath -ldflags="-s -w" -o bin/acp-bridge ./cmd/acp-bridge
 
 generate:
 	@if [ ! -x $(MOCKGEN) ]; then \
@@ -48,4 +49,4 @@ docs:
 	@python3 scripts/check_docs.py
 
 clean:
-	rm -rf bin/acp-server coverage.out
+	rm -rf bin/acp-server bin/acp-bridge coverage.out
