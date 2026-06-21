@@ -26,17 +26,28 @@ if missing:
     sys.exit(1)
 
 spec = Path("SPEC.md").read_text(encoding="utf-8")
-checks = ["POST /v1/context", "Execution Manifest", "feedback_endpoint"]
+checks = ["Agent Contract Protocol", "Execution Contract", "feedback_endpoint", "POST /v1/context"]
 for needle in checks:
     if needle not in spec:
         print(f"SPEC.md missing required phrase: {needle}", file=sys.stderr)
         sys.exit(1)
 
+readme = Path("README.md").read_text(encoding="utf-8")
+readme_checks = ["Agent Contract Protocol", "governed execution", "Token efficiency is a side effect"]
+for needle in readme_checks:
+    if needle not in readme:
+        print(f"README.md missing required phrase: {needle}", file=sys.stderr)
+        sys.exit(1)
+
 # Guard against the old positioning silently coming back. The phrase is
 # explicitly allowed in the changelog and in docs/positioning.md (where we
 # explain the deprecation), but nowhere else.
-banned = re.compile(r"successor to MCP|protocol that replaces MCP", re.IGNORECASE)
-allowed = {"SPEC.md": ["Repositioned from"], "docs/positioning.md": ["earlier draft of ACP framed itself"]}
+banned = re.compile(r"successor to MCP|protocol that replaces MCP|Agent Context Protocol", re.IGNORECASE)
+allowed = {
+    "SPEC.md": ["Repositioned from"],
+    "docs/positioning.md": ["original ACP framing was Agent Context Protocol"],
+    "CHANGELOG.md": ["Renamed the project identity", "Agent Context Protocol specification"],
+}
 for md in Path(".").glob("**/*.md"):
     rel = str(md.as_posix())
     # Skip vendored / generated trees.

@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ACP — Agent Context Protocol</title>
-<meta name="description" content="ACP: one API call returns the exact tools, schemas, auth, and execution order an agent needs. Sits on top of MCP. Cuts tool-context tokens 65–97%." />
-<meta property="og:title" content="ACP — Agent Context Protocol" />
-<meta property="og:description" content="One API call. Complete execution context. Minimal tokens. Sits on top of MCP." />
+<title>ACP - Agent Contract Protocol</title>
+<meta name="description" content="ACP is the governed execution layer for autonomous agents. Any tool source in. Signed, identity-bound, ordered, auditable execution out." />
+<meta property="og:title" content="ACP - Agent Contract Protocol" />
+<meta property="og:description" content="Signed, identity-bound, ordered, auditable execution contracts over MCP and other tool sources." />
 <meta property="og:type" content="website" />
 <meta name="theme-color" content="#1a73e8" />
 <style>
@@ -51,28 +51,28 @@
 <body>
 <main>
   <header class="hero">
-    <span class="pill">Open protocol · v0.1 · CC BY 4.0</span>
-    <h1>ACP — Agent Context Protocol</h1>
-    <p class="tagline">One API call. Complete execution context. Minimal tokens. Sits on top of MCP.</p>
+    <span class="pill">Open protocol · v0.2 · CC BY 4.0</span>
+    <h1>ACP - Agent Contract Protocol</h1>
+    <p class="tagline">The governed execution layer for autonomous agents. Any tool source in. Signed, identity-bound execution out.</p>
   </header>
 
   <section>
     <p>
       MCP answers <em>"what tools exist?"</em>. <strong>ACP sits on top of MCP</strong>
-      and answers <em>"what exactly do I need to do right now, and how?"</em>.
+      and answers <em>"what execution is allowed for this agent, right now?"</em>.
       The agent submits an intent; ACP returns one intent-scoped Execution
-      Manifest with auth pre-injected, dependency order pre-computed, and
-      security boundaries declared. Existing MCP servers keep working.
+      Contract with auth pre-injected, dependency order pre-computed, and
+      policy boundaries declared. Existing MCP servers keep working.
     </p>
   </section>
 
   <section>
-    <h2>Headline benchmark</h2>
+    <h2>Token efficiency as a side effect</h2>
     <div class="num-grid">
       <div class="num"><p class="v">76.6%</p><p class="l">mean tool-context token reduction</p></div>
       <div class="num"><p class="v">97.4%</p><p class="l">at scale (50 tools, 2 relevant)</p></div>
       <div class="num"><p class="v">1 RT</p><p class="l">vs 3–21 round trips for MCP</p></div>
-      <div class="num"><p class="v">0</p><p class="l">credentials in agent context</p></div>
+      <div class="num"><p class="v">0</p><p class="l">credentials in model context</p></div>
     </div>
     <table>
       <thead><tr><th>Scenario</th><th>ACP / MCP tokens</th><th>RT</th><th>Reduction</th></tr></thead>
@@ -89,8 +89,8 @@
 
   <section>
     <h2>Try it (~30 seconds)</h2>
-    <pre><code>git clone https://github.com/Clawdlinux/ninevigil-acp
-cd ninevigil-acp
+    <pre><code>git clone https://github.com/Clawdlinux/agent-contract-protocol
+cd agent-contract-protocol
 go build -o bin/acp-server ./cmd/acp-server
 ACP_AUTH_TOKEN=dev ./bin/acp-server --addr :8080 &amp;
 
@@ -130,21 +130,21 @@ mf, _ := client.Context(ctx, manifest.ContextRequest{
   </section>
 
   <section>
-    <h2>What you get</h2>
+    <h2>What the contract gives you</h2>
     <ul>
-      <li><strong>Intent-scoped manifests.</strong> Only the tools relevant to the task. Schemas compacted into a typed mini-language.</li>
+      <li><strong>Intent-scoped contracts.</strong> Only the capabilities relevant to the task. Schemas compacted into a typed mini-language.</li>
       <li><strong>Auth never enters the agent context window.</strong> Credentials are injected at a proxy boundary.</li>
       <li><strong>Deterministic execution order.</strong> <code>depends_on</code> is server-computed. The agent doesn't reason about ordering.</li>
-      <li><strong>Declared security boundaries.</strong> Egress allow-list, per-action token ceiling, approval gates, audit level — all part of the contract.</li>
+      <li><strong>Declared security boundaries.</strong> Egress allow-list, per-action token ceiling, approval gates, audit level - all part of the contract.</li>
       <li><strong>MCP-compatible.</strong> Point ACP at any MCP server. The reference implementation ingests MCP <code>tools/list</code> payloads automatically.</li>
       <li><strong>Open spec.</strong> CC BY 4.0. SDKs Apache 2.0. Reference runtime BSL 1.1 with 3-year Apache conversion.</li>
     </ul>
   </section>
 
   <section class="cta">
-    <a class="btn" href="https://github.com/Clawdlinux/ninevigil-acp">Code on GitHub</a>
-    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/SPEC.md">Read SPEC.md</a>
-    <a class="btn secondary" href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/paper/acp.md">Paper draft</a>
+    <a class="btn" href="https://github.com/Clawdlinux/agent-contract-protocol">Code on GitHub</a>
+    <a class="btn secondary" href="https://github.com/Clawdlinux/agent-contract-protocol/blob/main/SPEC.md">Read SPEC.md</a>
+    <a class="btn secondary" href="https://github.com/Clawdlinux/agent-contract-protocol/blob/main/paper/acp.md">Paper draft</a>
   </section>
 
   <footer>
@@ -152,7 +152,7 @@ mf, _ := client.Context(ctx, manifest.ContextRequest{
     Clawdlinux / NineVigil. Spec under
     <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
     Reference implementation under
-    <a href="https://github.com/Clawdlinux/ninevigil-acp/blob/main/LICENSE">BSL 1.1</a>
+    <a href="https://github.com/Clawdlinux/agent-contract-protocol/blob/main/LICENSE">BSL 1.1</a>
     (converts to Apache 2.0 on 2029-05-02).
   </footer>
 </main>

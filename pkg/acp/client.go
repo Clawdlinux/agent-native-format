@@ -30,7 +30,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 //go:generate ../../bin/mockgen -source=client.go -destination=mock_httpdoer_test.go -package=acp

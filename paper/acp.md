@@ -1,4 +1,4 @@
-# ACP: Intent-Resolved Execution Manifests for Token-Efficient Agent Tool Use
+# ACP: Intent-Resolved Execution Contracts for Autonomous Agent Tool Use
 
 **Shreyansh Sancheti**
 *Clawdlinux / NineVigil*
@@ -11,7 +11,7 @@
 Production agent systems built on the Model Context Protocol (MCP)
 spend a large fraction of their context window on tool discovery and
 verbose JSON-Schema descriptors before performing any user task.
-We introduce the **Agent Context Protocol (ACP)**, a server-side layer
+We introduce the **Agent Contract Protocol (ACP)**, a server-side layer
 that sits on top of MCP and returns a single intent-scoped Execution
 Manifest in one round trip with auth pre-injected, dependency order
 pre-computed, and security boundaries declared.
@@ -29,7 +29,7 @@ discovery (MCP-Zero), ACP combines server-side intent resolution, schema
 stripping, credential injection, and dependency pre-computation into one
 execution manifest. The reference implementation is open source.
 
-**Code:** `https://github.com/Clawdlinux/ninevigil-acp`
+**Code:** `https://github.com/Clawdlinux/agent-contract-protocol`
 **License (spec):** CC BY 4.0
 **License (reference runtime):** BSL 1.1, converts to Apache 2.0 on
 2029-05-02
@@ -117,7 +117,7 @@ AgentSpec describes the agent itself; ACP describes one execution
 context for one task. An agent interoperability survey (Ehtesham et al.,
 2025) also uses the acronym ACP for IBM's Agent Communication Protocol,
 a RESTful agent-to-agent messaging protocol. In this paper, ACP means
-**Agent Context Protocol**, a tool-context optimization protocol rather
+**Agent Contract Protocol**, a tool-context optimization protocol rather
 than an agent-to-agent messaging protocol.
 
 **Open tool-use benchmarks.** BFCL (Patil et al., ICML 2025) provides
@@ -332,8 +332,8 @@ All benchmark code and result artifacts are open:
 - Deterministic results: `results/2026-05-02-week3-baseline.json`
 
 ```bash
-git clone https://github.com/Clawdlinux/ninevigil-acp
-cd ninevigil-acp
+git clone https://github.com/Clawdlinux/agent-contract-protocol
+cd agent-contract-protocol
 python3 -m venv .venv && .venv/bin/pip install tiktoken
 export $(grep -v '^#' .env | xargs)
 # Frontier benchmark (requires API keys)
@@ -386,7 +386,7 @@ adapter at `internal/sources/mcp`.
 
 ## 6. Conclusion
 
-We have introduced ACP, an intent-resolved execution-manifest layer
+We have introduced ACP, an intent-resolved execution-contract layer
 that sits on top of MCP and other tool sources. Across five scenarios
 and four frontier models (Opus 4.7, Sonnet 4.6, GPT-5.5, GPT-5.4),
 ACP reduces provider-reported tool-context input tokens by 26–93%
@@ -446,4 +446,4 @@ from teams running multi-tool agent systems at scale.
 *Draft updated: 2026-05-13. Frontier benchmark: 120 API calls across
 Opus 4.7, Sonnet 4.6, GPT-5.5, GPT-5.4. Raw results committed under
 `results/frontier/`. Manuscript source:
-`https://github.com/Clawdlinux/ninevigil-acp/blob/main/paper/acp.md`*
+`https://github.com/Clawdlinux/agent-contract-protocol/blob/main/paper/acp.md`*

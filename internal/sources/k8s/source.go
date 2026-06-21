@@ -39,8 +39,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 // AnnotationPrefix is the common prefix for all ACP-relevant Service

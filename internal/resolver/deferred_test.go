@@ -18,12 +18,12 @@ func TestDeferredResolver_Resolve(t *testing.T) {
 	allCaps := []string{"audit", "database", "email", "messaging", "sql", "template"}
 
 	cases := []struct {
-		name     string
-		intent   string
-		hints    []string
-		observe  []string // capabilities to observe before Resolve
-		want     []string
-		wantErr  bool
+		name    string
+		intent  string
+		hints   []string
+		observe []string // capabilities to observe before Resolve
+		want    []string
+		wantErr bool
 	}{
 		{
 			name:   "cold start returns all capabilities",

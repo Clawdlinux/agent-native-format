@@ -1,7 +1,7 @@
 [project]
-name = "ninevigil-acp-tools"
+name = "agent-contract-protocol-tools"
 version = "0.0.0"
-description = "Benchmark and adapter tooling for the NineVigil ACP PoC"
+description = "Benchmark and adapter tooling for the Agent Contract Protocol PoC"
 requires-python = ">=3.12"
 readme = "README.md"
 

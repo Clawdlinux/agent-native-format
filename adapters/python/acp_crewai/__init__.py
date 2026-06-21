@@ -1,4 +1,4 @@
-"""CrewAI adapter for ACP Execution Manifests.
+"""CrewAI adapter for ACP Execution Contracts.
 
 Exposes each ACP action as a CrewAI ``BaseTool`` so a Crew can use the
 manifest's actions like any other tool. The tool body POSTs through the

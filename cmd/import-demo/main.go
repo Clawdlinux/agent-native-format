@@ -6,10 +6,10 @@ you may not use this file except in compliance with the License.
 
 import-demo is a self-contained example that:
 
-  1. Spins up an in-memory ACP registry.
-  2. Imports tools from one or more upstream MCP servers via their HTTP
-     `tools/list` endpoint (the 2024-11 spec envelope).
-  3. Prints a side-by-side summary of what each source contributed.
+ 1. Spins up an in-memory ACP registry.
+ 2. Imports tools from one or more upstream MCP servers via their HTTP
+    `tools/list` endpoint (the 2024-11 spec envelope).
+ 3. Prints a side-by-side summary of what each source contributed.
 
 Use this as the template for "I have an existing MCP server in production,
 how do I plug it into ACP?" The same NewImporter+ImportSource calls live
@@ -33,8 +33,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	mcpsource "github.com/Clawdlinux/ninevigil-acp/internal/sources/mcp"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	mcpsource "github.com/Clawdlinux/agent-contract-protocol/internal/sources/mcp"
 )
 
 // sourceFlag is a repeatable -source flag whose value is parsed as a comma-

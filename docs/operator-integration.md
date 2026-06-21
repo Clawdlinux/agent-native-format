@@ -7,7 +7,7 @@
 
 The agentic-operator (Clawdlinux/agentic-operator-core, public) is the
 Kubernetes-native control plane for agent workloads in regulated clusters.
-ACP is the runtime layer that returns intent-scoped Execution Manifests.
+ACP is the runtime layer that returns intent-scoped Execution Contracts.
 This doc defines the contract between the two so neither side blocks the
 other.
 
@@ -20,9 +20,9 @@ other.
             |  POST /v1/context
             v
 +-------------------------+
-|   ACP server            |   <-- this repo (Clawdlinux/ninevigil-acp)
+|   ACP server            |   <-- this repo (Clawdlinux/agent-contract-protocol)
 | - intent resolver       |
-| - manifest builder      |
+| - contract builder      |
 | - auth proxy            |
 +-------------------------+
             ^  reads tools from
@@ -53,9 +53,9 @@ required.
 
 | Concern | Owner | Repo |
 |---|---|---|
-| ACP wire protocol | this repo | `Clawdlinux/ninevigil-acp` SPEC.md |
-| ACP server runtime | this repo | `Clawdlinux/ninevigil-acp` cmd/, internal/ |
-| ACP source adapters (MCP, k8s) | this repo | `Clawdlinux/ninevigil-acp` internal/sources/ |
+| ACP wire protocol | this repo | `Clawdlinux/agent-contract-protocol` SPEC.md |
+| ACP server runtime | this repo | `Clawdlinux/agent-contract-protocol` cmd/, internal/ |
+| ACP source adapters (MCP, k8s) | this repo | `Clawdlinux/agent-contract-protocol` internal/sources/ |
 | Kubernetes CRDs (AgentWorkload, AgentCard, Tenant) | operator | `Clawdlinux/agentic-operator-core` api/v1alpha1/ |
 | Reconcilers | operator | `Clawdlinux/agentic-operator-core` internal/controller/ |
 | RuntimeClass / NetworkPolicy / RBAC manifests | operator | `Clawdlinux/agentic-operator-core` charts/ |

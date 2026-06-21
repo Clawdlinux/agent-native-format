@@ -3,7 +3,7 @@
 //
 // This package is designed to be imported by agentic-operator-core:
 //
-//	import "github.com/Clawdlinux/ninevigil-acp/translators/kubernetes"
+//	import "github.com/Clawdlinux/agent-contract-protocol/translators/kubernetes"
 //
 // The translator takes standard k8s.io types and produces ANF documents
 // that compress ~12,000 tokens of raw K8s JSON into ~350 tokens of
@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Clawdlinux/ninevigil-acp/pkg/anf"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/anf"
 )
 
 const TranslatorVersion = "ninevigil/k8s-translator:0.1.0"

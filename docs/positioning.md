@@ -1,120 +1,115 @@
-# Positioning: ACP on top of MCP
+# Positioning: Agent Contract Protocol
 
-> The strategic positioning of ACP. Companion to the technical spec
-> ([SPEC.md §10](../SPEC.md#10-relationship-to-mcp)).
-> Status: 2026-05-03.
+> Status: 2026-06-04. Companion to [SPEC.md](../SPEC.md).
 
 ## One-line statement
 
-> MCP answers "what tools exist?". **ACP sits on top of MCP** and answers
-> "what exactly do I need to do right now, and how?".
+MCP answers **what tools exist**. ACP answers **what execution is allowed**.
 
-## The metaphor
+Agent Contract Protocol is the governed execution layer for autonomous agents:
+any tool source in, signed and auditable execution contracts out.
 
-MCP is the USB port. ACP is the OS device manager that only loads the
-drivers your current task needs.
+## What changed
 
-- **MCP**: catalog protocol. Every server publishes a `tools/list`. Every
-  agent must learn that surface up front, every session, every connection.
-- **ACP**: execution-context protocol. Agent submits intent + identity.
-  Server returns one manifest with the exact tools, compact schemas,
-  pre-injected credentials, declared dependency order, and security
-  boundaries.
+The original ACP framing was Agent Context Protocol. It emphasized compact
+schemas, one round trip, and token reduction.
 
-## Why "on top of" beats "successor to"
+That problem is real, but it is no longer enough. Claude Code Tool Search,
+MCP-Zero, Semantic Tool Discovery, mcp2cli, and MCPorter all attack discovery,
+tool selection, and schema cost. The market is moving those layers toward
+commodity infrastructure.
 
-The earlier draft of ACP framed itself as a successor to MCP. That framing
-made for a punchy pitch line but cost us every adoption advantage:
+ACP now targets the open layers above discovery:
 
-| Issue | "Successor" framing | "On top of" framing |
+| Layer | Question | Status |
 |---|---|---|
-| Anthropic / MCP authors | Adversarial | Aligned |
-| Existing MCP server ecosystem | Threat to be replaced | Supply chain to consume |
-| "You can't out-ecosystem MCP" objection | Fatal | Doesn't apply |
-| Day-1 adoption story | "Migrate off MCP" (high friction) | "Point ACP at your existing MCP servers" (low friction) |
-| Future MCP improvements | Threats that erode our edge | Free upgrades to our supply chain |
+| 1 Discovery | What tools exist? | MCP owns this |
+| 2 Selection | Which tools fit this intent? | Commoditizing |
+| 3 Schema cost | How much context does the catalog burn? | Becoming platform default |
+| 4 Ordering | What sequence is valid? | ACP already declares it |
+| 5 Identity | Who is the agent acting as? | Open |
+| 6 Policy | What is allowed? | Open |
+| 7 Execution | Where is the call isolated and enforced? | Partial |
+| 8 Audit | What happened, and can we prove it? | Open |
+| 9 Feedback | Did it work, and can the system improve? | Open |
 
-The technical claims are unchanged. The 70.2% / 64.7% / 75.6% / **97.4%**
-/ 74.9% S1-S5 token reductions stand either way. Only the narrative changes
-from "we beat MCP" to "we make MCP economical at production scale."
+The thesis is simple: discovery matters once per tool. Governance matters on
+every action.
 
-## How ACP layers on MCP in code
+## The execution contract
 
-The reference implementation (this repo) ships an MCP source adapter at
-[`internal/sources/mcp`](../internal/sources/mcp/source.go). The flow:
+The core primitive is an Execution Contract. The current v0.1 wire type is
+still named `ExecutionManifest` for compatibility, but the product meaning has
+shifted.
 
+```text
+ExecutionContract {
+  intent          // the agent's stated goal
+  capabilities   // scoped schemas and endpoints
+  identity        // principal and credential alias, never raw secrets
+  plan            // ordered actions with depends_on
+  policy          // egress, approval, TTL, rate limits, audit level
+  signature       // server signature over the contract
+}
 ```
-agent ── POST /v1/context ──> ACP server ── reads MCP tools/list ──> any MCP server
-       <── ExecutionManifest ──
-```
 
-The `Importer.ImportSource(Source)` call:
+The proxy enforces the contract. The model does not get to self-police.
 
-1. `GET <base>/tools/list` from any MCP-compliant server.
-2. For each descriptor: infer capability tags from name + verb synonyms.
-3. Compact the verbose JSON-Schema into the ACP mini-language (defined in
-   [SPEC.md §4.4](../SPEC.md#44-schema-mini-language)).
-4. Register the tool as `<source_name>.<tool_name>` with the source's host
-   on the egress allow-list and `auth: pre-injected` so the proxy handles
-   credentials.
+## The Databricks analogy
 
-The compaction is what produces the token reduction. A real MCP `tools/list`
-descriptor for `github.issues.create` weighs ~1.5 KB; the compact ACP form
-is ~80 bytes for the same executable meaning. Across a 5-tool workflow
-this is the difference between 1,431 tokens and 359 tokens (S5 measured).
+Databricks did not win by claiming object storage was dead. It defined a table
+contract over commodity storage: metadata, transactions, governance, and
+interoperability.
 
-## What we keep, what we open, what we don't ship
+ACP should do the same for agents.
 
-| Layer | License | Why |
-|---|---|---|
-| Protocol spec (`SPEC.md`, `docs/protocol.md`) | CC BY 4.0 | Maximize ecosystem adoption |
-| SDKs and adapters (`pkg/`, `adapters/`) | Apache 2.0 | Make it trivial to consume from any agent framework |
-| Server runtime (`cmd/`, `internal/`) | BSL 1.1, 3-year Apache conversion | Protect the optimized runtime + data flywheel until adoption catches up |
+- Commodity sources: MCP servers, REST/OpenAPI endpoints, gRPC services, CLIs,
+  Kubernetes Services.
+- Commodity compute: the LLM agent loop.
+- Missing middle: a portable governed execution contract.
 
-We do **not** ship: a competing tool catalog, an MCP-server runtime, or any
-piece of the MCP stack. Anthropic's MCP team continues to own that surface.
-ACP is purely the layer above it.
+That contract is useful locally and in a regulated cluster. Same abstraction.
+Different deployment boundary.
 
-## What "compatible" means concretely
+## What ACP does not claim
 
-If an organization is already running MCP servers:
+- ACP does not replace MCP.
+- ACP does not own tool discovery.
+- ACP does not compete on raw token reduction as a moat.
+- ACP does not require teams to rewrite their tools.
+- ACP is not a full enterprise agent control plane.
 
-1. They can keep them running unchanged.
-2. They point ACP at the MCP server (one-line registration).
-3. Agents call ACP instead of the MCP server directly.
-4. Token cost drops 65-97% (measured); auth no longer enters agent context.
-5. New tools added to the MCP server appear in the ACP registry on next
-   refresh (no re-deploy of ACP).
+ACP consumes existing tool catalogs and turns intent into governed execution.
 
-## SDK / ecosystem strategy
+## Why this matters
 
-We do **not** plan to compete with Anthropic on SDK breadth. ACP is one
-HTTP endpoint plus a typed manifest parser per language:
+The blocker for production autonomy is trust. Teams hesitate to let agents touch
+real systems because they cannot bound blast radius, attribute actions, revoke a
+plan, or replay an audit trail.
 
-- The "client SDK" is a thin HTTP wrapper (~200 lines per language).
-- We ship Python (`acp_common`, `acp_openai`, `acp_langgraph`,
-  `acp_crewai`) and Go (`pkg/acp`) initially.
-- Anything that can `POST /v1/context` and parse JSON can consume ACP.
+ACP makes those controls part of the primitive:
 
-The proprietary value is server-side: intent resolution, schema compaction,
-credential injection, dependency ordering, and the optimizer that gets
-better with usage data.
+- Auth stays out of model context.
+- Actions are ordered before execution.
+- Egress and approval gates are declared up front.
+- Contracts can expire and be revoked.
+- Audit records attach to the same contract id.
 
-## Concrete fundraising / pitch implications
+## Validation posture
 
-- We are **not** asking investors to bet on us replacing MCP.
-- We are asking them to bet on the **execution-context layer** being a
-  category, with us as the reference implementation.
-- The MCP ecosystem is a feature, not a threat. Every new MCP server is
-  another tool ACP can scope intent over.
-- The data flywheel (manifest -> execution -> feedback -> better manifest)
-  is the long-term moat, not the protocol itself.
+The next public step is not a launch claim. It is a question.
+
+Ask agent builders how they handle identity, audit, approval, revocation, and
+bounded blast radius today. If they say Tool Search solved their problem, ACP
+should narrow scope. If they independently name execution trust as the blocker,
+the contract primitive is worth hardening.
+
+See [docs/validation/signals.md](./validation/signals.md).
 
 ## References inside this repo
 
-- [SPEC.md §10 Relationship to MCP](../SPEC.md#10-relationship-to-mcp)
-- [internal/sources/mcp/source.go](../internal/sources/mcp/source.go)
-- [tests/integration/mcp_source_to_acp_test.go](../tests/integration/mcp_source_to_acp_test.go)
+- [SPEC.md](../SPEC.md)
 - [docs/architecture.md](./architecture.md)
+- [docs/operator-integration.md](./operator-integration.md)
 - [docs/pitch-deck-data.md](./pitch-deck-data.md)
-- [docs/LICENSING.md](./LICENSING.md)
+- [docs/discovery/2026-06-research-log.md](./discovery/2026-06-research-log.md)

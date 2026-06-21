@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 // errorSink always fails on Record so we can hit handleFeedback's 500 path.

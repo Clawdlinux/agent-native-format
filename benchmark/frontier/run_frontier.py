@@ -12,7 +12,7 @@ Measures:
   - Estimated cost
 
 Usage:
-    cd ninevigil-acp
+    cd agent-contract-protocol
     export $(grep -v '^#' .env | xargs)
     python3 benchmark/frontier/run_frontier.py --runs 5 --out results/frontier/
 """

@@ -19,12 +19,12 @@ import (
 	"testing"
 	"time"
 
-	builder "github.com/Clawdlinux/ninevigil-acp/internal/builder"
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	"github.com/Clawdlinux/ninevigil-acp/internal/resolver"
-	"github.com/Clawdlinux/ninevigil-acp/internal/server"
-	"github.com/Clawdlinux/ninevigil-acp/pkg/acp"
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	builder "github.com/Clawdlinux/agent-contract-protocol/internal/builder"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/server"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/acp"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 // liveStack returns an httptest.Server hosting a fully-wired ACP stack.

@@ -38,7 +38,7 @@ import (
 )
 
 const (
-	TracerName = "github.com/Clawdlinux/ninevigil-acp/internal/observability"
+	TracerName = "github.com/Clawdlinux/agent-contract-protocol/internal/observability"
 	SchemaURL  = "https://opentelemetry.io/schemas/genai/1.30.0"
 )
 

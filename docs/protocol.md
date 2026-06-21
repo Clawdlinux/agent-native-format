@@ -9,7 +9,7 @@ moves from spec to code.
 
 - `POST /v1/context`
 - `POST /v1/feedback`
-- Execution Manifest with `actions`, `boundaries`, `ttl`, and
+- Execution Contract with `actions`, `boundaries`, `ttl`, and
   `feedback_endpoint`
 - Compact schema mini-language (`string`, `int?`, `json`, `string[]`, etc.)
 
@@ -17,7 +17,7 @@ moves from spec to code.
 
 | Topic | Question | Initial direction |
 |---|---|---|
-| Manifest id | UUID v4, ULID, or short hash? | ULID for sortability |
+| Contract id | UUID v4, ULID, or short hash? | ULID for sortability |
 | Capability matching | Keyword matcher vs embedding search | Keyword Week 1, embeddings Week 3 |
 | Schema compression | Fixed mini-language vs generated type aliases | Start fixed; benchmark aliasing later |
 | Approval gates | ACP server or proxy owns blocking? | Proxy enforces; server declares |

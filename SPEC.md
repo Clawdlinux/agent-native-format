@@ -1,46 +1,52 @@
-# Agent Context Protocol (ACP) — v0.1 DRAFT
+# Agent Contract Protocol (ACP) - v0.2 DRAFT
 
-> **Status:** DRAFT — May 2, 2026
+> **Status:** DRAFT - June 4, 2026
 > **Editors:** Shreyansh Sancheti (Clawdlinux / NineVigil)
 > **License:** CC BY 4.0 (spec only; see [LICENSE](./LICENSE) for runtime)
-> **Tagline:** One API call. Complete execution context. Minimal tokens.
+> **Tagline:** Governed execution contracts for autonomous agents.
 
 ---
 
 ## 1. Abstract
 
-The **Agent Context Protocol (ACP)** is a wire protocol between an autonomous
-agent (or agent runtime) and a context-resolution service that returns a
-complete, intent-scoped **Execution Manifest**. The manifest declares the
-exact endpoints, schemas, authentication injection, execution dependencies,
-and security boundaries required to satisfy the agent's stated intent — in
-the fewest tokens possible.
+The **Agent Contract Protocol (ACP)** is a wire protocol between an autonomous
+agent (or agent runtime) and a contract-resolution service that returns a
+complete, intent-scoped **Execution Contract**. The contract declares the
+exact endpoints, compact schemas, identity binding, authentication injection,
+execution dependencies, policy boundaries, and audit hooks required to satisfy
+the agent's stated intent.
 
-ACP is an **intent-resolution and execution-planning layer that sits on top
-of MCP** and other tool sources (REST APIs, gRPC services, Kubernetes APIs).
-MCP answers “what tools exist?”; ACP answers “what exactly do I need to do
-right now, and how?”. ACP servers consume MCP `tools/list` payloads (see
-[§10](#10-relationship-to-mcp)) and emit token-minimal manifests that any
-agent runtime can execute with one round trip.
+ACP is a **governed execution layer that sits on top of MCP** and other tool
+sources (REST APIs, gRPC services, Kubernetes APIs, CLIs). MCP answers "what
+tools exist?"; ACP answers "what execution is allowed for this agent, right
+now?". ACP servers consume MCP `tools/list` payloads (see
+[§10](#10-relationship-to-mcp)) and other catalogs, then emit contracts that
+any agent runtime can execute through a policy-enforcing proxy.
 
 ## 2. Motivation
 
-MCP was designed for human-like browsing of tool surfaces. It does that job
-well. In production, however, that same human-friendly surface becomes a
-dominant cost in agent context windows:
+MCP was designed for tool discovery. It does that job well. Claude Code Tool
+Search and semantic retrieval are also making large tool catalogs cheaper to
+query. Tool discovery and schema cost are becoming platform problems.
 
-| Failure mode | Observed cost |
+Production autonomy still needs a separate execution contract. Before an agent
+touches a real system, infrastructure must answer:
+
+| Failure mode | Operational cost |
 |---|---|
-| Discovery tax (`tools/list` per server, every session) | 22 K tokens before first prompt (Eckstein) |
-| Schema bloat (descriptions, examples, nested docs) | 4–32× token cost vs CLI (Scalekit, n=75) |
-| No intent scoping (loads all tools, every time) | 143 K of 200 K tokens consumed (Apideck) |
-| No auth injection (agent handles credentials in-context) | Credential-leak risk + extra round trips |
-| No execution ordering (flat tool list) | Agent burns tokens reasoning about DAGs |
+| Unbound identity | Actions cannot be tied to a principal and credential alias. |
+| Policy drift | Egress, approval, TTL, and rate limits are enforced ad hoc. |
+| Credential exposure | Agents may see or relay credentials meant for upstream systems. |
+| Ordering inferred | Agents spend tokens and make mistakes reasoning about dependencies. |
+| Weak audit | Tool calls are not attached to a signed, replayable unit of intent. |
 
-ACP doesn’t replace any of this — MCP servers stay where they are. ACP
-strips the verbosity, scopes by intent, injects credentials at the proxy
-boundary, and pre-computes execution order, then hands the agent a single
-manifest small enough to fit in any context budget.
+ACP does not replace MCP. MCP servers stay where they are. ACP consumes their
+catalogs, scopes capabilities by intent, binds execution to identity and policy,
+injects credentials at the proxy boundary, pre-computes ordering, and emits a
+single contract the proxy can enforce.
+
+Token minimization remains useful and measured. It is a side effect of scoped
+contracts, not the central claim.
 
 Cited references in [docs/references.md](./docs/references.md). See also
 [docs/positioning.md](./docs/positioning.md) for the full “ACP on top of
@@ -48,16 +54,19 @@ MCP” framing.
 
 ## 3. Design Principles
 
-1. **The infrastructure computes the context, not the agent.**
-2. **One round trip.** Discovery, schema, auth, and ordering arrive together.
-3. **Token-minimal by construction.** Schemas are field-name + type only.
-4. **Auth never enters the agent's context window.** Injection happens at
+1. **The infrastructure computes the contract, not the agent.**
+2. **One intent, one contract.** Discovery, schema, identity, policy, auth,
+  and ordering arrive together.
+3. **Policy is enforced at the boundary.** The proxy checks the contract before
+  any upstream call.
+4. **Token-minimal by construction.** Schemas are field-name + type only.
+5. **Auth never enters the agent's context window.** Injection happens at
    the proxy boundary.
-5. **Execution is declared, not inferred.** `depends_on` is explicit.
-6. **Boundaries are part of the contract.** Egress, budgets, approvals, and
+6. **Execution is declared, not inferred.** `depends_on` is explicit.
+7. **Boundaries are part of the contract.** Egress, budgets, approvals, and
    audit level are returned with the manifest.
-7. **Every result is a training signal.** Feedback endpoint is mandatory.
-8. **Deferred resolution is first-class.** Agents MAY operate without
+8. **Every result is an audit and feedback signal.** Feedback endpoint is mandatory.
+9. **Deferred resolution is first-class.** Agents MAY operate without
    upfront intent. The server starts broad and narrows as observations
    accumulate. See §4.8.
 
@@ -91,11 +100,14 @@ Authorization: Bearer <agent-identity-token>
 | `intent` | string | yes | Natural-language statement of what the agent wants to accomplish. |
 | `agent_id` | string | yes | Stable identity. Used for policy + audit. |
 | `capabilities` | string[] | no | Optional hints the resolver may use to short-circuit intent parsing. |
-| `constraints.max_tokens` | int | no | Token budget the manifest must respect. |
+| `constraints.max_tokens` | int | no | Token budget the contract must respect. |
 | `constraints.timeout` | duration | no | Wall-clock budget for the entire DAG. |
 | `constraints.output_format` | enum | no | `minimal` \| `verbose`. Default `minimal`. |
 
-### 4.3 Response — Execution Manifest
+### 4.3 Response - Execution Contract
+
+The v0.1 JSON field names keep `manifest_id` for compatibility. In v0.2 and
+later documents, this object is an Execution Contract.
 
 ```json
 {
@@ -287,10 +299,10 @@ A conforming **client** MUST:
 - Honor `boundaries.egress` (refuse calls to other hosts).
 
 A conforming **server** MUST:
-- Return a manifest whose total schema payload is no larger than the
+- Return a contract whose total schema payload is no larger than the
   equivalent MCP `tools/list` payload would be.
 - Inject auth at the proxy boundary.
-- Expire manifests at `ttl`.
+- Expire contracts at `ttl`.
 
 ## 6. Versioning
 
@@ -300,7 +312,7 @@ pre-stable.
 ## 7. Security Considerations
 
 - Identity tokens MUST be short-lived (≤1h recommended).
-- Manifests MUST NOT contain secret material.
+- Execution Contracts MUST NOT contain secret material.
 - Egress allow-lists MUST be enforced at the proxy, not by the agent.
 - `require_approval` actions MUST block at the proxy until an out-of-band
   approval is recorded.
@@ -313,26 +325,29 @@ Code Mode, AgentSpec, A2A, Oracle Open Agent Spec).
 
 ## 9. Changelog
 
-- **v0.1 (2026-05-02)** — Initial draft extracted from
+- **v0.1 (2026-05-02)** - Initial draft extracted from
   `ACP_PoC_Specification_CONFIDENTIAL.docx`.
-- **v0.1.1 (2026-05-03)** — Repositioned from "successor to MCP" to
+- **v0.1.1 (2026-05-03)** - Repositioned from "successor to MCP" to
   "intent-resolution layer on top of MCP and other tool sources". No wire
   format changes. Added §10.
-- **v0.2.0 (2026-05-16)** — Added §4.8 Deferred Intent Mode for
+- **v0.2.0 (2026-05-16)** - Added §4.8 Deferred Intent Mode for
   interactive environments (IDE copilots, chat agents). Added Design
   Principle #8. Reference implementation: `internal/resolver/deferred.go`,
   `internal/bridge/`, `cmd/acp-bridge/`.
+- **v0.2.1 (2026-06-04)** - Reframed ACP as Agent Contract Protocol. The
+  v0.1 `ExecutionManifest` wire type remains for compatibility, but the
+  protocol now defines the object as an Execution Contract.
 
 ## 10. Relationship to MCP
 
 ACP **does not replace MCP**. ACP is a layer that consumes MCP (and other
-tool sources) and emits intent-scoped manifests.
+tool sources) and emits intent-scoped execution contracts.
 
 ```
 agent ── POST /v1/context ──> ACP server ──┬── reads MCP tools/list
                                            ├── reads REST/gRPC catalogs
                                            └── reads Kubernetes APIs
-       <── ExecutionManifest ──
+      <── ExecutionContract ──
 ```
 
 A conforming ACP server SHOULD provide an MCP source adapter. The reference
@@ -348,9 +363,10 @@ implementation in this repository ships one at
 4. Registers each tool in the ACP registry under
    `<source_name>.<tool_name>`.
 
-The compaction step is what produces the token reduction headlined in
+The compaction step still produces the token reduction headlined in
 [docs/pitch-deck-data.md](./docs/pitch-deck-data.md). The MCP server itself
-is unchanged; the agent just talks to ACP instead of to MCP directly.
+is unchanged; the agent talks to ACP so execution can be scoped, ordered,
+identity-bound, and audited before the proxy calls the upstream tool.
 
 ### Conformance for an MCP-source adapter
 

@@ -12,7 +12,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 func newTool(id string, caps ...string) Tool {

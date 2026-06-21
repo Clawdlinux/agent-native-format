@@ -28,10 +28,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/bridge"
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	"github.com/Clawdlinux/ninevigil-acp/internal/resolver"
-	mcpsource "github.com/Clawdlinux/ninevigil-acp/internal/sources/mcp"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/bridge"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
+	mcpsource "github.com/Clawdlinux/agent-contract-protocol/internal/sources/mcp"
 )
 
 type jsonrpcRequest struct {

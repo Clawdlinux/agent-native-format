@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Clawdlinux/ninevigil-acp/pkg/anf"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/anf"
 )
 
 // TestTranslatePaymentsNamespace produces the example from FORMAT.md and

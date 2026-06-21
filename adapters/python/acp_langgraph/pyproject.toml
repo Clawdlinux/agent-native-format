@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "acp-langgraph"
 version = "0.1.0"
-description = "LangGraph adapter for ACP (Agent Context Protocol) execution manifests."
+description = "LangGraph adapter for ACP (Agent Contract Protocol) execution contracts."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
@@ -38,10 +38,10 @@ langgraph = ["langgraph>=0.0.50"]
 test = ["pytest>=7", "langgraph>=0.0.50"]
 
 [project.urls]
-Homepage = "https://github.com/Clawdlinux/ninevigil-acp"
-Repository = "https://github.com/Clawdlinux/ninevigil-acp"
-Spec = "https://github.com/Clawdlinux/ninevigil-acp/blob/main/SPEC.md"
-Issues = "https://github.com/Clawdlinux/ninevigil-acp/issues"
+Homepage = "https://github.com/Clawdlinux/agent-contract-protocol"
+Repository = "https://github.com/Clawdlinux/agent-contract-protocol"
+Spec = "https://github.com/Clawdlinux/agent-contract-protocol/blob/main/SPEC.md"
+Issues = "https://github.com/Clawdlinux/agent-contract-protocol/issues"
 
 [tool.setuptools]
 packages = ["acp_langgraph"]

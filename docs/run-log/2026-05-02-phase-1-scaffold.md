@@ -9,14 +9,14 @@ protocol spec, scaffold, benchmark plan, and Obsidian mirror.
 
 - Source document: `/Users/sunny/Documents/Claude/Projects/Kubernetes Agent Swarms for Enterprise/ACP_PoC_Specification_CONFIDENTIAL.docx`
 - GitHub org: `clawdlinux`
-- Repo: `Clawdlinux/ninevigil-acp`
-- Local path: `/Users/sunny/clawdlinux/ninevigil-acp`
+- Repo: `Clawdlinux/agent-contract-protocol`
+- Local path: `/Users/sunny/clawdlinux/agent-contract-protocol`
 - Obsidian vault folder: `ACP-PoC/` inside the NineVigil vault
 
 ## Work completed
 
-- Created private GitHub repo `Clawdlinux/ninevigil-acp`.
-- Cloned repo to `/Users/sunny/clawdlinux/ninevigil-acp`.
+- Created private GitHub repo `Clawdlinux/agent-contract-protocol`.
+- Cloned repo to `/Users/sunny/clawdlinux/agent-contract-protocol`.
 - Created source-spec scaffold:
   - `cmd/acp-server/`
   - `cmd/benchmark/`

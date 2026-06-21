@@ -1,6 +1,6 @@
 # ACP Architecture
 
-ACP shifts execution-context work from the agent runtime to the NineVigil
+ACP shifts execution governance from the agent runtime to the NineVigil
 control plane. **ACP sits on top of MCP** and other tool sources; see
 [positioning.md](./positioning.md) for the strategic framing and
 [SPEC.md §10](../SPEC.md#10-relationship-to-mcp) for the wire-level details.
@@ -9,22 +9,22 @@ control plane. **ACP sits on top of MCP** and other tool sources; see
 agent ── POST /v1/context ──> ACP server ──┬── reads MCP `tools/list`
                                            ├── reads REST/gRPC catalogs
                                            └── reads Kubernetes APIs
-       <── ExecutionManifest ──
+      <── ExecutionContract ──
 ```
 
 ## Components
 
 | Component | Responsibility | Language |
 |---|---|---|
-| ACP Server | Receives intent, resolves capabilities, computes manifests | Go |
+| ACP Server | Receives intent, resolves capabilities, computes contracts | Go |
 | Tool Registry | Stores tools, compact schemas, auth configs, capability tags | Go |
 | Intent Resolver | Maps natural language intent to required capabilities | Go first, embeddings later |
-| Manifest Builder | Selects relevant actions, strips schemas, computes ordering | Go |
+| Contract Builder | Selects relevant actions, strips schemas, computes ordering | Go |
 | Auth Proxy | Injects credentials at the network boundary | Go / Envoy |
 | **MCP Source Adapter** | Ingests MCP `tools/list` and registers each tool with compact ACP schemas | Go (`internal/sources/mcp`) |
 | Benchmark Harness | Runs ACP vs MCP, records tokens, latency, success rate | Python |
 | MCP Baseline | Reference MCP `tools/list` payload reproducer for benchmarks | Python |
-| Agent Adapters | Consume ACP manifests from LangGraph, CrewAI, OpenAI flows | Python |
+| Agent Adapters | Consume ACP contracts from LangGraph, CrewAI, OpenAI flows | Python |
 
 ## Request path
 
@@ -34,11 +34,11 @@ agent ── POST /v1/context ──> ACP server ──┬── reads MCP `tool
 3. Intent Resolver maps intent to capability tags.
 4. Tool Registry returns candidate tools (including those imported from MCP
    sources via the MCP source adapter).
-5. Manifest Builder strips schemas, orders actions, attaches boundaries.
+5. Contract Builder strips schemas, orders actions, attaches boundaries.
 6. Auth Proxy prepares per-action credential injection without exposing
    secrets to the agent.
-7. ACP Server returns one Execution Manifest.
-8. Agent executes actions in manifest order via the proxy and reports
+7. ACP Server returns one Execution Contract.
+8. Agent executes actions in contract order via the proxy and reports
    feedback.
 
 ## Tool sources
@@ -52,7 +52,7 @@ adapter; future adapters can ingest:
 
 Each source converts its native catalog into ACP `Tool` entries and
 registers them. The agent never sees the source's native protocol; it only
-sees the compact ACP manifest.
+sees the compact ACP contract.
 
 ## Deployment modes
 
@@ -65,7 +65,7 @@ sees the compact ACP manifest.
 ## Security model
 
 - Agents authenticate to ACP with short-lived identity tokens.
-- Manifests never contain raw credentials.
+- Execution Contracts never contain raw credentials.
 - Auth injection happens at the proxy boundary.
 - Egress allow-lists are enforced by the proxy.
 - Human approval gates are declared in `boundaries.require_approval` and

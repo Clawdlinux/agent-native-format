@@ -19,8 +19,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Clawdlinux/ninevigil-acp/internal/registry"
-	"github.com/Clawdlinux/ninevigil-acp/pkg/manifest"
+	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
 )
 
 //go:generate ../../bin/mockgen -source=builder.go -destination=mocks_test.go -package=builder
