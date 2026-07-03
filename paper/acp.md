@@ -2,7 +2,7 @@
 
 **Shreyansh Sancheti**
 *Clawdlinux / NineVigil*
-`shreyansh@clawdlinux.org`
+`github.com/Clawdlinux`
 
 ---
 
