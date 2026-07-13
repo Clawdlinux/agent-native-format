@@ -23,8 +23,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/observability"
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	"github.com/Clawdlinux/agent-native-format/internal/observability"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 //go:generate ../../bin/mockgen -source=server.go -destination=mocks_test.go -package=server

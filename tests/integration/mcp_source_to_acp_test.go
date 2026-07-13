@@ -28,13 +28,13 @@ import (
 	"testing"
 	"time"
 
-	builder "github.com/Clawdlinux/agent-contract-protocol/internal/builder"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/server"
-	mcpsource "github.com/Clawdlinux/agent-contract-protocol/internal/sources/mcp"
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/acp"
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	builder "github.com/Clawdlinux/agent-native-format/internal/builder"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/internal/resolver"
+	"github.com/Clawdlinux/agent-native-format/internal/server"
+	mcpsource "github.com/Clawdlinux/agent-native-format/internal/sources/mcp"
+	"github.com/Clawdlinux/agent-native-format/pkg/acp"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 // fakeMCPServer returns an httptest.Server that serves a verbose MCP

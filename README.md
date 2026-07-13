@@ -1,60 +1,64 @@
-# Agent Contract Protocol
+# Agent Native Format (ANF)
 
-> **ACP** is the governed execution layer for autonomous agents.
-> Any tool source in. Signed, identity-bound, ordered, auditable execution out.
+> **ANF** is a token-minimal view format for AI agents.
+> Translate live system state into far fewer tokens. Same facts, a fraction of
+> the context window.
 >
-> **Status:** Public PoC · v0.2 DRAFT · June 2026 &nbsp;**Owner:** Clawdlinux / NineVigil
+> **Status:** Public PoC · v0.1 spec DRAFT · 2026 &nbsp;**Owner:** Clawdlinux
+
+Not Zed's Agent Client Protocol. Not IBM's Agent Communication Protocol. ANF is
+a data format, not a transport.
 
 ---
 
 ## TL;DR
 
-MCP answers **what tools exist**. Claude Code Tool Search and semantic retrieval
-are making tool selection cheaper. That is good. It also means raw token
-reduction is not a durable product thesis.
+JSON, YAML, and HTML are built for humans. Agents pay for that in tokens.
 
-The hard problem is now execution trust.
+ANF is a line-oriented representation built for LLM consumption. It encodes the
+decision-relevant state of a system, a Kubernetes namespace, a database, a SaaS
+dashboard, in the fewest tokens that still carry the facts.
 
-Before an autonomous agent touches a real system, you need to know:
+- No quotes, braces, or commas. Indentation and newlines are the structure.
+- Health, alerts, and available actions surface first.
+- Self-describing. An LLM parses it with no schema.
+
+A Kubernetes namespace that costs about 12,000 tokens as raw API JSON costs
+about 350 tokens as ANF. The full spec is in [`FORMAT.md`](FORMAT.md).
+
+## What ships today
+
+- **Spec.** [`FORMAT.md`](FORMAT.md), CC BY 4.0. The format definition.
+- **Go encoder.** [`pkg/anf`](pkg/anf), Apache 2.0. Build and emit ANF documents.
+- **Kubernetes translator.** [`translators/kubernetes`](translators/kubernetes).
+  Live cluster state to ANF.
+- **Benchmarks.** Reproducible token measurements against raw and filtered JSON.
+
+## Governed execution runtime
+
+The repo also ships a reference runtime that turns an agent intent into a
+scoped, auditable execution contract. This was the original Agent Contract
+Protocol work. It stays here as the execution layer that consumes tool
+discovery and enforces policy at the boundary.
+
+Before an autonomous agent touches a real system, the runtime answers:
 
 1. **Who is it acting as?** The contract binds execution to an agent identity
    and a credential alias. Raw credentials never enter the model context.
 2. **What is it allowed to do?** The contract declares egress, approval gates,
    TTL, rate limits, and audit level.
-3. **What happened afterward?** Every action can be tied back to a contract,
-   action id, principal, outcome, and audit record.
+3. **What happened afterward?** Every action ties back to a contract, action
+   id, principal, outcome, and audit record.
 
-ACP takes an agent intent and returns an **Execution Contract**. The current
-wire type is still `ExecutionManifest` for v0.1 compatibility, but the contract
-is the product primitive: scoped capabilities, ordered actions, auth handled at
-the proxy, and policy declared before the first tool call.
+The runtime is MCP-compatible. It consumes existing `tools/list` output,
+normalizes MCP, Kubernetes, and future OpenAPI/gRPC/CLI sources into one
+contract shape, enforces egress and approval at the proxy, and attaches audit
+events to the same contract id.
 
-## Why this exists
+Scoped contracts also cut tool-context tokens, because a contract only carries
+the capabilities the intent needs. Measured against the MCP baseline:
 
-Autonomous agents are stuck in demos because teams cannot bound their blast
-radius. Tool discovery is getting solved. Production execution governance is
-not.
-
-ACP is a small open contract format and reference runtime for that gap:
-
-- **MCP-compatible.** Existing MCP servers keep working. ACP consumes their
-  `tools/list` and emits a governed execution contract.
-- **Source-agnostic.** MCP, Kubernetes Services, and future OpenAPI/gRPC/CLI
-  adapters all normalize into the same contract shape.
-- **Policy at the boundary.** The proxy enforces egress and approval. The
-  model does not get to self-police.
-- **Audit by construction.** Feedback and proxy execution events attach to the
-  same contract id.
-
-## Token efficiency is a side effect
-
-ACP still reduces tool-context tokens because contracts only include the
-capabilities needed for the intent.
-
-Measured benchmark data is in
-[`results/2026-05-02-week3-summary.md`](results/2026-05-02-week3-summary.md).
-
-| Scenario | ACP / MCP tokens | ACP / MCP round trips | Reduction |
+| Scenario | runtime / MCP tokens | runtime / MCP round trips | Reduction |
 |---|---:|---:|---:|
 | S1 Simple DB query | 111 / 373 | 1 / 3 | 70.2% |
 | S2 Multi-tool workflow | 295 / 837 | 1 / 5 | 64.7% |
@@ -62,16 +66,23 @@ Measured benchmark data is in
 | S4 Scale, 50 tools and 2 relevant | 241 / 9,223 | 1 / 21 | 97.4% |
 | S5 Auth-heavy | 359 / 1,431 | 1 / 7 | 74.9% |
 
-Those numbers are useful. They are not the moat. The moat is the governed
-execution contract.
+Full data in
+[`results/2026-05-02-week3-summary.md`](results/2026-05-02-week3-summary.md).
 
 ## Repository layout
 
 ```text
-agent-contract-protocol/
-├── SPEC.md                       # ACP protocol specification
+agent-native-format/
+├── FORMAT.md                     # ANF format specification (CC BY 4.0)
+├── SPEC.md                       # Execution runtime protocol specification
+├── pkg/
+│   ├── anf/                      # ANF encoder and types
+│   ├── acp/                      # Execution runtime Go SDK
+│   └── manifest/                 # Wire types
+├── translators/
+│   └── kubernetes/               # Live cluster state to ANF
 ├── cmd/
-│   ├── acp-server/               # ACP server entrypoint
+│   ├── acp-server/               # Execution runtime entrypoint
 │   ├── acp-bridge/               # MCP bridge for IDE-style clients
 │   └── benchmark/                # Benchmark CLI
 ├── internal/
@@ -80,11 +91,8 @@ agent-contract-protocol/
 │   ├── registry/                 # Tool registry
 │   ├── resolver/                 # Intent to capabilities resolver
 │   └── sources/                  # MCP and Kubernetes source adapters
-├── pkg/
-│   ├── acp/                      # Public Go SDK
-│   └── manifest/                 # Wire types
 ├── adapters/python/              # Python adapters for common agent stacks
-├── benchmark/                    # Reproducible MCP vs ACP harness
+├── benchmark/                    # Reproducible token benchmark harness
 ├── docs/                         # Architecture, positioning, validation
 └── deploy/                       # Docker Compose and Kubernetes assets
 ```
@@ -94,8 +102,8 @@ agent-contract-protocol/
 ### Build from source
 
 ```bash
-git clone https://github.com/Clawdlinux/agent-contract-protocol
-cd agent-contract-protocol
+git clone https://github.com/Clawdlinux/agent-native-format
+cd agent-native-format
 make build
 ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
 ```
@@ -105,7 +113,7 @@ ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
 For normal MCP users, install the bridge and register one MCP server in VS Code:
 
 ```bash
-go install github.com/Clawdlinux/agent-contract-protocol/cmd/acp-bridge@latest
+go install github.com/Clawdlinux/agent-native-format/cmd/acp-bridge@latest
 ```
 
 `~/Library/Application Support/Code/User/mcp.json`:
@@ -145,14 +153,14 @@ curl -sS -X POST http://localhost:8080/v1/context \
   | python3 -m json.tool
 ```
 
-### Go install after the rename lands
+### Go install
 
 ```bash
-go install github.com/Clawdlinux/agent-contract-protocol/cmd/acp-server@main
+go install github.com/Clawdlinux/agent-native-format/cmd/acp-server@main
 ACP_AUTH_TOKEN=dev-token acp-server --addr :8080
 ```
 
-Use a release tag once the first Agent Contract Protocol tag is cut.
+Use a release tag like `@v0.2.0-paper` for reproducible installs.
 
 ## Use with existing MCP servers
 
@@ -230,10 +238,10 @@ See [`docs/positioning.md`](docs/positioning.md) and
 ## Python adapters
 
 ```bash
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_common"
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_langgraph"
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_openai"
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_crewai"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_common"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_langgraph"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_openai"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_crewai"
 ```
 
 ## Go SDK

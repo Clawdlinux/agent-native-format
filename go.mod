@@ -1,8 +1,8 @@
-module github.com/Clawdlinux/agent-contract-protocol
+module github.com/Clawdlinux/agent-native-format
 
 go 1.25.3
 
-toolchain go1.26.4
+toolchain go1.26.5
 
 require (
 	go.opentelemetry.io/otel v1.43.0

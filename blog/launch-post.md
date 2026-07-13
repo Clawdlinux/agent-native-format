@@ -25,7 +25,7 @@ auditable execution out.
 
 If this is not your pain, I want to know.
 
-Repo: https://github.com/Clawdlinux/agent-contract-protocol
+Repo: https://github.com/Clawdlinux/agent-native-format
 
 ## LinkedIn
 
@@ -50,7 +50,7 @@ auditable execution out.
 Genuinely looking for counterexamples. If this is already solved in your stack,
 I want to learn how.
 
-Repo: https://github.com/Clawdlinux/agent-contract-protocol
+Repo: https://github.com/Clawdlinux/agent-native-format
 
 ## Hacker News / Reddit
 
@@ -81,4 +81,4 @@ existing tool sources and emits a signed, identity-bound, ordered, auditable uni
 of execution. I am not sure yet if this is the right primitive, so I would rather
 ask before building too much.
 
-Repo: https://github.com/Clawdlinux/agent-contract-protocol
+Repo: https://github.com/Clawdlinux/agent-native-format

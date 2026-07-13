@@ -33,7 +33,7 @@ for needle in checks:
         sys.exit(1)
 
 readme = Path("README.md").read_text(encoding="utf-8")
-readme_checks = ["Agent Contract Protocol", "governed execution", "Token efficiency is a side effect"]
+readme_checks = ["Agent Native Format", "token-minimal view format", "Governed execution runtime"]
 for needle in readme_checks:
     if needle not in readme:
         print(f"README.md missing required phrase: {needle}", file=sys.stderr)

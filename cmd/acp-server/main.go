@@ -20,12 +20,12 @@ import (
 	"syscall"
 	"time"
 
-	builder "github.com/Clawdlinux/agent-contract-protocol/internal/builder"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/observability"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/proxy"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/server"
+	builder "github.com/Clawdlinux/agent-native-format/internal/builder"
+	"github.com/Clawdlinux/agent-native-format/internal/observability"
+	"github.com/Clawdlinux/agent-native-format/internal/proxy"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/internal/resolver"
+	"github.com/Clawdlinux/agent-native-format/internal/server"
 )
 
 // acpVersion is the version string set at build time via -ldflags.

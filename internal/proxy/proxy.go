@@ -32,7 +32,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 //go:generate ../../bin/mockgen -source=proxy.go -destination=mocks_test.go -package=proxy

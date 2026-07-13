@@ -14,9 +14,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/internal/resolver"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 type fakeForwarder struct {

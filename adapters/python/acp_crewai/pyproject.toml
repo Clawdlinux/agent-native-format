@@ -29,8 +29,8 @@ crewai = ["crewai>=0.1.0"]
 test = ["pytest>=7"]
 
 [project.urls]
-Homepage = "https://github.com/Clawdlinux/agent-contract-protocol"
-Repository = "https://github.com/Clawdlinux/agent-contract-protocol"
+Homepage = "https://github.com/Clawdlinux/agent-native-format"
+Repository = "https://github.com/Clawdlinux/agent-native-format"
 
 [tool.setuptools]
 packages = ["acp_crewai"]

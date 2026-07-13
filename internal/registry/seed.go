@@ -7,7 +7,7 @@ See LICENSE in the repository root.
 
 package registry
 
-import "github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+import "github.com/Clawdlinux/agent-native-format/pkg/manifest"
 
 // Seed populates a registry with a baseline of demo tools used by the Week 1
 // PoC server, the docker-compose dev stack, and the benchmark harness.

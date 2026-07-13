@@ -24,7 +24,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	mcpsource "github.com/Clawdlinux/agent-contract-protocol/internal/sources/mcp"
+	mcpsource "github.com/Clawdlinux/agent-native-format/internal/sources/mcp"
 )
 
 const defaultProtocolVersion = "2025-03-26"
