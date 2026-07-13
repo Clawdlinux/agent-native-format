@@ -17,7 +17,7 @@ This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Renamed the project identity from Agent Context Protocol to Agent Contract
   Protocol while keeping the ACP acronym.
 - Renamed the Go module and repository references to
-  `github.com/Clawdlinux/agent-contract-protocol`.
+  `github.com/Clawdlinux/agent-native-format`.
 - Reframed the README, SPEC, positioning doc, landing page, and public post
   draft around governed execution contracts instead of token efficiency.
 
@@ -125,5 +125,5 @@ Mean reduction: **76.6%**.
 - `pkg/`, `adapters/`: Apache 2.0.
 - `cmd/`, `internal/`: BSL 1.1, converts to Apache 2.0 on 2029-05-02.
 
-[Unreleased]: https://github.com/Clawdlinux/agent-contract-protocol/compare/v0.1.0-spec...HEAD
-[0.1.0-spec]: https://github.com/Clawdlinux/agent-contract-protocol/releases/tag/v0.1.0-spec
+[Unreleased]: https://github.com/Clawdlinux/agent-native-format/compare/v0.1.0-spec...HEAD
+[0.1.0-spec]: https://github.com/Clawdlinux/agent-native-format/releases/tag/v0.1.0-spec

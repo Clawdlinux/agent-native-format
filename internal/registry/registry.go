@@ -15,7 +15,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 // ErrNotFound is returned when a tool is not registered.

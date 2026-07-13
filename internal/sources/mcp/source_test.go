@@ -18,7 +18,7 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
 )
 
 func sampleToolsListJSON() string {

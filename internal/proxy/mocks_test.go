@@ -14,7 +14,7 @@ import (
 	http "net/http"
 	reflect "reflect"
 
-	manifest "github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	manifest "github.com/Clawdlinux/agent-native-format/pkg/manifest"
 	gomock "go.uber.org/mock/gomock"
 )
 

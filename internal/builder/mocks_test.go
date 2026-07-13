@@ -12,7 +12,7 @@ package builder
 import (
 	reflect "reflect"
 
-	registry "github.com/Clawdlinux/agent-contract-protocol/internal/registry"
+	registry "github.com/Clawdlinux/agent-native-format/internal/registry"
 	gomock "go.uber.org/mock/gomock"
 )
 

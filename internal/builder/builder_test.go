@@ -14,8 +14,8 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 // fixedID is a tiny IDSource for deterministic tests.

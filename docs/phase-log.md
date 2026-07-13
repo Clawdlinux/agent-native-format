@@ -11,8 +11,8 @@ Obsidian vault.
 **Inputs**
 - Source spec: `ACP_PoC_Specification_CONFIDENTIAL.docx`
 - Workspace: `/Users/sunny/clawdlinux/agent-contract-protocol`
-- GitHub repo: `Clawdlinux/agent-contract-protocol` (private)
-- GitHub milestone: `https://github.com/Clawdlinux/agent-contract-protocol/milestone/1`
+- GitHub repo: `Clawdlinux/agent-native-format` (private)
+- GitHub milestone: `https://github.com/Clawdlinux/agent-native-format/milestone/1`
 
 **Decisions**
 - Repo name: `agent-contract-protocol`

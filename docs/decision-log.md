@@ -2,7 +2,7 @@
 
 ## 2026-05-02 — Start ACP as a private Clawdlinux repo
 
-**Decision:** Create `Clawdlinux/agent-contract-protocol` as a private repository and
+**Decision:** Create `Clawdlinux/agent-native-format` as a private repository and
 build the PoC independently from `agentic-operator-core`.
 
 **Why:** ACP is a new protocol and benchmark artifact. Keeping it separate

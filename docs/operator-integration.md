@@ -20,7 +20,7 @@ other.
             |  POST /v1/context
             v
 +-------------------------+
-|   ACP server            |   <-- this repo (Clawdlinux/agent-contract-protocol)
+|   ACP server            |   <-- this repo (Clawdlinux/agent-native-format)
 | - intent resolver       |
 | - contract builder      |
 | - auth proxy            |
@@ -53,9 +53,9 @@ required.
 
 | Concern | Owner | Repo |
 |---|---|---|
-| ACP wire protocol | this repo | `Clawdlinux/agent-contract-protocol` SPEC.md |
-| ACP server runtime | this repo | `Clawdlinux/agent-contract-protocol` cmd/, internal/ |
-| ACP source adapters (MCP, k8s) | this repo | `Clawdlinux/agent-contract-protocol` internal/sources/ |
+| ACP wire protocol | this repo | `Clawdlinux/agent-native-format` SPEC.md |
+| ACP server runtime | this repo | `Clawdlinux/agent-native-format` cmd/, internal/ |
+| ACP source adapters (MCP, k8s) | this repo | `Clawdlinux/agent-native-format` internal/sources/ |
 | Kubernetes CRDs (AgentWorkload, AgentCard, Tenant) | operator | `Clawdlinux/agentic-operator-core` api/v1alpha1/ |
 | Reconcilers | operator | `Clawdlinux/agentic-operator-core` internal/controller/ |
 | RuntimeClass / NetworkPolicy / RBAC manifests | operator | `Clawdlinux/agentic-operator-core` charts/ |

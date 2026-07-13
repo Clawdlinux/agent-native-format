@@ -94,7 +94,7 @@ agent-contract-protocol/
 ### Build from source
 
 ```bash
-git clone https://github.com/Clawdlinux/agent-contract-protocol
+git clone https://github.com/Clawdlinux/agent-native-format
 cd agent-contract-protocol
 make build
 ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
@@ -105,7 +105,7 @@ ACP_AUTH_TOKEN=dev-token ./bin/acp-server --addr :8080
 For normal MCP users, install the bridge and register one MCP server in VS Code:
 
 ```bash
-go install github.com/Clawdlinux/agent-contract-protocol/cmd/acp-bridge@latest
+go install github.com/Clawdlinux/agent-native-format/cmd/acp-bridge@latest
 ```
 
 `~/Library/Application Support/Code/User/mcp.json`:
@@ -148,7 +148,7 @@ curl -sS -X POST http://localhost:8080/v1/context \
 ### Go install after the rename lands
 
 ```bash
-go install github.com/Clawdlinux/agent-contract-protocol/cmd/acp-server@main
+go install github.com/Clawdlinux/agent-native-format/cmd/acp-server@main
 ACP_AUTH_TOKEN=dev-token acp-server --addr :8080
 ```
 
@@ -230,10 +230,10 @@ See [`docs/positioning.md`](docs/positioning.md) and
 ## Python adapters
 
 ```bash
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_common"
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_langgraph"
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_openai"
-pip install "git+https://github.com/Clawdlinux/agent-contract-protocol.git@main#subdirectory=adapters/python/acp_crewai"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_common"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_langgraph"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_openai"
+pip install "git+https://github.com/Clawdlinux/agent-native-format.git@main#subdirectory=adapters/python/acp_crewai"
 ```
 
 ## Go SDK

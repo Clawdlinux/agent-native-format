@@ -33,8 +33,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	mcpsource "github.com/Clawdlinux/agent-contract-protocol/internal/sources/mcp"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	mcpsource "github.com/Clawdlinux/agent-native-format/internal/sources/mcp"
 )
 
 // sourceFlag is a repeatable -source flag whose value is parsed as a comma-

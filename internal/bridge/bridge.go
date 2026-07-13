@@ -31,8 +31,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/internal/resolver"
 )
 
 // Forwarder routes a bridge tools/call to the original downstream MCP server.

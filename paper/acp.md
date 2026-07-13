@@ -29,7 +29,7 @@ discovery (MCP-Zero), ACP combines server-side intent resolution, schema
 stripping, credential injection, and dependency pre-computation into one
 execution manifest. The reference implementation is open source.
 
-**Code:** `https://github.com/Clawdlinux/agent-contract-protocol`
+**Code:** `https://github.com/Clawdlinux/agent-native-format`
 **License (spec):** CC BY 4.0
 **License (reference runtime):** BSL 1.1, converts to Apache 2.0 on
 2029-05-02
@@ -332,7 +332,7 @@ All benchmark code and result artifacts are open:
 - Deterministic results: `results/2026-05-02-week3-baseline.json`
 
 ```bash
-git clone https://github.com/Clawdlinux/agent-contract-protocol
+git clone https://github.com/Clawdlinux/agent-native-format
 cd agent-contract-protocol
 python3 -m venv .venv && .venv/bin/pip install tiktoken
 export $(grep -v '^#' .env | xargs)
@@ -446,4 +446,4 @@ from teams running multi-tool agent systems at scale.
 *Draft updated: 2026-05-13. Frontier benchmark: 120 API calls across
 Opus 4.7, Sonnet 4.6, GPT-5.5, GPT-5.4. Raw results committed under
 `results/frontier/`. Manuscript source:
-`https://github.com/Clawdlinux/agent-contract-protocol/blob/main/paper/acp.md`*
+`https://github.com/Clawdlinux/agent-native-format/blob/main/paper/acp.md`*

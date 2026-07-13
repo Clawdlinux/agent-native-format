@@ -34,8 +34,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 //go:generate ../../../bin/mockgen -source=source.go -destination=mocks_test.go -package=mcp

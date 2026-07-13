@@ -20,7 +20,7 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/Clawdlinux/agent-contract-protocol/pkg/manifest"
+	"github.com/Clawdlinux/agent-native-format/pkg/manifest"
 )
 
 // fakeUpstream returns an httptest.Server that records the last request it

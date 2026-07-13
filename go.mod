@@ -1,4 +1,4 @@
-module github.com/Clawdlinux/agent-contract-protocol
+module github.com/Clawdlinux/agent-native-format
 
 go 1.25.3
 

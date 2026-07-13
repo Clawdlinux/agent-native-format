@@ -40,12 +40,12 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/Clawdlinux/agent-contract-protocol/internal/bridge"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/mcpclient"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/registry"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/resolver"
-	mcpsource "github.com/Clawdlinux/agent-contract-protocol/internal/sources/mcp"
-	"github.com/Clawdlinux/agent-contract-protocol/internal/vscodeconfig"
+	"github.com/Clawdlinux/agent-native-format/internal/bridge"
+	"github.com/Clawdlinux/agent-native-format/internal/mcpclient"
+	"github.com/Clawdlinux/agent-native-format/internal/registry"
+	"github.com/Clawdlinux/agent-native-format/internal/resolver"
+	mcpsource "github.com/Clawdlinux/agent-native-format/internal/sources/mcp"
+	"github.com/Clawdlinux/agent-native-format/internal/vscodeconfig"
 )
 
 var version = "0.2.0-dev"

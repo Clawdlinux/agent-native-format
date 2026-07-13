@@ -95,12 +95,12 @@ builder, and bearer auth.
 
 ```bash
 $ go test -race -count=1 ./...
-ok  github.com/Clawdlinux/agent-contract-protocol/internal/manifest    0.49s
-ok  github.com/Clawdlinux/agent-contract-protocol/internal/registry    0.91s
-ok  github.com/Clawdlinux/agent-contract-protocol/internal/resolver    0.51s
-ok  github.com/Clawdlinux/agent-contract-protocol/internal/server      0.59s
-ok  github.com/Clawdlinux/agent-contract-protocol/pkg/acp              0.57s
-ok  github.com/Clawdlinux/agent-contract-protocol/pkg/manifest         0.43s
+ok  github.com/Clawdlinux/agent-native-format/internal/manifest    0.49s
+ok  github.com/Clawdlinux/agent-native-format/internal/registry    0.91s
+ok  github.com/Clawdlinux/agent-native-format/internal/resolver    0.51s
+ok  github.com/Clawdlinux/agent-native-format/internal/server      0.59s
+ok  github.com/Clawdlinux/agent-native-format/pkg/acp              0.57s
+ok  github.com/Clawdlinux/agent-native-format/pkg/manifest         0.43s
 ```
 
 End-to-end smoke test against the running binary:
