@@ -1,4 +1,4 @@
-# ACP: Intent-Resolved Execution Contracts for Autonomous Agent Tool Use
+# Agent Native Format: Token-Efficient Execution Contracts for Autonomous Agent Tool Use
 
 **Shreyansh Sancheti**
 *Clawdlinux / NineVigil*
@@ -11,9 +11,10 @@
 Production agent systems built on the Model Context Protocol (MCP)
 spend a large fraction of their context window on tool discovery and
 verbose JSON-Schema descriptors before performing any user task.
-We introduce the **Agent Contract Protocol (ACP)**, a server-side layer
-that sits on top of MCP and returns a single intent-scoped Execution
-Manifest in one round trip with auth pre-injected, dependency order
+We present the execution-contract layer of **Agent Native Format (ANF)**.
+Named the Agent Contract Protocol (ACP), it is a server-side layer that
+sits on top of MCP and returns a single intent-scoped Execution Manifest
+in one round trip with auth pre-injected, dependency order
 pre-computed, and security boundaries declared.
 
 We evaluate ACP across four frontier models — Claude Opus 4.7, Claude
