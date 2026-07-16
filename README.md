@@ -69,6 +69,22 @@ the capabilities the intent needs. Measured against the MCP baseline:
 Full data in
 [`results/2026-05-02-week3-summary.md`](results/2026-05-02-week3-summary.md).
 
+## Prior art and honest positioning
+
+ANF is not a novel serialization format, and this is not published research. The
+token-efficient-format space is already crowded: TOON, TRON, and TSLN cover
+compact JSON-style encodings. Independent work is also sobering about the
+approach. The "Notation Matters" agentic benchmark (arXiv 2605.29676) finds
+compact notations save roughly 18-27% inside real agent loops and cost accuracy.
+State-in-context minification (arXiv 2606.01326) reports about 42% with a 12pp
+accuracy drop.
+
+So ANF does not compete on notation. Most of its token savings come from view
+extraction: dropping irrelevant fields and surfacing the decision-relevant state
+(health, alerts, available actions), not from compressing the syntax. Treat ANF
+as a supporting internal tool for that view extraction, grounded in the
+literature above, not as a groundbreaking format.
+
 ## Repository layout
 
 ```text
