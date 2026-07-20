@@ -21,6 +21,7 @@ package anfmcp
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -228,7 +229,12 @@ func (s *Server) Serve(ctx context.Context, in io.Reader, out io.Writer) error {
 // handle dispatches one request. The second return reports whether a response
 // should be written (false for notifications).
 func (s *Server) handle(ctx context.Context, req rpcRequest) (rpcResponse, bool) {
-	isNotification := len(req.ID) == 0
+	// A request without an id is a notification. JSON-RPC 2.0 forbids replying
+	// to notifications. Every method here is side-effect free, so dropping a
+	// notification loses nothing.
+	if len(req.ID) == 0 {
+		return rpcResponse{}, false
+	}
 
 	switch req.Method {
 	case "server/discover":
@@ -237,8 +243,6 @@ func (s *Server) handle(ctx context.Context, req rpcRequest) (rpcResponse, bool)
 	case "initialize":
 		// Legacy handshake, retained for current clients that still send it.
 		return s.ok(req.ID, s.initializeResult(req.Params)), true
-	case "notifications/initialized", "notifications/cancelled":
-		return rpcResponse{}, false
 	case "ping":
 		return s.ok(req.ID, map[string]any{}), true
 	case "tools/list":
@@ -250,10 +254,6 @@ func (s *Server) handle(ctx context.Context, req rpcRequest) (rpcResponse, bool)
 	case "resources/read":
 		return s.resourcesRead(ctx, req), true
 	default:
-		if isNotification {
-			// Unknown notification: ignore silently per JSON-RPC.
-			return rpcResponse{}, false
-		}
 		return s.fail(req.ID, codeMethodNotFound, "method not found: "+req.Method), true
 	}
 }
@@ -329,7 +329,11 @@ type toolCallParams struct {
 
 func (s *Server) toolsCall(ctx context.Context, req rpcRequest) rpcResponse {
 	var p toolCallParams
-	if err := json.Unmarshal(req.Params, &p); err != nil {
+	// Decode with UseNumber so large integers survive as json.Number rather
+	// than being rounded through float64.
+	dec := json.NewDecoder(bytes.NewReader(req.Params))
+	dec.UseNumber()
+	if err := dec.Decode(&p); err != nil {
 		return s.fail(req.ID, codeInvalidParams, "invalid params: "+err.Error())
 	}
 	if p.Name == "" {

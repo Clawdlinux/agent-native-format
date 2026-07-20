@@ -28,7 +28,8 @@ Then register it in your MCP client (see cmd/anf-mcp/README.md for configs).
 ## How to use it
 
 - `anf_encode` with `{"data": <any JSON>}` returns ANF for arbitrary JSON. It is
-  lossless and deterministic. Pass an optional `scope` to label the root.
+  deterministic and structure-preserving; nothing is dropped. Pass an optional
+  `scope` to label the root.
 - `anf_encode_kubernetes` with `{"view": <namespace view>}` returns ANF for a
   Kubernetes namespace and surfaces health first.
 - Read the `anf://spec/format` resource to learn the exact format.

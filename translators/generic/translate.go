@@ -1,12 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
-// Package generic provides a deterministic, lossless translator that converts
-// arbitrary decoded JSON into an ANF document. It performs a purely structural
-// mapping: every key and scalar in the input appears exactly once in the output
-// and no semantics (health, status, alerts, or actions) are inferred.
+// Package generic provides a deterministic, structure-preserving translator
+// that converts arbitrary decoded JSON into an ANF document. It performs a
+// purely structural mapping: no fields are dropped and no semantics (health,
+// status, alerts, or actions) are inferred. It only removes the syntactic
+// overhead of JSON.
+//
+// Caveat: ANF is line-oriented and does not escape values. A string value that
+// contains a newline is emitted verbatim, so byte-exact round-tripping of such
+// values is not guaranteed. The facts are preserved; the exact framing of a
+// multi-line value is not.
 package generic
 
 import (
+	"encoding/json"
+	"fmt"
 	"math"
 	"sort"
 	"strconv"
@@ -15,14 +23,18 @@ import (
 	"github.com/Clawdlinux/agent-native-format/pkg/anf"
 )
 
+// maxDepth bounds recursion so pathologically nested input cannot overflow the
+// stack. Inputs nested deeper than this are rejected with an error.
+const maxDepth = 512
+
 // translatorName identifies this translator in the document header.
 const translatorName = "clawdlinux/generic-translator"
 
 // Translate converts an arbitrary decoded JSON value (the result of
 // json.Unmarshal into any) into an ANF Document. It is deterministic and
-// lossless: every key and scalar in the input appears exactly once in the
-// output, and no semantics are inferred. source and scope populate the document
-// header; now sets the timestamp.
+// structure-preserving: no fields are dropped and no semantics are inferred.
+// source and scope populate the document header; now sets the timestamp. It
+// returns an error if the input nests deeper than maxDepth.
 func Translate(input any, source, scope string, now time.Time) (*anf.Document, error) {
 	doc := anf.NewDocument(source, scope, now)
 	doc.SetTranslator(translatorName)
@@ -38,12 +50,20 @@ func Translate(input any, source, scope string, now time.Time) (*anf.Document, e
 			doc.AddEntity(e)
 		}
 		for _, k := range containers {
-			doc.AddEntity(entityFromValue(k, v[k]))
+			child, err := entityFromValue(k, v[k], 1)
+			if err != nil {
+				return nil, err
+			}
+			doc.AddEntity(child)
 		}
 	case []any:
 		e := anf.Entity{Type: "array", Name: scope, Status: anf.StatusEmpty}
 		for _, elem := range v {
-			e.Children = append(e.Children, entityFromValue("item", elem))
+			child, err := entityFromValue("item", elem, 1)
+			if err != nil {
+				return nil, err
+			}
+			e.Children = append(e.Children, child)
 		}
 		doc.AddEntity(e)
 	default:
@@ -58,39 +78,43 @@ func Translate(input any, source, scope string, now time.Time) (*anf.Document, e
 	return doc, nil
 }
 
-// entityFromValue recursively maps a keyed JSON value into an ANF entity.
-func entityFromValue(key string, value any) anf.Entity {
+// entityFromValue recursively maps a keyed JSON value into an ANF entity. depth
+// tracks recursion; it returns an error if the input nests beyond maxDepth.
+func entityFromValue(key string, value any, depth int) (anf.Entity, error) {
+	if depth > maxDepth {
+		return anf.Entity{}, fmt.Errorf("generic: input nesting exceeds %d levels", maxDepth)
+	}
 	switch v := value.(type) {
 	case map[string]any:
 		e := anf.Entity{Type: key, Name: objectName(v), Status: anf.StatusEmpty}
 		for _, k := range sortedKeys(v) {
 			if isContainer(v[k]) {
-				e.Children = append(e.Children, entityFromValue(k, v[k]))
+				child, err := entityFromValue(k, v[k], depth+1)
+				if err != nil {
+					return anf.Entity{}, err
+				}
+				e.Children = append(e.Children, child)
 			} else {
 				e.Props = append(e.Props, anf.Property{Key: k, Value: scalarString(v[k])})
 			}
 		}
-		return e
+		return e, nil
 	case []any:
 		e := anf.Entity{Type: key, Status: anf.StatusEmpty}
 		for _, elem := range v {
-			if isContainer(elem) {
-				e.Children = append(e.Children, entityFromValue(key, elem))
-			} else {
-				e.Children = append(e.Children, anf.Entity{
-					Type:   key,
-					Status: anf.StatusEmpty,
-					Props:  []anf.Property{{Key: "value", Value: scalarString(elem)}},
-				})
+			child, err := entityFromValue(key, elem, depth+1)
+			if err != nil {
+				return anf.Entity{}, err
 			}
+			e.Children = append(e.Children, child)
 		}
-		return e
+		return e, nil
 	default:
 		return anf.Entity{
 			Type:   key,
 			Status: anf.StatusEmpty,
 			Props:  []anf.Property{{Key: "value", Value: scalarString(value)}},
-		}
+		}, nil
 	}
 }
 
@@ -130,8 +154,8 @@ func isContainer(v any) bool {
 }
 
 // objectName returns a human name for an object: the "name" string if present,
-// else the "id" string if present, else "". The chosen key remains a property
-// and is not consumed here (losslessness is preserved by the caller).
+// else the "id" string if present, else "". The chosen key is still emitted as
+// a property, so nothing is dropped.
 func objectName(m map[string]any) string {
 	if s, ok := m["name"].(string); ok {
 		return s
@@ -142,7 +166,8 @@ func objectName(m map[string]any) string {
 	return ""
 }
 
-// scalarString renders a JSON scalar as its ANF string form.
+// scalarString renders a JSON scalar as its ANF string form. Numbers decoded
+// with json.Number are rendered verbatim so large integers are not corrupted.
 func scalarString(v any) string {
 	switch s := v.(type) {
 	case string:
@@ -152,6 +177,8 @@ func scalarString(v any) string {
 			return "true"
 		}
 		return "false"
+	case json.Number:
+		return s.String()
 	case float64:
 		if !math.IsInf(s, 0) && !math.IsNaN(s) && s == math.Trunc(s) {
 			return strconv.FormatFloat(s, 'f', -1, 64)
@@ -160,6 +187,6 @@ func scalarString(v any) string {
 	case nil:
 		return "null"
 	default:
-		return "null"
+		return fmt.Sprintf("%v", v)
 	}
 }

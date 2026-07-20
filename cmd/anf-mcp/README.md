@@ -46,10 +46,10 @@ If `anf-mcp` is not on your `PATH`, use the absolute path from
 
 Tools:
 
-- `anf_encode` takes any JSON value and returns ANF. The mapping is lossless and
-  deterministic. Objects become entities, scalars become properties, arrays
-  become child entities. Keys are sorted. Nothing is dropped and nothing is
-  invented.
+- `anf_encode` takes any JSON value and returns ANF. The mapping is deterministic
+  and structure-preserving. Objects become entities, scalars become properties,
+  arrays become child entities. Keys are sorted. Nothing is dropped and nothing
+  is invented.
 - `anf_encode_kubernetes` takes a Kubernetes namespace view and returns ANF via
   the domain translator, which surfaces health, alerts, and available actions
   first.
@@ -64,6 +64,11 @@ Resource:
 `anf_encode` strips the syntactic overhead of JSON: braces, quotes, and commas.
 Same facts, fewer tokens. It does not infer health, status, or alerts, so it
 will not mislead an agent about state.
+
+One caveat: ANF is line-oriented and does not escape values. A string value that
+contains a newline is not byte-exact round-trippable. The facts survive; the
+framing of a multi-line value does not. Very large integers are preserved (the
+server decodes numbers without float rounding).
 
 Most of the large reductions in our benchmarks come from two things, not from
 clever notation:

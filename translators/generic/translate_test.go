@@ -4,6 +4,7 @@ package generic
 import (
 	"encoding/json"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -270,5 +271,54 @@ func TestTranslateDeterministic(t *testing.T) {
 	if anf.EncodeToString(doc1) != anf.EncodeToString(doc2) {
 		t.Errorf("output not deterministic\nfirst:\n%s\nsecond:\n%s",
 			anf.EncodeToString(doc1), anf.EncodeToString(doc2))
+	}
+}
+
+// TestTranslateBigIntPreserved verifies that a large integer decoded as
+// json.Number keeps full precision, not the float64 rounding it would suffer.
+func TestTranslateBigIntPreserved(t *testing.T) {
+	t.Parallel()
+
+	doc, err := Translate(map[string]any{"id": json.Number("12345678901234567890")}, "test", "root", fixedTime)
+	if err != nil {
+		t.Fatalf("Translate: %v", err)
+	}
+	if out := anf.EncodeToString(doc); !strings.Contains(out, "12345678901234567890") {
+		t.Errorf("big integer lost precision:\n%s", out)
+	}
+}
+
+// TestTranslateDepthLimit verifies that pathologically nested input is rejected
+// instead of overflowing the stack.
+func TestTranslateDepthLimit(t *testing.T) {
+	t.Parallel()
+
+	var v any = "leaf"
+	for i := 0; i < maxDepth+5; i++ {
+		v = map[string]any{"child": v}
+	}
+	if _, err := Translate(v, "test", "root", fixedTime); err == nil {
+		t.Error("expected error for input nested beyond maxDepth")
+	}
+}
+
+// TestTranslateEmptyContainers checks empty object and array mappings.
+func TestTranslateEmptyContainers(t *testing.T) {
+	t.Parallel()
+
+	doc, err := Translate(map[string]any{}, "test", "root", fixedTime)
+	if err != nil {
+		t.Fatalf("empty object: %v", err)
+	}
+	if len(doc.Entities) != 0 {
+		t.Errorf("empty object should yield no entities, got %d", len(doc.Entities))
+	}
+
+	doc2, err := Translate([]any{}, "test", "root", fixedTime)
+	if err != nil {
+		t.Fatalf("empty array: %v", err)
+	}
+	if len(doc2.Entities) != 1 || doc2.Entities[0].Type != "array" || len(doc2.Entities[0].Children) != 0 {
+		t.Errorf("empty array mapping unexpected: %#v", doc2.Entities)
 	}
 }

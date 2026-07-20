@@ -32,9 +32,9 @@ func encodeTool() anfmcp.Tool {
 	return anfmcp.Tool{
 		Name: "anf_encode",
 		Description: "Encode an arbitrary JSON value as Agent Native Format (ANF), a " +
-			"line-oriented, token-minimal representation. The mapping is lossless and " +
-			"deterministic: same facts, far fewer tokens. Use it to compress verbose JSON " +
-			"state before putting it in the context window.",
+			"line-oriented, token-minimal representation. The mapping is deterministic and " +
+			"structure-preserving: no fields are dropped and no semantics are inferred. Use it " +
+			"to compress verbose JSON state before putting it in the context window.",
 		InputSchema: map[string]any{
 			"type": "object",
 			"properties": map[string]any{

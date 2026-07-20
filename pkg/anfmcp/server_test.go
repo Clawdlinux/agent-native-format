@@ -266,6 +266,24 @@ func TestServerNotificationHasNoResponse(t *testing.T) {
 	}
 }
 
+// TestServerKnownMethodNotification verifies that a known method (ping) sent
+// without an id is treated as a notification and receives no response.
+func TestServerKnownMethodNotification(t *testing.T) {
+	t.Parallel()
+
+	resp := runServer(t, nil,
+		`{"jsonrpc":"2.0","method":"ping"}`,
+		`{"jsonrpc":"2.0","id":9,"method":"ping"}`,
+	)
+
+	if len(resp) != 1 {
+		t.Fatalf("want 1 response (only the id'd ping), got %d", len(resp))
+	}
+	if string(resp[0].ID) != "9" {
+		t.Errorf("response id = %s, want 9", resp[0].ID)
+	}
+}
+
 func TestServerParseError(t *testing.T) {
 	t.Parallel()
 
