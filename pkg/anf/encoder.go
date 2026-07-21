@@ -3,6 +3,7 @@ package anf
 
 import (
 	"io"
+	"sort"
 	"strings"
 )
 
@@ -99,11 +100,11 @@ func writeAlert(b *strings.Builder, a Alert) {
 	b.WriteString(a.Name)
 	b.WriteByte(' ')
 	b.WriteString(a.Message)
-	for k, v := range a.Props {
+	for _, k := range sortedMapKeys(a.Props) {
 		b.WriteByte(' ')
 		b.WriteString(k)
 		b.WriteByte(':')
-		b.WriteString(v)
+		b.WriteString(a.Props[k])
 	}
 	b.WriteByte('\n')
 }
@@ -115,11 +116,11 @@ func writeAction(b *strings.Builder, a Action) {
 	b.WriteString(a.Type)
 	b.WriteByte(' ')
 	b.WriteString(a.Name)
-	for k, v := range a.Params {
+	for _, k := range sortedMapKeys(a.Params) {
 		b.WriteByte(' ')
 		b.WriteString(k)
 		b.WriteByte(':')
-		b.WriteString(v)
+		b.WriteString(a.Params[k])
 	}
 	b.WriteByte('\n')
 }
@@ -128,4 +129,15 @@ func writeIndent(b *strings.Builder, depth int) {
 	for i := 0; i < depth; i++ {
 		b.WriteString("  ")
 	}
+}
+
+// sortedMapKeys returns a map's keys in lexicographic order so alert and action
+// property output is deterministic.
+func sortedMapKeys(m map[string]string) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
 }

@@ -32,6 +32,9 @@ about 350 tokens as ANF. The full spec is in [`FORMAT.md`](FORMAT.md).
 - **Go encoder.** [`pkg/anf`](pkg/anf), Apache 2.0. Build and emit ANF documents.
 - **Kubernetes translator.** [`translators/kubernetes`](translators/kubernetes).
   Live cluster state to ANF.
+- **MCP server.** [`cmd/anf-mcp`](cmd/anf-mcp), Apache 2.0. A stateless stdio MCP
+  server exposing ANF encoding tools to any MCP client (Claude, Cursor, VS Code,
+  Codex). `go install github.com/Clawdlinux/agent-native-format/cmd/anf-mcp@latest`.
 - **Benchmarks.** Reproducible token measurements against raw and filtered JSON.
 
 ## Governed execution runtime

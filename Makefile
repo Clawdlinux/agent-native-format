@@ -38,6 +38,7 @@ docker-build:
 build:
 	$(GO) build -trimpath -ldflags="-s -w" -o bin/acp-server ./cmd/acp-server
 	$(GO) build -trimpath -ldflags="-s -w" -o bin/acp-bridge ./cmd/acp-bridge
+	$(GO) build -trimpath -ldflags="-s -w" -o bin/anf-mcp ./cmd/anf-mcp
 
 generate:
 	@if [ ! -x $(MOCKGEN) ]; then \
